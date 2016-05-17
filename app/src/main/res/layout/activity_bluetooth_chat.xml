@@ -7,24 +7,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sdsmdg.game.MainActivity">
-
+    tools:context="com.sdsmdg.game.BluetoothChat">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="List of available devices"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="" />
 
-    <ListView
-        android:id="@+id/unpairedListView"
-        android:layout_width="wrap_content"
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="sendMessage"
+        android:text="Send message" />
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sendButton"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
