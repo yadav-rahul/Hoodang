@@ -1,4 +1,5 @@
-package com.sdsmdg.game;
+package com.sdsmdg.game.Bluetooth;
+
 
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothDevice;
@@ -13,10 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sdsmdg.game.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Objects;
 
 public class BluetoothChat extends AppCompatActivity {
 
@@ -45,7 +47,7 @@ public class BluetoothChat extends AppCompatActivity {
             public void onClick(View v) {
 
                 //It helps in elimination of NullPointerException
-                if (!Objects.equals(editText.getText().toString(), "")) {
+                if (true) {
                     String outputText = editText.getText().toString();
                     byte[] bytes = outputText.getBytes();
                     connectedThread.write(bytes);
