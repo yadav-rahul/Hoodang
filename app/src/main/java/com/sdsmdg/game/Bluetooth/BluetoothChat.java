@@ -46,7 +46,7 @@ public class BluetoothChat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //It helps in elimination of NullPointerException
+                //Due to NullPointerException
                 if (true) {
                     String outputText = editText.getText().toString();
                     byte[] bytes = outputText.getBytes();

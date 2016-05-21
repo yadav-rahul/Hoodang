@@ -20,14 +20,15 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
 
     private final int boardWidth = (GameWorld.width) / 5;
     private final int boardHeight = (GameWorld.height) / 50;
-    private final float dT = 0.5f;
+    private final float dT = 0.3f;
     private final Paint paint;
     String TAG = "com.sdsmdg.game";
-    private RectF rectF;
+    private RectF reactFB1;
     private GameWorld.RenderThread renderThread;
 
-    private float vX, vY;
-    private int xCenter, yCenter;
+    private float vB1X,vB2X;
+    private int xB1Center, yB1Center;
+    private int xB2Center, yB2Center;
 
     public MyView(Context context) {
         super(context);
@@ -42,52 +43,68 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
 
-        rectF = new RectF();
+        reactFB1 = new RectF();
         Log.i(TAG, "Constructor ends");
     }
 
-    public boolean setBoardAtCenter(int x, int y) {
+    public boolean setBoardOneAtCenter(int x, int y) {
         //Default position at the start of the Game
-        xCenter = x;
-        yCenter = (y - boardHeight);
+        xB1Center = x;
+        yB1Center = (y - boardHeight);
 
-        Log.i(TAG, "HEIGHT" + GameWorld.height+ " WIDTH "+ GameWorld.width);
         return true;
     }
 
-    public boolean updateBoardCenter() {
-        if (Math.abs(GameWorld.aX) < 1) {
-            vX = 0;
+    public boolean setBoardTwoAtCenter(int x, int y) {
+        //Default position at the start of the Game
+        xB2Center = x;
+        yB2Center = (y + boardHeight);
+
+        return true;
+    }
+
+
+    public boolean updateB1Center() {
+        if (Math.abs(GameWorld.aB1X) < 1) {
+            vB1X = 0;
         } else {
-            if (GameWorld.aX < 0) {
-                vX = GameWorld.width/36;
+            if (GameWorld.aB1X < 0) {
+                vB1X = GameWorld.width / 36;
+            } else {
+                vB1X = -GameWorld.width / 36;
             }
-            else{
-                vX = -GameWorld.width/36;
-            }
         }
 
-        xCenter += (int) (vX * dT);
+        xB1Center += (int) (vB1X * dT);
 
 
-        if (xCenter < boardWidth / 2) {
-            xCenter = boardWidth / 2;
-            vX = 0;
+        if (xB1Center < boardWidth / 2) {
+            xB1Center = boardWidth / 2;
+            vB1X = 0;
         }
-        if (xCenter > GameWorld.width - (boardWidth / 2)) {
-            xCenter = (GameWorld.width - (boardWidth / 2));
-            vX = 0;
+        if (xB1Center > GameWorld.width - (boardWidth / 2)) {
+            xB1Center = (GameWorld.width - (boardWidth / 2));
+            vB1X = 0;
         }
 
+        return true;
+    }
+    
+    public boolean updateB2Center(){
+        
+        
+        
+        
+        
         return true;
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (rectF != null) {
-            rectF.set(xCenter - (boardWidth / 2), yCenter + (boardHeight / 2), xCenter + (boardWidth / 2), yCenter - (boardHeight / 2));
+        if (reactFB1 != null) {
+            reactFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
             canvas.drawColor(0XFF000000);
-            canvas.drawRect(rectF, paint);
+            canvas.drawRect(reactFB1, paint);
         }
     }
 

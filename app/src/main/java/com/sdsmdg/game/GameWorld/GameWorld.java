@@ -19,8 +19,7 @@ import com.sdsmdg.game.MyView;
  */
 public class GameWorld extends Activity implements SensorEventListener {
 
-    public static float aX;
-    public static float aY;
+    public static float aB1X;
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
     private SensorManager sensorManager;
@@ -39,19 +38,19 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        height = (int) (0.97 * displaymetrics.heightPixels);
+        height = (int) (0.95 * displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
 
         Log.i(TAG,"onCreate Starts");
         myView = new MyView(this);
-        myView.setBoardAtCenter(width/2,height);
+        myView.setBoardOneAtCenter(width/2,height);
+        myView.setBoardTwoAtCenter(width/2,0);
         setContentView(myView);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        aX = event.values[0];
-        aY = event.values[1];
+        aB1X = event.values[0];
     }
 
     @Override
@@ -103,11 +102,9 @@ public class GameWorld extends Activity implements SensorEventListener {
             Canvas canvas;
 
             while (isRunning) {
-                myView.updateBoardCenter();
+                myView.updateB1Center();
                 canvas = null;
                 try {
-
-
                     canvas = surfaceHolder.lockCanvas(null);
 
                     synchronized (surfaceHolder) {
