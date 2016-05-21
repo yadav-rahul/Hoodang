@@ -3,6 +3,7 @@ package com.sdsmdg.game;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.sdsmdg.game.GameWorld.GameWorld;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
+    public String TAG = "com.sdsmdg.game";
     Button sP,mP;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +35,13 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             }
 
             case R.id.multiPlayerButton:{
-                Intent i = new Intent(this, GameWorld.class);
+                Intent i = new Intent(getApplicationContext(), GameWorld.class);
+                Log.i(TAG, "MP Buttton clicked");
                 startActivity(i);
 
                 break;
             }
         }
     }
+
 }
