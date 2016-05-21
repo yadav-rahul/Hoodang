@@ -19,7 +19,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
     //Surface holder help in monitoring the changes
 
     private final int boardWidth = (GameWorld.width) / 5;
-    private final int boardHeight = (GameWorld.height)/50;
+    private final int boardHeight = (GameWorld.height) / 50;
     private final float dT = 0.5f;
     private final Paint paint;
     String TAG = "com.sdsmdg.game";
@@ -49,16 +49,26 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean setBoardAtCenter(int x, int y) {
         //Default position at the start of the Game
         xCenter = x;
-        yCenter = (int) (y - 2.5 * boardHeight);
+        yCenter = (y - boardHeight);
 
+        Log.i(TAG, "HEIGHT" + GameWorld.height+ " WIDTH "+ GameWorld.width);
         return true;
     }
 
     public boolean updateBoardCenter() {
-        vX -= (GameWorld.aX) * dT;
-        xCenter += (int) (dT * (vX + 0.5 * GameWorld.aX * dT));
+        if (Math.abs(GameWorld.aX) < 1) {
+            vX = 0;
+        } else {
+            if (GameWorld.aX < 0) {
+                vX = GameWorld.width/36;
+            }
+            else{
+                vX = -GameWorld.width/36;
+            }
+        }
 
-        //yCenter = 20;
+        xCenter += (int) (vX * dT);
+
 
         if (xCenter < boardWidth / 2) {
             xCenter = boardWidth / 2;

@@ -39,7 +39,7 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        height = displaymetrics.heightPixels;
+        height = (int) (0.97 * displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
 
         Log.i(TAG,"onCreate Starts");
