@@ -35,6 +35,7 @@ public class BluetoothChat extends AppCompatActivity {
 
         bluetoothSocket = MainActivity.bluetoothSocket;
         bluetoothDevice = MainActivity.bluetoothDevice;
+        
         textView = (TextView) findViewById(R.id.textView);
         editText = (EditText) findViewById(R.id.editText);
         sendButton = (Button) findViewById(R.id.sendButton);

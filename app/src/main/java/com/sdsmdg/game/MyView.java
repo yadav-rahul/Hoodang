@@ -23,7 +23,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
     private final float dT = 0.3f;
     private final Paint paint;
     String TAG = "com.sdsmdg.game";
-    private RectF reactFB1;
+    private RectF rectFB1,rectFB2;
     private GameWorld.RenderThread renderThread;
 
     private float vB1X,vB2X;
@@ -43,7 +43,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
 
-        reactFB1 = new RectF();
+        rectFB1 = new RectF();
+        rectFB2 = new RectF();
         Log.i(TAG, "Constructor ends");
     }
 
@@ -91,9 +92,28 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
     }
     
     public boolean updateB2Center(){
-        
-        
-        
+
+        if (Math.abs(GameWorld.aB1X) < 1) {
+            vB2X = 0;
+        } else {
+            if (GameWorld.aB1X < 0) {
+                vB2X = GameWorld.width / 36;
+            } else {
+                vB2X = -GameWorld.width / 36;
+            }
+        }
+
+        xB2Center += (int) (vB2X * dT);
+
+
+        if (xB2Center < boardWidth / 2) {
+            xB2Center = boardWidth / 2;
+            vB2X = 0;
+        }
+        if (xB2Center > GameWorld.width - (boardWidth / 2)) {
+            xB2Center = (GameWorld.width - (boardWidth / 2));
+            vB2X = 0;
+        }
         
         
         return true;
@@ -101,10 +121,17 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (reactFB1 != null) {
-            reactFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
-            canvas.drawColor(0XFF000000);
-            canvas.drawRect(reactFB1, paint);
+        canvas.drawColor(0XFF000000);
+        if (rectFB1 != null) {
+            rectFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
+            
+            canvas.drawRect(rectFB1, paint);
+        }
+        
+        if(rectFB2!=null){
+            rectFB2.set(xB2Center - (boardWidth / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth / 2), yB2Center - (boardHeight / 2));
+
+            canvas.drawRect(rectFB2, paint);
         }
     }
 

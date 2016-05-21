@@ -103,6 +103,7 @@ public class GameWorld extends Activity implements SensorEventListener {
 
             while (isRunning) {
                 myView.updateB1Center();
+                myView.updateB2Center();
                 canvas = null;
                 try {
                     canvas = surfaceHolder.lockCanvas(null);
