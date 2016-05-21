@@ -1,10 +1,8 @@
 package com.sdsmdg.game.Bluetooth;
 
 
-import android.annotation.TargetApi;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +41,6 @@ public class BluetoothChat extends AppCompatActivity {
         connectedThread.start();
         sendButton.setOnClickListener(new View.OnClickListener() {
 
-            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
 
