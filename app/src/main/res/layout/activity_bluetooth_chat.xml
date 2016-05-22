@@ -22,8 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="sendMessage"
-        android:text="Send message" />
+        android:text="@string/send_message" />
 
     <EditText
         android:id="@+id/editText"

@@ -3,6 +3,7 @@
     package="com.sdsmdg.game">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
@@ -18,8 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Bluetooth.MainActivity" />
-        <activity android:name=".GameWorld.GameWorld"/>
-
+        <activity android:name=".GameWorld.GameWorld" />
         <activity android:name=".Bluetooth.BluetoothChat" />
         <activity android:name=".Launcher">
             <intent-filter>
@@ -28,6 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Bluetooth.BluetoothChat$SendService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

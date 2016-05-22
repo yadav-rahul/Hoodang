@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.sdsmdg.game.GameWorld.GameWorld;
+import com.sdsmdg.game.Bluetooth.MainActivity;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,7 +35,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             }
 
             case R.id.multiPlayerButton:{
-                Intent i = new Intent(getApplicationContext(), GameWorld.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 Log.i(TAG, "MP Buttton clicked");
                 startActivity(i);
 

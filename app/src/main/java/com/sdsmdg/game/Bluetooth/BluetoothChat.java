@@ -1,13 +1,16 @@
 package com.sdsmdg.game.Bluetooth;
 
 
+import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,11 +23,12 @@ import java.io.OutputStream;
 
 public class BluetoothChat extends AppCompatActivity {
 
+    private static final String TAG = "com.sdsmdg.game";
+    public static EditText editText;
+    public TextView textView;
     BluetoothSocket bluetoothSocket;
     BluetoothDevice bluetoothDevice;
-    Button sendButton;
-    EditText editText;
-    TextView textView;
+    static ConnectedThread connectedThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,31 +37,59 @@ public class BluetoothChat extends AppCompatActivity {
 
         bluetoothSocket = MainActivity.bluetoothSocket;
         bluetoothDevice = MainActivity.bluetoothDevice;
-        
+
         textView = (TextView) findViewById(R.id.textView);
         editText = (EditText) findViewById(R.id.editText);
-        sendButton = (Button) findViewById(R.id.sendButton);
-        final ConnectedThread connectedThread = new ConnectedThread(bluetoothSocket);
+
+
+
+        connectedThread = new ConnectedThread(bluetoothSocket);
         connectedThread.start();
-        sendButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
+        Intent i = new Intent(getApplicationContext(), SendService.class);
+        startService(i);
 
-                //Due to NullPointerException
-                if (true) {
-                    String outputText = editText.getText().toString();
-                    byte[] bytes = outputText.getBytes();
-                    connectedThread.write(bytes);
+    }
 
-                    editText.setText("");
-                    Toast.makeText(BluetoothChat.this, "Message has been Send !", Toast.LENGTH_SHORT).show();
+    public static class SendService extends Service {
+
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            Log.i(TAG, "onStartCommand called");
+            new CountDownTimer(60000, 100) {
+
+                public void onTick(long millisUntilFinished) {
+                    if (true) {
+                        String outputText = editText.getText().toString();
+                        if (outputText != null){
+                            byte[] bytes = outputText.getBytes();
+
+                            connectedThread.write(bytes);
+                        }
+
+                        //Log.i(TAG,"Time remaining : " + millisUntilFinished/1000);
+                    }
                 }
 
-            }
-        });
+                public void onFinish() {
+                    Log.i(TAG, "Count Down finish");
+                    Toast.makeText(SendService.this, "Time Over", Toast.LENGTH_SHORT).show();
+                }
+            }.start();
+
+            return Service.START_STICKY;
+        }
 
 
+        @Override
+        public void onDestroy() {
+            Log.i(TAG, "onDestroy called");
+        }
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
+        }
     }
 
     public class ConnectedThread extends Thread {
