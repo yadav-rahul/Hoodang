@@ -23,10 +23,10 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
     private final float dT = 0.3f;
     private final Paint paint;
     String TAG = "com.sdsmdg.game";
-    private RectF rectFB1,rectFB2;
+    private RectF rectFB1, rectFB2;
     private GameWorld.RenderThread renderThread;
 
-    private float vB1X,vB2X;
+    private float vB1X, vB2X;
     private int xB1Center, yB1Center;
     private int xB2Center, yB2Center;
 
@@ -90,8 +90,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
 
         return true;
     }
-    
-    public boolean updateB2Center(){
+
+    public boolean updateB2Center() {
 
         if (Math.abs(GameWorld.aB1X) < 1) {
             vB2X = 0;
@@ -114,8 +114,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
             xB2Center = (GameWorld.width - (boardWidth / 2));
             vB2X = 0;
         }
-        
-        
+
+
         return true;
     }
 
@@ -124,11 +124,11 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(0XFF000000);
         if (rectFB1 != null) {
             rectFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
-            
+
             canvas.drawRect(rectFB1, paint);
         }
-        
-        if(rectFB2!=null){
+
+        if (rectFB2 != null) {
             rectFB2.set(xB2Center - (boardWidth / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth / 2), yB2Center - (boardHeight / 2));
 
             canvas.drawRect(rectFB2, paint);

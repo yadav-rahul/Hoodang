@@ -41,10 +41,10 @@ public class GameWorld extends Activity implements SensorEventListener {
         height = (int) (0.95 * displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
 
-        Log.i(TAG,"onCreate Starts");
+        Log.i(TAG, "onCreate Starts");
         myView = new MyView(this);
-        myView.setBoardOneAtCenter(width/2,height);
-        myView.setBoardTwoAtCenter(width/2,0);
+        myView.setBoardOneAtCenter(width / 2, height);
+        myView.setBoardTwoAtCenter(width / 2, 0);
         setContentView(myView);
     }
 
@@ -56,6 +56,15 @@ public class GameWorld extends Activity implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    public int getB1Direction() {
+        if (Math.abs(aB1X) < 1)
+            return 0;
+        else if (aB1X < 0)
+            return 1;
+        else
+            return -1;
     }
 
     @Override

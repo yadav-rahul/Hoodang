@@ -13,7 +13,8 @@ import com.sdsmdg.game.Bluetooth.MainActivity;
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
     public String TAG = "com.sdsmdg.game";
-    Button sP,mP;
+    Button sP, mP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,15 +27,14 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.singlePlayerButton:{
+        switch (v.getId()) {
+            case R.id.singlePlayerButton: {
                 Toast.makeText(Launcher.this, "Work in Progress", Toast.LENGTH_SHORT).show();
 
                 break;
             }
 
-            case R.id.multiPlayerButton:{
+            case R.id.multiPlayerButton: {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 Log.i(TAG, "MP Buttton clicked");
                 startActivity(i);

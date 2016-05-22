@@ -25,10 +25,10 @@ public class BluetoothChat extends AppCompatActivity {
 
     private static final String TAG = "com.sdsmdg.game";
     public static EditText editText;
+    static ConnectedThread connectedThread;
     public TextView textView;
     BluetoothSocket bluetoothSocket;
     BluetoothDevice bluetoothDevice;
-    static ConnectedThread connectedThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class BluetoothChat extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.textView);
         editText = (EditText) findViewById(R.id.editText);
-
 
 
         connectedThread = new ConnectedThread(bluetoothSocket);
@@ -61,13 +60,11 @@ public class BluetoothChat extends AppCompatActivity {
                 public void onTick(long millisUntilFinished) {
                     if (true) {
                         String outputText = editText.getText().toString();
-                        if (outputText != null){
+                        if (outputText != null) {
                             byte[] bytes = outputText.getBytes();
 
                             connectedThread.write(bytes);
                         }
-
-                        //Log.i(TAG,"Time remaining : " + millisUntilFinished/1000);
                     }
                 }
 
