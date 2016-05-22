@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Bluetooth.MainActivity" />
         <activity android:name=".GameWorld.GameWorld" />
-        <activity android:name=".Bluetooth.BluetoothChat" />
+
         <activity android:name=".Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
         </activity>
 
         <service
-            android:name=".Bluetooth.BluetoothChat$SendService"
+            android:name=".GameWorld.GameWorld$SendService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

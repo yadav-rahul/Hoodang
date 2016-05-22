@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.sdsmdg.game.GameWorld.GameWorld;
 import com.sdsmdg.game.R;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startChat() {
-        Intent i = new Intent(this, BluetoothChat.class);
+        Intent i = new Intent(this, GameWorld.class);
         startActivity(i);
 
     }

@@ -87,20 +87,17 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
             xB1Center = (GameWorld.width - (boardWidth / 2));
             vB1X = 0;
         }
-
         return true;
     }
 
     public boolean updateB2Center() {
 
-        if (Math.abs(GameWorld.aB1X) < 1) {
+        if (GameWorld.directionB2 == 0) {
             vB2X = 0;
-        } else {
-            if (GameWorld.aB1X < 0) {
-                vB2X = GameWorld.width / 36;
-            } else {
-                vB2X = -GameWorld.width / 36;
-            }
+        } else if (GameWorld.directionB2 == 1) {
+            vB2X = -GameWorld.width / 36;
+        } else if (GameWorld.directionB2 == -1) {
+            vB2X = GameWorld.width / 36;
         }
 
         xB2Center += (int) (vB2X * dT);
