@@ -85,15 +85,11 @@ public class MainActivity extends AppCompatActivity {
         if (mBluetoothAdapter == null) {
             Toast.makeText(MainActivity.this, "Sorry, Your device doesn't support Bluetooth !", Toast.LENGTH_SHORT).show();
         } else {
-            if (!mBluetoothAdapter.isEnabled()) {
-
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            } else {
-                Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-                startActivity(discoverableIntent);
+            if (mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.disable();
             }
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
         }
 
