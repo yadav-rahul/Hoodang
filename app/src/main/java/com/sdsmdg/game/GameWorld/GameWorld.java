@@ -43,6 +43,7 @@ public class GameWorld extends Activity implements SensorEventListener {
     private MyView myView;
     public static int directionB2;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,9 +88,9 @@ public class GameWorld extends Activity implements SensorEventListener {
         if (Math.abs(aB1X) < 1)
             return "0";
         else if (aB1X < 0)
-            return "1";
-        else
             return "-1";
+        else
+            return "1";
     }
 
     @Override
@@ -181,7 +182,7 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         @Override
         public void onDestroy() {
-            //  Log.i(TAG, "onDestroy called");
+            stopSelf();
         }
 
         @Override

@@ -251,8 +251,4 @@ public class MainActivity extends AppCompatActivity {
             startChat();
         }
     }
-
-
 }
-
-
