@@ -13,7 +13,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -34,6 +33,7 @@ public class GameWorld extends Activity implements SensorEventListener {
 
     public static float aB1X;
     public static int height, width;
+    public static int directionB2;
     static ConnectedThread connectedThread;
     public String TAG = "com.sdsmdg.game";
     BluetoothSocket bluetoothSocket;
@@ -41,8 +41,15 @@ public class GameWorld extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private MyView myView;
-    public static int directionB2;
 
+    public static String getB1Direction() {
+        if (Math.abs(aB1X) < 1)
+            return "0";
+        else if (aB1X < 0)
+            return ("-" + width);
+        else
+            return ("" + width);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,15 +89,6 @@ public class GameWorld extends Activity implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-    public static String getB1Direction() {
-        if (Math.abs(aB1X) < 1)
-            return "0";
-        else if (aB1X < 0)
-            return "-1";
-        else
-            return "1";
     }
 
     @Override
@@ -160,11 +158,12 @@ public class GameWorld extends Activity implements SensorEventListener {
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
             // Log.i(TAG, "onStartCommand called");
-            new CountDownTimer(60000, 100) {
+            new CountDownTimer(600000, 400) {
 
                 public void onTick(long millisUntilFinished) {
                     if (true) {
-                        String outputText = getB1Direction();
+                        //Now we have casted int to the string
+                        String outputText = (getB1Direction());
                         byte[] bytes = outputText.getBytes();
                         connectedThread.write(bytes);
                     }
@@ -176,7 +175,7 @@ public class GameWorld extends Activity implements SensorEventListener {
                 }
             }.start();
 
-            return Service.START_STICKY;
+            return Service.START_NOT_STICKY;
         }
 
 
@@ -197,7 +196,6 @@ public class GameWorld extends Activity implements SensorEventListener {
         private final BluetoothSocket socket;
         private final InputStream inputStream;
         private final OutputStream outputStream;
-        Handler handler;
 
         public ConnectedThread(BluetoothSocket bluetoothSocket) {
 
