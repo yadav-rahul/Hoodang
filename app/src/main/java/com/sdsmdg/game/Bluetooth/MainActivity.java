@@ -1,4 +1,4 @@
-package com.sdsmdg.game;
+package com.sdsmdg.game.Bluetooth;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.sdsmdg.game.GameWorld.GameWorld;
+import com.sdsmdg.game.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
+
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startChat() {
-        Intent i = new Intent(this, BluetoothChat.class);
+        Intent i = new Intent(this, GameWorld.class);
         startActivity(i);
 
     }
@@ -76,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         unpairedListView = (ListView) findViewById(R.id.unpairedListView);
 
@@ -90,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             }
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
         }
 
     }
@@ -246,8 +251,4 @@ public class MainActivity extends AppCompatActivity {
             startChat();
         }
     }
-
-
 }
-
-
