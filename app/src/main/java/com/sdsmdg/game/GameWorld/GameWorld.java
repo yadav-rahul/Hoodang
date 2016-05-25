@@ -69,8 +69,6 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         Log.i(TAG, "onCreate Starts");
         myView = new MyView(this);
-        myView.setBoardOneAtCenter(width / 2, height);
-        myView.setBoardTwoAtCenter(width / 2, 0);
         setContentView(myView);
 
 
@@ -135,8 +133,7 @@ public class GameWorld extends Activity implements SensorEventListener {
             Canvas canvas;
 
             while (isRunning) {
-                myView.updateB1Center();
-                myView.updateB2Center();
+                myView.update();
                 canvas = null;
                 try {
                     canvas = surfaceHolder.lockCanvas(null);

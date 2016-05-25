@@ -8,25 +8,25 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.sdsmdg.game.GameWorld.Ball;
 import com.sdsmdg.game.GameWorld.GameWorld;
 
 
 /**
  * Created by Rahul Yadav on 5/20/2016.
  */
-public class MyView extends SurfaceView implements SurfaceHolder.Callback {
-
-    //Surface holder help in monitoring the changes
+public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball {
 
     private final int boardWidth = (GameWorld.width) / 5;
     private final int boardHeight = (GameWorld.height) / 50;
     private final float dT = 0.3f;
     private final Paint paint;
     String TAG = "com.sdsmdg.game";
+    private float vBallX, vBallY;
     private RectF rectFB1, rectFB2;
     private GameWorld.RenderThread renderThread;
-
     private float vB1X, vB2X;
+    private int xBallCenter, yBallCenter;
     private int xB1Center, yB1Center;
     private int xB2Center, yB2Center;
 
@@ -45,7 +45,9 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
 
         rectFB1 = new RectF();
         rectFB2 = new RectF();
-        Log.i(TAG, "Constructor ends");
+
+        setBoardOneAtCenter(GameWorld.width / 2, GameWorld.height);
+        setBoardTwoAtCenter(GameWorld.width / 2, 0);
     }
 
     public boolean setBoardOneAtCenter(int x, int y) {
@@ -64,6 +66,23 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
+    @Override
+    public boolean initializeBall(int xBallCenter, int yBallCenter) {
+
+        return true;
+    }
+
+    @Override
+    public boolean updateBall() {
+        return true;
+    }
+
+    public boolean update() {
+        updateB1Center();
+        updateB2Center();
+        updateBall();
+        return true;
+    }
 
     public boolean updateB1Center() {
         if (Math.abs(GameWorld.aB1X) < 1) {
@@ -129,6 +148,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback {
 
             canvas.drawRect(rectFB2, paint);
         }
+
     }
 
     @Override
