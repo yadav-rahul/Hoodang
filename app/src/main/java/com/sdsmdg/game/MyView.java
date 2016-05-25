@@ -48,6 +48,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
         setBoardOneAtCenter(GameWorld.width / 2, GameWorld.height);
         setBoardTwoAtCenter(GameWorld.width / 2, 0);
+        initializeBallPosition(GameWorld.width, GameWorld.height);
     }
 
     public boolean setBoardOneAtCenter(int x, int y) {
@@ -67,13 +68,40 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     }
 
     @Override
-    public boolean initializeBall(int xBallCenter, int yBallCenter) {
+    public boolean initializeBallPosition(int x, int y) {
+        xBallCenter = x/2;
+        yBallCenter = y/2;
+        initializeBallVelocity(x, y);
+        return true;
+    }
 
+    @Override
+    public boolean initializeBallVelocity(int x, int y) {
+        vBallX = x / 25;
+        vBallY = y / 30;
         return true;
     }
 
     @Override
     public boolean updateBall() {
+
+
+        xBallCenter += vBallX * dT;
+        yBallCenter += vBallY * dT;
+
+        if (xBallCenter < Ball.radius) {
+            xBallCenter = Ball.radius;
+            vBallX = -vBallX;
+        } else if (yBallCenter < Ball.radius) {
+            yBallCenter = Ball.radius;
+            vBallY = -vBallY;
+        } else if (xBallCenter > GameWorld.width - Ball.radius) {
+            xBallCenter = GameWorld.width - Ball.radius;
+            vBallX = -vBallX;
+        } else if (yBallCenter > GameWorld.height - Ball.radius) {
+            yBallCenter = GameWorld.height - Ball.radius;
+            vBallY = -vBallY;
+        }
         return true;
     }
 
@@ -147,6 +175,11 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             rectFB2.set(xB2Center - (boardWidth / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth / 2), yB2Center - (boardHeight / 2));
 
             canvas.drawRect(rectFB2, paint);
+        }
+        if (Ball.rectFBall != null) {
+            Ball.rectFBall.set(xBallCenter - Ball.radius, yBallCenter - Ball.radius, xBallCenter + Ball.radius, yBallCenter + Ball.radius);
+
+            canvas.drawOval(Ball.rectFBall, paint);
         }
 
     }
