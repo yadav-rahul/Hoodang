@@ -69,8 +69,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
     @Override
     public boolean initializeBallPosition(int x, int y) {
-        xBallCenter = x/2;
-        yBallCenter = y/2;
+        xBallCenter = x / 2;
+        yBallCenter = y / 2;
         initializeBallVelocity(x, y);
         return true;
     }
@@ -82,28 +82,6 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         return true;
     }
 
-    @Override
-    public boolean updateBall() {
-
-
-        xBallCenter += vBallX * dT;
-        yBallCenter += vBallY * dT;
-
-        if (xBallCenter < Ball.radius) {
-            xBallCenter = Ball.radius;
-            vBallX = -vBallX;
-        } else if (yBallCenter < Ball.radius) {
-            yBallCenter = Ball.radius;
-            vBallY = -vBallY;
-        } else if (xBallCenter > GameWorld.width - Ball.radius) {
-            xBallCenter = GameWorld.width - Ball.radius;
-            vBallX = -vBallX;
-        } else if (yBallCenter > GameWorld.height - Ball.radius) {
-            yBallCenter = GameWorld.height - Ball.radius;
-            vBallY = -vBallY;
-        }
-        return true;
-    }
 
     public boolean update() {
         updateB1Center();
@@ -157,8 +135,42 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             xB2Center = (GameWorld.width - (boardWidth / 2));
             vB2X = 0;
         }
+        return true;
+    }
+
+    @Override
+    public boolean updateBall() {
 
 
+        xBallCenter += vBallX * dT;
+        yBallCenter += vBallY * dT;
+
+        if (xBallCenter < Ball.radius) {
+            xBallCenter = Ball.radius;
+            vBallX = -vBallX;
+        } else if (xBallCenter > GameWorld.width - Ball.radius) {
+            xBallCenter = GameWorld.width - Ball.radius;
+            vBallX = -vBallX;
+        } else if (yBallCenter < Ball.radius) {
+            //P2 dies
+            yBallCenter = Ball.radius;
+            vBallY = -vBallY;
+        } else if (yBallCenter > GameWorld.height - Ball.radius) {
+            //P1 dies
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean collide(int x) {
+        if (x == 1) {
+            yBallCenter = (int) (GameWorld.height - 1.5*boardHeight-Ball.radius);
+            vBallY = -vBallY;
+        } else if (x == 2) {
+            yBallCenter = Ball.radius;
+            vBallY = -vBallY;
+        }
         return true;
     }
 
@@ -181,7 +193,13 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
             canvas.drawOval(Ball.rectFBall, paint);
         }
-
+        if (rectFB1 != null) {
+            if (rectFB1.intersect(rectFBall)) {
+                collide(1);
+            } else if (rectFB2.intersect(rectFBall)) {
+                collide(2);
+            }
+        }
     }
 
     @Override

@@ -12,4 +12,5 @@ public interface Ball {
     boolean initializeBallPosition(int x, int y);
     boolean initializeBallVelocity(int x,int y);
     boolean updateBall();
+    boolean collide(int x);
 }
