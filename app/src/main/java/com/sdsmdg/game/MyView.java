@@ -20,7 +20,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     private final int boardWidth = (GameWorld.width) / 5;
     private final int boardHeight = (GameWorld.height) / 50;
     private final float dT = 0.3f;
-    private final Paint myPaint, invisible;
+    private final Paint paintB1, paintB2,paintBall;
     String TAG = "com.sdsmdg.game";
     private float vBallX, vBallY;
     private RectF rectFB1, rectFB2, rectInvisible;
@@ -38,17 +38,23 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         renderThread = new GameWorld.RenderThread(getHolder(), this);
 
         setFocusable(true);
-        myPaint = new Paint();
-        myPaint.setColor(0xFFFFFAAF);
-        myPaint.setAlpha(255);
-        myPaint.setStyle(Paint.Style.FILL);
-        myPaint.setAntiAlias(true);
+        paintB1 = new Paint();
+        paintB1.setColor(0xFF3F51B5);
+        paintB1.setAlpha(255);
+        paintB1.setStyle(Paint.Style.FILL);
+        paintB1.setAntiAlias(true);
 
-        invisible = new Paint();
-        invisible.setColor(0xFFFFFFFF);
-        invisible.setAlpha(0);
-        invisible.setStyle(Paint.Style.FILL);
-        invisible.setAntiAlias(true);
+        paintB2 = new Paint();
+        paintB2.setColor(0xFF3F51B5);
+        paintB2.setAlpha(255);
+        paintB2.setStyle(Paint.Style.FILL);
+        paintB2.setAntiAlias(true);
+
+        paintBall = new Paint();
+        paintBall.setColor(0xFFFF4081);
+        paintBall.setAlpha(255);
+        paintBall.setStyle(Paint.Style.FILL);
+        paintBall.setAntiAlias(true);
 
         rectFB1 = new RectF();
         rectFB2 = new RectF();
@@ -188,22 +194,22 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawColor(0XFF000000);
+        canvas.drawColor(0XFFFFFFFF);
         if (rectFB1 != null) {
             rectFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
 
-            canvas.drawRect(rectFB1, myPaint);
+            canvas.drawRect(rectFB1, paintB1);
         }
 
         if (rectFB2 != null) {
             rectFB2.set(xB2Center - (boardWidth / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth / 2), yB2Center - (boardHeight / 2));
 
-            canvas.drawRect(rectFB2, myPaint);
+            canvas.drawRect(rectFB2, paintB2);
         }
         if (Ball.rectFBall != null) {
             Ball.rectFBall.set(xBallCenter - Ball.radius, yBallCenter - Ball.radius, xBallCenter + Ball.radius, yBallCenter + Ball.radius);
 
-            canvas.drawOval(Ball.rectFBall, myPaint);
+            canvas.drawOval(Ball.rectFBall, paintBall);
         }
         if (rectFB1 != null) {
             if (rectFB1.intersect(rectFBall)) {
