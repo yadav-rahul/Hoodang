@@ -13,6 +13,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -68,8 +69,9 @@ public class MainActivity extends AppCompatActivity {
         return ctx;
     }
 
-    public void startChat() {
+    public void startChat(int x) {
         Intent i = new Intent(this, GameWorld.class);
+        i.putExtra("orientation", x);
         startActivity(i);
 
     }
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
 
@@ -149,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+        mBluetoothAdapter.disable();
     }
 
 
@@ -192,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
 
                     MainActivity.bluetoothDevice = socket.getRemoteDevice();
                     MainActivity.bluetoothSocket = socket;
-                    startChat();
+
+                    startChat(-1);
 
                     try {
                         bluetoothServerSocket.close();
@@ -248,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
             MainActivity.bluetoothSocket = bluetoothSocket;
             MainActivity.bluetoothDevice = bluetoothDevice;
-            startChat();
+            startChat(1);
         }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         mP = (Button) findViewById(R.id.multiPlayerButton);
         sP.setOnClickListener(this);
         mP.setOnClickListener(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override

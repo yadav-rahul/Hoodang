@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
@@ -14,9 +15,11 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
@@ -34,6 +37,7 @@ public class GameWorld extends Activity implements SensorEventListener {
     public static float aB1X;
     public static int height, width;
     public static int directionB2;
+    public static int temp;
     static ConnectedThread connectedThread;
     public String TAG = "com.sdsmdg.game";
     BluetoothSocket bluetoothSocket;
@@ -51,17 +55,30 @@ public class GameWorld extends Activity implements SensorEventListener {
             return ("" + width);
     }
 
+    public static void setAutoOrientationEnabled(Context context, boolean enabled) {
+        Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        setAutoOrientationEnabled(this, true);
+        Bundle bundle = getIntent().getExtras();
+        temp = bundle.getInt("orientation");
+        if (temp == 1) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+        }
+
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        height = (int) (0.95 * displaymetrics.heightPixels);
+        height = (displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
 
         bluetoothSocket = MainActivity.bluetoothSocket;
@@ -69,18 +86,20 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         Log.i(TAG, "onCreate Starts");
         myView = new MyView(this);
-        myView.setBoardOneAtCenter(width / 2, height);
-        myView.setBoardTwoAtCenter(width / 2, 0);
-        setContentView(myView);
-
-
         Intent i = new Intent(getApplicationContext(), SendService.class);
         startService(i);
 
         connectedThread = new ConnectedThread(bluetoothSocket);
         connectedThread.start();
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(myView);
     }
 
+    //    public static void  startDialog(int x){
+//        Dialog dialog = new Dialog();
+//        dialog.setContentView(R.layout.my_dialog);
+//    }
     @Override
     public void onSensorChanged(SensorEvent event) {
         aB1X = event.values[0];
@@ -103,6 +122,8 @@ public class GameWorld extends Activity implements SensorEventListener {
         super.onPause();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
+
+        setAutoOrientationEnabled(this, false);
     }
 
     @Override
@@ -110,6 +131,8 @@ public class GameWorld extends Activity implements SensorEventListener {
         super.onStop();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
+
+        setAutoOrientationEnabled(this, false);
     }
 
     public static class RenderThread extends Thread {
@@ -135,8 +158,7 @@ public class GameWorld extends Activity implements SensorEventListener {
             Canvas canvas;
 
             while (isRunning) {
-                myView.updateB1Center();
-                myView.updateB2Center();
+                myView.update();
                 canvas = null;
                 try {
                     canvas = surfaceHolder.lockCanvas(null);
