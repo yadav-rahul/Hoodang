@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
@@ -85,14 +86,14 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         Log.i(TAG, "onCreate Starts");
         myView = new MyView(this);
-        setContentView(myView);
-
-
         Intent i = new Intent(getApplicationContext(), SendService.class);
         startService(i);
 
         connectedThread = new ConnectedThread(bluetoothSocket);
         connectedThread.start();
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(myView);
     }
 
     //    public static void  startDialog(int x){
@@ -122,7 +123,7 @@ public class GameWorld extends Activity implements SensorEventListener {
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
 
-        setAutoOrientationEnabled(this,false);
+        setAutoOrientationEnabled(this, false);
     }
 
     @Override
