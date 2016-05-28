@@ -96,10 +96,6 @@ public class GameWorld extends Activity implements SensorEventListener {
         setContentView(myView);
     }
 
-    //    public static void  startDialog(int x){
-//        Dialog dialog = new Dialog();
-//        dialog.setContentView(R.layout.my_dialog);
-//    }
     @Override
     public void onSensorChanged(SensorEvent event) {
         aB1X = event.values[0];
@@ -137,8 +133,6 @@ public class GameWorld extends Activity implements SensorEventListener {
 
     public static class RenderThread extends Thread {
 
-        public String TAG = "com.sdsmdg.game";
-
         private SurfaceHolder surfaceHolder;
         private MyView myView;
         private boolean isRunning = false;
@@ -154,7 +148,6 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         @Override
         public void run() {
-            Log.i(TAG, "Thread running");
             Canvas canvas;
 
             while (isRunning) {
@@ -179,12 +172,10 @@ public class GameWorld extends Activity implements SensorEventListener {
     public static class SendService extends Service {
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            // Log.i(TAG, "onStartCommand called");
             new CountDownTimer(600000, 400) {
 
                 public void onTick(long millisUntilFinished) {
                     if (true) {
-                        //Now we have casted int to the string
                         String outputText = (getB1Direction());
                         byte[] bytes = outputText.getBytes();
                         connectedThread.write(bytes);
@@ -192,7 +183,6 @@ public class GameWorld extends Activity implements SensorEventListener {
                 }
 
                 public void onFinish() {
-                    //        Log.i(TAG, "Count Down finish");
                     Toast.makeText(SendService.this, "Time Over", Toast.LENGTH_SHORT).show();
                 }
             }.start();
