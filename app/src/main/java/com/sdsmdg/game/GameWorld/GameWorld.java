@@ -78,7 +78,7 @@ public class GameWorld extends Activity implements SensorEventListener {
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        height = (int) (0.95 * displaymetrics.heightPixels);
+        height = (displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
 
         bluetoothSocket = MainActivity.bluetoothSocket;
@@ -131,6 +131,8 @@ public class GameWorld extends Activity implements SensorEventListener {
         super.onStop();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
+
+        setAutoOrientationEnabled(this, false);
     }
 
     public static class RenderThread extends Thread {
