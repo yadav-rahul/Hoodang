@@ -183,10 +183,10 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     @Override
     public boolean collide(int x) {
         if (x == 1) {
-            yBallCenter = (int) (GameWorld.height - 1.5 * boardHeight - Ball.radius);
+            yBallCenter = (int) (GameWorld.height - boardHeight - Ball.radius);
             vBallY = -vBallY;
         } else if (x == 2) {
-            yBallCenter = Ball.radius;
+            yBallCenter = Ball.radius + boardHeight;
             vBallY = -vBallY;
         }
         return true;
@@ -212,9 +212,9 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             canvas.drawOval(Ball.rectFBall, paintBall);
         }
         if (rectFB1 != null) {
-            if (rectFB1.intersect(rectFBall)) {
+            if (rectFBall.intersect(rectFB1)) {
                 collide(1);
-            } else if (rectFB2.intersect(rectFBall)) {
+            } else if (rectFBall.intersect(rectFB2)) {
                 collide(2);
             }
         }
