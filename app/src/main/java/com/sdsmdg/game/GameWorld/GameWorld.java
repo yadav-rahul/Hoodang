@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
@@ -34,6 +35,7 @@ public class GameWorld extends Activity implements SensorEventListener {
     public static float aB1X;
     public static int height, width;
     public static int directionB2;
+    public static int temp;
     static ConnectedThread connectedThread;
     public String TAG = "com.sdsmdg.game";
     BluetoothSocket bluetoothSocket;
@@ -41,6 +43,7 @@ public class GameWorld extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private MyView myView;
+    private Context context;
 
     public static String getB1Direction() {
         if (Math.abs(aB1X) < 1)
@@ -54,7 +57,16 @@ public class GameWorld extends Activity implements SensorEventListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.context = GameWorld.this;
+
+        Bundle bundle = getIntent().getExtras();
+        temp = bundle.getInt("orientation");
+        if (temp == 1) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+        }
+
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -79,6 +91,10 @@ public class GameWorld extends Activity implements SensorEventListener {
         connectedThread.start();
     }
 
+    //    public static void  startDialog(int x){
+//        Dialog dialog = new Dialog();
+//        dialog.setContentView(R.layout.my_dialog);
+//    }
     @Override
     public void onSensorChanged(SensorEvent event) {
         aB1X = event.values[0];

@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
         return ctx;
     }
 
-    public void startChat() {
+    public void startChat(int x) {
         Intent i = new Intent(this, GameWorld.class);
+        i.putExtra("orientation", x);
         startActivity(i);
 
     }
@@ -192,7 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
                     MainActivity.bluetoothDevice = socket.getRemoteDevice();
                     MainActivity.bluetoothSocket = socket;
-                    startChat();
+
+                    startChat(-1);
 
                     try {
                         bluetoothServerSocket.close();
@@ -248,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
             MainActivity.bluetoothSocket = bluetoothSocket;
             MainActivity.bluetoothDevice = bluetoothDevice;
-            startChat();
+            startChat(1);
         }
     }
 }
