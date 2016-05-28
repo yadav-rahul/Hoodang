@@ -15,6 +15,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -43,7 +44,6 @@ public class GameWorld extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private MyView myView;
-    private Context context;
 
     public static String getB1Direction() {
         if (Math.abs(aB1X) < 1)
@@ -54,11 +54,15 @@ public class GameWorld extends Activity implements SensorEventListener {
             return ("" + width);
     }
 
+    public static void setAutoOrientationEnabled(Context context, boolean enabled) {
+        Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.context = GameWorld.this;
 
+        setAutoOrientationEnabled(this, true);
         Bundle bundle = getIntent().getExtras();
         temp = bundle.getInt("orientation");
         if (temp == 1) {
@@ -117,6 +121,8 @@ public class GameWorld extends Activity implements SensorEventListener {
         super.onPause();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
+
+        setAutoOrientationEnabled(this,false);
     }
 
     @Override
