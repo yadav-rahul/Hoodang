@@ -167,9 +167,10 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             xBallCenter = GameWorld.width - Ball.radius;
             vBallX = -vBallX;
         } else if (yBallCenter < Ball.radius) {
-            //Pi wins
+            //P1 wins
             yBallCenter = Ball.radius;
             vBallY = -vBallY;
+
 
         } else if (yBallCenter > GameWorld.height - Ball.radius) {
             //P2 wins
