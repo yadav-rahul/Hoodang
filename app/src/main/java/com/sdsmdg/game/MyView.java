@@ -20,7 +20,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     private final int boardWidth = (GameWorld.width) / 5;
     private final int boardHeight = (GameWorld.height) / 50;
     private final float dT = 0.3f;
-    private final Paint paintB1, paintB2,paintBall;
+    private final Paint paintB1, paintB2, paintBall;
     String TAG = "com.sdsmdg.game";
     private float vBallX, vBallY;
     private RectF rectFB1, rectFB2, rectInvisible;
@@ -29,10 +29,14 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     private int xBallCenter, yBallCenter;
     private int xB1Center, yB1Center;
     private int xB2Center, yB2Center;
+    private Context context;
+    private GameWorld gameWorld;
 
 
-    public MyView(Context context) {
+    public MyView(Context context, GameWorld gameWorld) {
         super(context);
+        this.context = context;
+        this.gameWorld = gameWorld;
         Log.i(TAG, "Constructor of shape view starts");
         getHolder().addCallback(this);
         renderThread = new GameWorld.RenderThread(getHolder(), this);
@@ -92,8 +96,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
     @Override
     public boolean initializeBallVelocity(int x, int y) {
-        vBallX = (GameWorld.temp)*x / 25;
-        vBallY = (GameWorld.temp)*y / 30;
+        vBallX = (GameWorld.temp) * x / 25;
+        vBallY = (GameWorld.temp) * y / 30;
         return true;
     }
 
@@ -110,9 +114,9 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             vB1X = 0;
         } else {
             if (GameWorld.aB1X < 0) {
-                vB1X = (GameWorld.temp)*GameWorld.width / 36;
+                vB1X = (GameWorld.temp) * GameWorld.width / 36;
             } else {
-                vB1X = -(GameWorld.temp)*GameWorld.width / 36;
+                vB1X = -(GameWorld.temp) * GameWorld.width / 36;
             }
         }
 
@@ -134,10 +138,10 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         if (GameWorld.directionB2 == 0) {
             vB2X = 0;
         } else if (GameWorld.directionB2 > 0) {
-            vB2X = -(GameWorld.temp)*GameWorld.width / 36;
+            vB2X = -(GameWorld.temp) * GameWorld.width / 36;
 
         } else {
-            vB2X = (GameWorld.temp)*GameWorld.width / 36;
+            vB2X = (GameWorld.temp) * GameWorld.width / 36;
         }
 
         xB2Center += (int) (vB2X * dT);
@@ -167,19 +171,21 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             xBallCenter = GameWorld.width - Ball.radius;
             vBallX = -vBallX;
         } else if (yBallCenter < Ball.radius) {
-            //P1 wins
+            //P2 missed the ball
+            //   popDialog(1);
             yBallCenter = Ball.radius;
             vBallY = -vBallY;
 
 
         } else if (yBallCenter > GameWorld.height - Ball.radius) {
-            //P2 wins
-           // GameWorld.startDialog(1);
+            //P1 missed the ball
+            gameWorld.popDialog(2);
             yBallCenter = GameWorld.height - Ball.radius;
             vBallY = -vBallY;
         }
         return true;
     }
+
 
     @Override
     public boolean collide(int x) {

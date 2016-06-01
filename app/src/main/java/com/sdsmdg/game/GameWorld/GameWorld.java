@@ -1,6 +1,7 @@
 package com.sdsmdg.game.GameWorld;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -19,11 +20,14 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
 import com.sdsmdg.game.MyView;
+import com.sdsmdg.game.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +49,8 @@ public class GameWorld extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private MyView myView;
+    private TextView score_textView;
+
 
     public static String getB1Direction() {
         if (Math.abs(aB1X) < 1)
@@ -85,7 +91,7 @@ public class GameWorld extends Activity implements SensorEventListener {
         bluetoothDevice = MainActivity.bluetoothDevice;
 
         Log.i(TAG, "onCreate Starts");
-        myView = new MyView(this);
+        myView = new MyView(this, this);
         Intent i = new Intent(getApplicationContext(), SendService.class);
         startService(i);
 
@@ -95,6 +101,21 @@ public class GameWorld extends Activity implements SensorEventListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(myView);
     }
+
+    public void popDialog(int x) {
+        Log.i(TAG, "Dialog Box running !");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Dialog dialog = new Dialog(GameWorld.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.my_dialog);
+                dialog.show();
+            }
+        });
+
+    }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
