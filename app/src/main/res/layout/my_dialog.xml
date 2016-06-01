@@ -1,65 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:background="@drawable/deleteback"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
-
-    <TextView
-        android:id="@+id/score_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="12dp"
-        android:text="Game Over"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/txt_diak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="12dp"
-        android:text="Would you like to play again !"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/transparent"
-        android:orientation="vertical">
+        android:layout_height="300dp"
+        android:background="@drawable/dialog_background"
+        android:orientation="vertical"
+        android:paddingLeft="43dp">
 
-        <Button
-            android:id="@+id/btn_yes"
-            android:layout_width="110dp"
-            android:layout_height="35dp"
-            android:background="@drawable/roundcorner"
-            android:clickable="true"
-            android:onClick="yes_buttonClick"
-            android:text="Yes"
-            android:textColor="#5DBCD2"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_no"
-            android:layout_width="110dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="0dp"
+        <TextView
+            android:id="@+id/game_overText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
             android:layout_marginTop="12dp"
-            android:background="@drawable/roundcorner"
-            android:clickable="true"
-            android:onClick="no_buttonClick"
-            android:text="No"
-            android:textColor="#5DBCD2"
+            android:gravity="center_horizontal"
+            android:paddingRight="30dp"
+            android:paddingTop="30dp"
+            android:text="Game Over"
+            android:textSize="25dp"
             android:textStyle="bold" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/result_textView"
+            android:layout_width="match_parent"
+            android:fontFamily="sans-serif-thin"
+            android:layout_marginTop="12dp"
+            android:text="Result"
+            android:paddingRight="20dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content" />
 
+        <TextView
+            android:fontFamily="sans-serif-thin"
+            android:id="@+id/txt_diak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Would you like to play again !"
+            android:paddingRight="20dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_yes"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundcorner"
+                android:clickable="true"
+                android:onClick="yes_buttonClick"
+                android:text="Yes"
+                android:textColor="#5DBCD2"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_no"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/roundcorner"
+                android:clickable="true"
+                android:onClick="no_buttonClick"
+                android:text="No"
+                android:textColor="#5DBCD2"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

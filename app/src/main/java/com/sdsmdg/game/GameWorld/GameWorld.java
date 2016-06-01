@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -103,11 +104,11 @@ public class GameWorld extends Activity implements SensorEventListener {
     }
 
     public void popDialog(int x) {
-        Log.i(TAG, "Dialog Box running !");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Dialog dialog = new Dialog(GameWorld.this);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.my_dialog);
                 dialog.show();
