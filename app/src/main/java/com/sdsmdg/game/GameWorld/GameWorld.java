@@ -21,12 +21,15 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
+import com.sdsmdg.game.Launcher;
 import com.sdsmdg.game.MyView;
 import com.sdsmdg.game.R;
 
@@ -50,8 +53,6 @@ public class GameWorld extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private MyView myView;
-    private TextView score_textView;
-
 
     public static String getB1Direction() {
         if (Math.abs(aB1X) < 1)
@@ -103,17 +104,39 @@ public class GameWorld extends Activity implements SensorEventListener {
         setContentView(myView);
     }
 
-    public void popDialog(int x) {
+    public void popDialog(final int x) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Dialog dialog = new Dialog(GameWorld.this);
+                TextView result_textView = (TextView) findViewById(R.id.result_textView);
+                final Dialog dialog = new Dialog(GameWorld.this);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.my_dialog);
                 dialog.show();
+
+                Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
+                Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
+
+                btn_yes.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent i = new Intent(GameWorld.this, Launcher.class);
+                        startActivity(i);
+                    }
+                });
+                btn_no.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
+
             }
         });
+
 
     }
 
@@ -140,8 +163,6 @@ public class GameWorld extends Activity implements SensorEventListener {
         super.onPause();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
-
-        setAutoOrientationEnabled(this, false);
     }
 
     @Override
@@ -151,6 +172,7 @@ public class GameWorld extends Activity implements SensorEventListener {
             sensorManager.unregisterListener(this);
 
         setAutoOrientationEnabled(this, false);
+        this.finish();
     }
 
     public static class RenderThread extends Thread {

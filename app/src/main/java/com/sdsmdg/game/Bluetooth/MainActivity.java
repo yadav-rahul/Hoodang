@@ -155,6 +155,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.finish();
+    }
+
     private class AcceptThread extends Thread {
 
         private static final String NAME = "Game";
