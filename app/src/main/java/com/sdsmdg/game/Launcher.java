@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
@@ -20,9 +21,10 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
 
     public static boolean isDialog = false;
-    public static int winner=1;
+    public static int winner = 1;
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
+    TextView result_textView;
     GameWorld gameWorld = new GameWorld(this);
 
     @Override
@@ -35,6 +37,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         sP.setOnClickListener(this);
         mP.setOnClickListener(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        result_textView = (TextView) findViewById(R.id.result_textView);
     }
 
     @Override
@@ -63,6 +66,15 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public void dialog(boolean check) {
         if (check) {
             isDialog = false;
+
+            try{
+                result_textView.setText(String.valueOf(winner) + "Wins");
+            }catch (NullPointerException e){
+                
+            }
+
+
+
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -74,18 +86,13 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent i = new Intent(Launcher.this, Launcher.class);
-                    startActivity(i);
+                    dialog.dismiss();
                 }
             });
             btn_no.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     dialog.dismiss();
                     System.exit(0);
-//                    Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.addCategory(Intent.CATEGORY_HOME);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
                 }
             });
 

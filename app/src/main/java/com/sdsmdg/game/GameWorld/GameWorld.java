@@ -109,6 +109,7 @@ public class GameWorld extends Activity implements SensorEventListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Launcher.winner = x;
                 Launcher.isDialog = true;
                 GameWorld.this.finish();
 
@@ -184,7 +185,11 @@ public class GameWorld extends Activity implements SensorEventListener {
                         if (canvas != null)
                             myView.onDraw(canvas);
                     }
-                } finally {
+                } catch (IllegalArgumentException e){
+
+                }
+
+                finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     }
