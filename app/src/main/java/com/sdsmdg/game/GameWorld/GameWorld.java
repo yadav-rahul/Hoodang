@@ -1,7 +1,7 @@
 package com.sdsmdg.game.GameWorld;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
-import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,17 +20,12 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
 import com.sdsmdg.game.Launcher;
 import com.sdsmdg.game.MyView;
-import com.sdsmdg.game.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +46,7 @@ public class GameWorld extends Activity implements SensorEventListener {
     BluetoothDevice bluetoothDevice;
     private SensorManager sensorManager;
     private Sensor sensor;
+    private Launcher launcher;
     private MyView myView;
 
     public static String getB1Direction() {
@@ -67,6 +62,13 @@ public class GameWorld extends Activity implements SensorEventListener {
         Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
     }
 
+    public GameWorld(){
+
+    }
+    public GameWorld(Launcher launcher) {
+        this.launcher = launcher;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +81,6 @@ public class GameWorld extends Activity implements SensorEventListener {
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
         }
-
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -108,31 +109,8 @@ public class GameWorld extends Activity implements SensorEventListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView result_textView = (TextView) findViewById(R.id.result_textView);
-                final Dialog dialog = new Dialog(GameWorld.this);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.my_dialog);
-                dialog.show();
-
-                Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
-                Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
-
-                btn_yes.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent i = new Intent(GameWorld.this, Launcher.class);
-                        startActivity(i);
-                    }
-                });
-                btn_no.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                });
+                Launcher.isDialog = true;
+                GameWorld.this.finish();
 
             }
         });
@@ -156,6 +134,7 @@ public class GameWorld extends Activity implements SensorEventListener {
         super.onResume();
         if (sensorManager != null)
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     @Override
@@ -190,6 +169,7 @@ public class GameWorld extends Activity implements SensorEventListener {
             isRunning = running;
         }
 
+        @SuppressLint("WrongCall")
         @Override
         public void run() {
             Canvas canvas;

@@ -180,8 +180,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         } else if (yBallCenter > GameWorld.height - Ball.radius) {
             //P1 missed the ball
             gameWorld.popDialog(2);
-            yBallCenter = GameWorld.height - Ball.radius;
-            vBallY = -vBallY;
+
         }
         return true;
     }
@@ -226,6 +225,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             }
         }
     }
+
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
