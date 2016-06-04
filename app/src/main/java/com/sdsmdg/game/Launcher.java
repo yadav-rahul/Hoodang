@@ -12,10 +12,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
 import com.sdsmdg.game.GameWorld.GameWorld;
+import com.sdsmdg.game.GameWorld.SinglePlayer;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,7 +44,8 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.singlePlayerButton: {
-                Toast.makeText(Launcher.this, "Work in Progress", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Launcher.this, "Work in Progress", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Launcher.this, SinglePlayer.class));
                 break;
             }
             case R.id.multiPlayerButton: {
@@ -66,10 +67,9 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public void dialog(boolean check) {
         if (check) {
             isDialog = false;
-
-            try{
+            try {
                 result_textView.setText(String.valueOf(winner) + "Wins");
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
 
             }
 
