@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sdsmdg.game.Bluetooth.MainActivity;
-import com.sdsmdg.game.GameWorld.GameWorld;
+import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
@@ -25,7 +25,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
     TextView result_textView;
-    GameWorld gameWorld = new GameWorld(this);
+    MultiPlayer multiPlayer = new MultiPlayer(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

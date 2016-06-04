@@ -21,13 +21,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Bluetooth.MainActivity" />
         <activity
-            android:name=".GameWorld.GameWorld"
+            android:name=".GameWorld.MultiPlayer"
             android:parentActivityName=".Launcher" />
         <activity android:name=".Launcher" />
 
 
         <service
-            android:name=".GameWorld.GameWorld$SendService"
+            android:name=".GameWorld.MultiPlayer$SendService"
             android:enabled="true"
             android:exported="true" />
 
