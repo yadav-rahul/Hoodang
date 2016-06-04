@@ -1,7 +1,6 @@
 package com.sdsmdg.game.GameWorld;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -34,7 +34,7 @@ import java.io.OutputStream;
 /**
  * Created by Rahul Yadav on 5/20/2016.
  */
-public class GameWorld extends Activity implements SensorEventListener {
+public class GameWorld extends AppCompatActivity implements SensorEventListener {
 
     public static float aB1X;
     public static int height, width;
@@ -170,7 +170,7 @@ public class GameWorld extends Activity implements SensorEventListener {
             isRunning = running;
         }
 
-        @SuppressLint("WrongCall")
+       @SuppressLint("WrongCall")
         @Override
         public void run() {
             Canvas canvas;
@@ -185,9 +185,7 @@ public class GameWorld extends Activity implements SensorEventListener {
                         if (canvas != null)
                             myView.onDraw(canvas);
                     }
-                } catch (IllegalArgumentException e){
-
-                }
+                } catch (IllegalArgumentException e){                }
 
                 finally {
                     if (canvas != null) {

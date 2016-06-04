@@ -96,8 +96,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
     @Override
     public boolean initializeBallVelocity(int x, int y) {
-        vBallX = (GameWorld.temp) * x / 25;
-        vBallY = (GameWorld.temp) * y / 30;
+        vBallX = (GameWorld.temp) * x / 100;
+        vBallY = (GameWorld.temp) * y / 120;
         return true;
     }
 
@@ -136,12 +136,15 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
     public boolean updateB2Center() {
         if (GameWorld.directionB2 == 0) {
+            Log.i(TAG, "Board 2 velocity is 0000");
             vB2X = 0;
         } else if (GameWorld.directionB2 > 0) {
             vB2X = -(GameWorld.temp) * GameWorld.width / 36;
 
+            Log.i(TAG, "Board 2 velocity is ++++");
         } else {
             vB2X = (GameWorld.temp) * GameWorld.width / 36;
+            Log.i(TAG, "Board 2 velocity is ----");
         }
 
         xB2Center += (int) (vB2X * dT);
@@ -175,7 +178,6 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             //   popDialog(1);
             yBallCenter = Ball.radius;
             vBallY = -vBallY;
-
 
         } else if (yBallCenter > GameWorld.height - Ball.radius) {
             //P1 missed the ball
@@ -226,7 +228,6 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         }
     }
 
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         renderThread.setRunning(true);
@@ -234,19 +235,15 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
         Log.i(TAG, "Surface created called");
     }
-
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
         Log.i(TAG, "Surface changed called");
     }
-
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         renderThread.setRunning(false);
 
         Log.i(TAG, "Surface destroyed called");
     }
-
-
 }

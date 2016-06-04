@@ -70,16 +70,15 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             try{
                 result_textView.setText(String.valueOf(winner) + "Wins");
             }catch (NullPointerException e){
-                
+
             }
-
-
 
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.my_dialog);
             dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
 
             Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
             Button btn_no = (Button) dialog.findViewById(R.id.btn_no);

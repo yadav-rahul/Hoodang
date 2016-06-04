@@ -7,6 +7,7 @@
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.harware.sensor" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -19,21 +20,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Bluetooth.MainActivity" />
-        <activity android:name=".GameWorld.GameWorld"
-            android:parentActivityName=".Launcher"/>
+        <activity
+            android:name=".GameWorld.GameWorld"
+            android:parentActivityName=".Launcher" />
+        <activity android:name=".Launcher" />
 
-        <activity android:name=".Launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <service
             android:name=".GameWorld.GameWorld$SendService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
