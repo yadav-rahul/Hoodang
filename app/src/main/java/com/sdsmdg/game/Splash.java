@@ -42,7 +42,7 @@ public class Splash extends Activity {
                     try {
                         // Sleep for 200 milliseconds.
                         //Just to display the progress slowly
-                        Thread.sleep(50);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -58,6 +58,6 @@ public class Splash extends Activity {
                 startActivity(i);
                 finish();
             }
-        }, 5000);
+        }, 1000);
     }
 }

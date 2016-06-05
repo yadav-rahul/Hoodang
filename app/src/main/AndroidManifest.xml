@@ -23,6 +23,10 @@
         <activity
             android:name=".GameWorld.MultiPlayer"
             android:parentActivityName=".Launcher" />
+
+        <activity
+            android:name=".GameWorld.SinglePlayer"
+            />
         <activity android:name=".Launcher" />
 
 
