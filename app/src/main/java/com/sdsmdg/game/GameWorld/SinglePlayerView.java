@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.sdsmdg.game.Launcher;
+
 /**
  * Created by Rahul Yadav on 6/4/2016.
  */
@@ -82,7 +84,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean initializeBallPosition(int x, int y) {
-        Log.i(TAG,"Ball position initialized");
+        Log.i(TAG, "Ball position initialized");
         xBallCenter = x / 2;
         yBallCenter = y / 2;
         initializeBallVelocity(x, y);
@@ -91,16 +93,23 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean initializeBallVelocity(int x, int y) {
-        Log.i(TAG,"Ball velocity initialized");
-        vBallX = x / 25;
-        vBallY = y / 30;
+        Log.i(TAG, "Ball velocity initialized");
+        vBallX = x / 23;
+        vBallY = y / 31;
         return true;
     }
 
     public boolean update() {
         updateB1Center();
-        updateB2Center();
         updateBall();
+        smartUpdateB2Center();
+        return true;
+    }
+
+    public boolean smartUpdateB2Center() {
+        if (vBallY < 0 && yBallCenter < Launcher.height / 2) {
+            updateB2Center();
+        }
         return true;
     }
 
@@ -172,6 +181,16 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     public boolean updateB2Center() {
         //TODO Automatically update center of Board 2
 
+        xB2Center = xBallCenter;
+
+        if (xB2Center < boardWidth / 2) {
+            xB2Center = boardWidth / 2;
+            vB2X = 0;
+        }
+        if (xB2Center > Launcher.width - (boardWidth / 2)) {
+            xB2Center = (Launcher.width - (boardWidth / 2));
+            vB2X = 0;
+        }
         return true;
     }
 

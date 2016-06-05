@@ -8,15 +8,13 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.sdsmdg.game.GameWorld.Ball;
-import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.Launcher;
 
 
 /**
  * Created by Rahul Yadav on 5/20/2016.
  */
-public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callback,Ball {
+public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callback, Ball {
 
     private final int boardWidth = (Launcher.width) / 5;
     private final int boardHeight = (Launcher.height) / 50;
@@ -150,7 +148,6 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
 
         xB2Center += (int) (vB2X * dT);
 
-
         if (xB2Center < boardWidth / 2) {
             xB2Center = boardWidth / 2;
             vB2X = 0;
@@ -236,11 +233,13 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
 
         Log.i(TAG, "Surface created called");
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
         Log.i(TAG, "Surface changed called");
     }
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         renderThread.setRunning(false);
