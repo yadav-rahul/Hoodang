@@ -7,7 +7,6 @@
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
-
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.harware.sensor" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -24,9 +23,7 @@
             android:name=".GameWorld.MultiPlayer"
             android:parentActivityName=".Launcher" />
 
-        <activity
-            android:name=".GameWorld.SinglePlayer"
-            />
+        <activity android:name=".GameWorld.SinglePlayer" />
         <activity android:name=".Launcher" />
 
 
