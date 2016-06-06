@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
@@ -21,7 +22,7 @@ public class SinglePlayer extends Activity implements SensorEventListener{
 
     public static float aB1X;
     public static int height, width;
-
+    protected PowerManager.WakeLock mWakeLock;
     public String TAG = "com.sdsmdg.game";
     private SensorManager sensorManager;
     private Sensor sensor;
@@ -70,7 +71,7 @@ public class SinglePlayer extends Activity implements SensorEventListener{
         super.onResume();
         if (sensorManager != null)
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -78,6 +79,7 @@ public class SinglePlayer extends Activity implements SensorEventListener{
         super.onPause();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

@@ -15,7 +15,6 @@ import com.sdsmdg.game.Launcher;
  */
 public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callback, Ball, BoardOne, BoardTwo {
 
-
     private final int boardWidth = (SinglePlayer.width) / 5;
     private final int boardHeight = (SinglePlayer.height) / 50;
     private final float dT = 0.3f;
@@ -200,16 +199,17 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         if (rectFB1 != null) {
             rectFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
 
-            canvas.drawRect(rectFB1, paintB1);
+            canvas.drawOval(rectFB1, paintB1);
         }
 
         if (rectFB2 != null) {
             rectFB2.set(xB2Center - (boardWidth / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth / 2), yB2Center - (boardHeight / 2));
 
-            canvas.drawRect(rectFB2, paintB2);
+            canvas.drawOval(rectFB2, paintB2);
         }
         if (Ball.rectFBall != null) {
             Ball.rectFBall.set(xBallCenter - Ball.radius, yBallCenter - Ball.radius, xBallCenter + Ball.radius, yBallCenter + Ball.radius);
+
 
             canvas.drawOval(Ball.rectFBall, paintBall);
         }

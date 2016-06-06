@@ -84,9 +84,9 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.my_dialog);
+            dialog.setContentView(R.layout.game_over_dialog);
             dialog.show();
-            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
 
             Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
             Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
