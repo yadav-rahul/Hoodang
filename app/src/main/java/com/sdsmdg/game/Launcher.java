@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.MultiPlayer;
@@ -60,6 +61,10 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
                 Intent i = new Intent(getApplicationContext(), Bluetooth.class);
                 Log.i(TAG, "MP Button clicked");
                 startActivity(i);
+                break;
+            }
+            case R.id.instructionsButton: {
+                Toast.makeText(Launcher.this, "More you play, More will you learn !", Toast.LENGTH_SHORT).show();
                 break;
             }
         }

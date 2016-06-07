@@ -131,7 +131,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             yBallCenter = Ball.radius;
             vBallY = -vBallY;
 
-        } else if (yBallCenter > SinglePlayer.height - Ball.radius) {
+        } else if (yBallCenter > SinglePlayer.height) {
             //P1 missed the ball
             singlePlayer.popDialog(2);
 
