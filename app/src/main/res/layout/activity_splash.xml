@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#654321"
+
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sdsmdg.game.Splash">
-
 
     <TextView
         android:id="@+id/textView1"
@@ -20,6 +21,7 @@
         android:layout_marginBottom="67dp"
         android:text="New Text"
         android:textColor="@color/colorWhite" />
+
 
     <ProgressBar
         android:id="@+id/progressBar1"
@@ -36,6 +38,7 @@
         android:progress="1" />
 
     <TextView
+
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +53,7 @@
         android:textSize="50dp"
         android:textStyle="italic"
         android:typeface="sans" />
+
 </RelativeLayout>
 
 

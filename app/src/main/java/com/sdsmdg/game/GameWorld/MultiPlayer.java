@@ -47,6 +47,14 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     private Launcher launcher;
     private MultiPlayerView multiPlayerView;
 
+    public MultiPlayer() {
+
+    }
+
+    public MultiPlayer(Launcher launcher) {
+        this.launcher = launcher;
+    }
+
     public static String getB1Direction() {
         if (Math.abs(aB1X) < 1)
             return "0";
@@ -60,12 +68,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
     }
 
-    public MultiPlayer(){
-    }
-
-    public MultiPlayer(Launcher launcher) {
-        this.launcher = launcher;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
 
 
         bluetoothSocket = Bluetooth.bluetoothSocket;
@@ -163,7 +164,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
             isRunning = running;
         }
 
-       @SuppressLint("WrongCall")
+        @SuppressLint("WrongCall")
         @Override
         public void run() {
             Canvas canvas;
@@ -178,9 +179,8 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                         if (canvas != null)
                             multiPlayerView.onDraw(canvas);
                     }
-                } catch (IllegalArgumentException e){                }
-
-                finally {
+                } catch (IllegalArgumentException e) {
+                } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     }

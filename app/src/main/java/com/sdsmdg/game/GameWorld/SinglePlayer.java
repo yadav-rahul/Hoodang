@@ -25,6 +25,7 @@ import com.sdsmdg.game.R;
 /**
  * Created by Rahul Yadav on 6/4/2016.
  */
+
 public class SinglePlayer extends Activity implements SensorEventListener {
 
     public static float aB1X;
