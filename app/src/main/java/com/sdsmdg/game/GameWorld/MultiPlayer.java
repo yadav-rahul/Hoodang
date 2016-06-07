@@ -49,6 +49,14 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     private Launcher launcher;
     private MyView myView;
 
+    public MultiPlayer() {
+
+    }
+
+    public MultiPlayer(Launcher launcher) {
+        this.launcher = launcher;
+    }
+
     public static String getB1Direction() {
         if (Math.abs(aB1X) < 1)
             return "0";
@@ -60,13 +68,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
     public static void setAutoOrientationEnabled(Context context, boolean enabled) {
         Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
-    }
-
-    public MultiPlayer(){
-
-    }
-    public MultiPlayer(Launcher launcher) {
-        this.launcher = launcher;
     }
 
     @Override
@@ -170,7 +171,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
             isRunning = running;
         }
 
-       @SuppressLint("WrongCall")
+        @SuppressLint("WrongCall")
         @Override
         public void run() {
             Canvas canvas;
@@ -185,9 +186,8 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                         if (canvas != null)
                             myView.onDraw(canvas);
                     }
-                } catch (IllegalArgumentException e){                }
-
-                finally {
+                } catch (IllegalArgumentException e) {
+                } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     }

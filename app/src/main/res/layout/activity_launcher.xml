@@ -10,30 +10,30 @@
     tools:context="com.sdsmdg.game.Launcher">
 
     <Button
+        android:id="@+id/singlePlayerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Single Player"
-        android:id="@+id/singlePlayerButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="144dp" />
+        android:layout_marginTop="144dp"
+        android:text="Single Player" />
 
     <Button
+        android:id="@+id/multiPlayerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="multi player"
-        android:id="@+id/multiPlayerButton"
         android:layout_below="@+id/singlePlayerButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp" />
+        android:layout_marginTop="104dp"
+        android:text="multi player" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Let&apos;s Play"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/singlePlayerButton"
-        android:layout_alignStart="@+id/singlePlayerButton" />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/singlePlayerButton"
+        android:text="Let&apos;s Play"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 </RelativeLayout>

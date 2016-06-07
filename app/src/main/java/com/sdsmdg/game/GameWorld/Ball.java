@@ -10,7 +10,10 @@ public interface Ball {
     RectF rectFBall = new RectF();
 
     boolean initializeBallPosition(int x, int y);
-    boolean initializeBallVelocity(int x,int y);
+
+    boolean initializeBallVelocity(int x, int y);
+
     boolean updateBall();
+
     boolean collide(int x);
 }

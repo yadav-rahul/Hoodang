@@ -235,11 +235,13 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
 
         Log.i(TAG, "Surface created called");
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
         Log.i(TAG, "Surface changed called");
     }
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         renderThread.setRunning(false);
