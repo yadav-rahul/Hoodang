@@ -98,10 +98,12 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         return true;
     }
 
-    public boolean update() {
-        updateB1Center();
-        updateBall();
-        smartUpdateB2Center();
+    public boolean update(boolean check) {
+        if (check) {
+            updateB1Center();
+            updateBall();
+            smartUpdateB2Center();
+        }
         return true;
     }
 

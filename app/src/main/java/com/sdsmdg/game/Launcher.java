@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.sdsmdg.game.Bluetooth.MainActivity;
+import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
 
@@ -52,14 +52,13 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.singlePlayerButton: {
                 Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
-                Log.i(TAG, "SP Buttton clicked");
+                Log.i(TAG, "SP Button clicked");
                 startActivity(i);
                 break;
             }
             case R.id.multiPlayerButton: {
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                Log.i(TAG, "MP Buttton clicked");
+                Intent i = new Intent(getApplicationContext(), Bluetooth.class);
+                Log.i(TAG, "MP Button clicked");
                 startActivity(i);
                 break;
             }
@@ -74,7 +73,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void dialog(boolean check) {
         if (check) {
-            isDialog = false;
+
             try {
                 result_textView.setText(String.valueOf(winner) + "Wins");
             } catch (NullPointerException e) {
@@ -93,6 +92,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    isDialog = false;
                     dialog.dismiss();
                 }
             });
@@ -102,8 +102,6 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
                     System.exit(0);
                 }
             });
-
-
         }
 
     }

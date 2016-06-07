@@ -5,21 +5,25 @@
     android:orientation="vertical">
 
     <RelativeLayout
+
+        android:id="@+id/ballonLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/ballon">
 
-        <TextView
-            android:id="@+id/textView3"
+        <Button
+            android:background="#00000000"
+            android:id="@+id/button_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:fontFamily="casual"
-            android:text="   Touch \n anywhere\n  to start"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:onClick="onBallonClicked"
+            android:text="  Tap \n here\n  to start"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorWhite"
             android:textStyle="bold" />
     </RelativeLayout>

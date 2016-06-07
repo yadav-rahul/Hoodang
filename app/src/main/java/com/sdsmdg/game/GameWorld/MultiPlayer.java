@@ -17,13 +17,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.sdsmdg.game.Bluetooth.MainActivity;
+import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.Launcher;
 
 import java.io.IOException;
@@ -86,8 +85,8 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
 
 
-        bluetoothSocket = MainActivity.bluetoothSocket;
-        bluetoothDevice = MainActivity.bluetoothDevice;
+        bluetoothSocket = Bluetooth.bluetoothSocket;
+        bluetoothDevice = Bluetooth.bluetoothDevice;
 
         Log.i(TAG, "onCreate Starts");
         multiPlayerView = new MultiPlayerView(this, this);

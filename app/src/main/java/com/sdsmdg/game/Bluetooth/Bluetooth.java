@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class Bluetooth extends AppCompatActivity {
 
     public final static UUID MY_UUID = UUID.fromString("4cf6a202-fe8e-484e-89f7-0a546739b427");
     /***************************************************************************
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
      * Initialization of variables
      ****************************************************************************/
 
-    public Context ctx = MainActivity.this;
+    public Context ctx = Bluetooth.this;
     int REQUEST_ENABLE_BT = 1551;//Any random number(>0)
     private ArrayList<String> mDeviceList = new ArrayList<String>();
     private ListView unpairedListView;
@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public MainActivity() {
-
+    public Bluetooth() {
     }
 
     public Context getCtx() {
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, MultiPlayer.class);
         i.putExtra("orientation", x);
         startActivity(i);
-
     }
 
     /********************************************************************************
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bluetooth);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         unpairedListView = (ListView) findViewById(R.id.unpairedListView);
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (mBluetoothAdapter == null) {
-            Toast.makeText(MainActivity.this, "Sorry, Your device doesn't support Bluetooth !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Bluetooth.this, "Sorry, Your device doesn't support Bluetooth !", Toast.LENGTH_SHORT).show();
         } else {
             if (mBluetoothAdapter.isEnabled()) {
                 mBluetoothAdapter.disable();
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (REQUEST_ENABLE_BT == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
-                Toast.makeText(MainActivity.this, "Bluetooth Successfully Enabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Bluetooth.this, "Bluetooth Successfully Enabled", Toast.LENGTH_SHORT).show();
                 mBluetoothAdapter.startDiscovery();
 
                 Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 acceptThread.start();
 
             } else {
-                Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Bluetooth.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -140,8 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 sendThread.start();
             }
         });
-
-
     }
 
     /********************************************************************************
@@ -153,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(receiver);
         mBluetoothAdapter.disable();
     }
-
 
     @Override
     protected void onStop() {
@@ -167,11 +162,10 @@ public class MainActivity extends AppCompatActivity {
         private static final String TAG = "com.sdsmdg.game";
         private final BluetoothServerSocket bluetoothServerSocket;
 
-
         public AcceptThread() {
             BluetoothServerSocket temp = null;
             try {
-                temp = MainActivity.mBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, MainActivity.MY_UUID);
+                temp = Bluetooth.mBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, Bluetooth.MY_UUID);
             } catch (IOException e) {
             }
 
@@ -199,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    MainActivity.bluetoothDevice = socket.getRemoteDevice();
-                    MainActivity.bluetoothSocket = socket;
+                    Bluetooth.bluetoothDevice = socket.getRemoteDevice();
+                    Bluetooth.bluetoothSocket = socket;
 
                     startChat(-1);
 
@@ -227,14 +221,12 @@ public class MainActivity extends AppCompatActivity {
         private final BluetoothSocket bluetoothSocket;
         private final BluetoothDevice bluetoothDevice;
 
-
         public SendThread(BluetoothDevice device) {
-
             BluetoothSocket temp = null;
             bluetoothDevice = device;
 
             try {
-                temp = bluetoothDevice.createRfcommSocketToServiceRecord(MainActivity.MY_UUID);
+                temp = bluetoothDevice.createRfcommSocketToServiceRecord(Bluetooth.MY_UUID);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -243,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            MainActivity.mBluetoothAdapter.cancelDiscovery();
+            Bluetooth.mBluetoothAdapter.cancelDiscovery();
 
             try {
                 bluetoothSocket.connect();
@@ -256,8 +248,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            MainActivity.bluetoothSocket = bluetoothSocket;
-            MainActivity.bluetoothDevice = bluetoothDevice;
+            Bluetooth.bluetoothSocket = bluetoothSocket;
+            Bluetooth.bluetoothDevice = bluetoothDevice;
             startChat(1);
         }
     }

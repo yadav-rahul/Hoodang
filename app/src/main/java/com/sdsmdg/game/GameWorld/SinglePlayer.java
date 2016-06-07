@@ -2,7 +2,9 @@ package com.sdsmdg.game.GameWorld;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,19 +13,26 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.sdsmdg.game.Launcher;
+import com.sdsmdg.game.R;
 
 /**
  * Created by Rahul Yadav on 6/4/2016.
  */
-public class SinglePlayer extends Activity implements SensorEventListener{
+public class SinglePlayer extends Activity implements SensorEventListener {
 
     public static float aB1X;
     public static int height, width;
-    protected PowerManager.WakeLock mWakeLock;
+    public static boolean isUpdate;
     public String TAG = "com.sdsmdg.game";
+    protected PowerManager.WakeLock mWakeLock;
+    RelativeLayout ballonLayout;
     private SensorManager sensorManager;
     private Sensor sensor;
     private SinglePlayerView singlePlayerView;
@@ -39,10 +48,33 @@ public class SinglePlayer extends Activity implements SensorEventListener{
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         height = (displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
-        
-        singlePlayerView = new SinglePlayerView(this,this);
+        singlePlayerView = new SinglePlayerView(this, this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(singlePlayerView);
+        isUpdate = false;
+        touchDialog();
+    }
+
+    public void touchDialog() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final Dialog dialog = new Dialog(SinglePlayer.this);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.touch_dialog);
+                dialog.show();
+                dialog.setCancelable(false);
+                Button button_start = (Button) dialog.findViewById(R.id.button_start);
+                button_start.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        isUpdate = true;
+                    }
+                });
+
+            }
+        });
     }
 
     public void popDialog(final int x) {
@@ -112,7 +144,7 @@ public class SinglePlayer extends Activity implements SensorEventListener{
             Canvas canvas;
 
             while (isRunning) {
-                singlePlayerView.update();
+                singlePlayerView.update(isUpdate);
                 canvas = null;
                 try {
                     canvas = surfaceHolder.lockCanvas(null);
@@ -121,9 +153,8 @@ public class SinglePlayer extends Activity implements SensorEventListener{
                         if (canvas != null)
                             singlePlayerView.onDraw(canvas);
                     }
-                } catch (IllegalArgumentException e){                }
-
-                finally {
+                } catch (IllegalArgumentException e) {
+                } finally {
                     if (canvas != null) {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     }
