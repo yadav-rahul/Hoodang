@@ -17,15 +17,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.sdsmdg.game.Bluetooth.MainActivity;
+import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.Launcher;
-import com.sdsmdg.game.MyView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +35,7 @@ import java.io.OutputStream;
 public class MultiPlayer extends Activity implements SensorEventListener {
 
     public static float aB1X;
-    public static int height, width;
+
     public static int directionB2;
     public static int temp;
     static ConnectedThread connectedThread;
@@ -47,7 +45,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private Launcher launcher;
-    private MyView myView;
+    private MultiPlayerView multiPlayerView;
 
     public MultiPlayer() {
 
@@ -61,14 +59,15 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         if (Math.abs(aB1X) < 1)
             return "0";
         else if (aB1X < 0)
-            return ("-" + width);
+            return ("-" + Launcher.width);
         else
-            return ("" + width);
+            return ("" + Launcher.width);
     }
 
     public static void setAutoOrientationEnabled(Context context, boolean enabled) {
         Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,16 +85,12 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        height = (displaymetrics.heightPixels);
-        width = displaymetrics.widthPixels;
 
-        bluetoothSocket = MainActivity.bluetoothSocket;
-        bluetoothDevice = MainActivity.bluetoothDevice;
+        bluetoothSocket = Bluetooth.bluetoothSocket;
+        bluetoothDevice = Bluetooth.bluetoothDevice;
 
         Log.i(TAG, "onCreate Starts");
-        myView = new MyView(this, this);
+        multiPlayerView = new MultiPlayerView(this, this);
         Intent i = new Intent(getApplicationContext(), SendService.class);
         startService(i);
 
@@ -103,7 +98,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         connectedThread.start();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(myView);
+        setContentView(multiPlayerView);
     }
 
     public void popDialog(final int x) {
@@ -116,8 +111,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
             }
         });
-
-
     }
 
 
@@ -159,12 +152,12 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     public static class RenderThread extends Thread {
 
         private SurfaceHolder surfaceHolder;
-        private MyView myView;
+        private MultiPlayerView multiPlayerView;
         private boolean isRunning = false;
 
-        public RenderThread(SurfaceHolder surfaceHolder, MyView myView) {
+        public RenderThread(SurfaceHolder surfaceHolder, MultiPlayerView multiPlayerView) {
             this.surfaceHolder = surfaceHolder;
-            this.myView = myView;
+            this.multiPlayerView = multiPlayerView;
         }
 
         public void setRunning(boolean running) {
@@ -177,14 +170,14 @@ public class MultiPlayer extends Activity implements SensorEventListener {
             Canvas canvas;
 
             while (isRunning) {
-                myView.update();
+                multiPlayerView.update();
                 canvas = null;
                 try {
                     canvas = surfaceHolder.lockCanvas(null);
 
                     synchronized (surfaceHolder) {
                         if (canvas != null)
-                            myView.onDraw(canvas);
+                            multiPlayerView.onDraw(canvas);
                     }
                 } catch (IllegalArgumentException e) {
                 } finally {

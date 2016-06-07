@@ -6,14 +6,16 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.sdsmdg.game.Bluetooth.MainActivity;
+import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
 
@@ -22,6 +24,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public static boolean isDialog = false;
     public static int winner = 1;
+    public static int height, width;
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
     TextView result_textView;
@@ -38,21 +41,30 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         mP.setOnClickListener(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         result_textView = (TextView) findViewById(R.id.result_textView);
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        height = (displaymetrics.heightPixels);
+        width = displaymetrics.widthPixels;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.singlePlayerButton: {
-                //Toast.makeText(Launcher.this, "Work in Progress", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Launcher.this, SinglePlayer.class));
+                Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
+                Log.i(TAG, "SP Button clicked");
+                startActivity(i);
                 break;
             }
             case R.id.multiPlayerButton: {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                Log.i(TAG, "MP Buttton clicked");
+                Intent i = new Intent(getApplicationContext(), Bluetooth.class);
+                Log.i(TAG, "MP Button clicked");
                 startActivity(i);
-
+                break;
+            }
+            case R.id.instructionsButton: {
+                Toast.makeText(Launcher.this, "More you play, More will you learn !", Toast.LENGTH_SHORT).show();
                 break;
             }
         }
@@ -66,7 +78,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void dialog(boolean check) {
         if (check) {
-            isDialog = false;
+
             try {
                 result_textView.setText(String.valueOf(winner) + "Wins");
             } catch (NullPointerException e) {
@@ -76,15 +88,16 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.my_dialog);
+            dialog.setContentView(R.layout.game_over_dialog);
             dialog.show();
-            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
 
             Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
             Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    isDialog = false;
                     dialog.dismiss();
                 }
             });
@@ -94,8 +107,6 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
                     System.exit(0);
                 }
             });
-
-
         }
 
     }

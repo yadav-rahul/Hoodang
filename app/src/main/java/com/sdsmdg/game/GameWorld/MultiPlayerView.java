@@ -1,4 +1,4 @@
-package com.sdsmdg.game;
+package com.sdsmdg.game.GameWorld;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,17 +8,16 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.sdsmdg.game.GameWorld.Ball;
-import com.sdsmdg.game.GameWorld.MultiPlayer;
+import com.sdsmdg.game.Launcher;
 
 
 /**
  * Created by Rahul Yadav on 5/20/2016.
  */
-public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball {
+public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callback, Ball {
 
-    private final int boardWidth = (MultiPlayer.width) / 5;
-    private final int boardHeight = (MultiPlayer.height) / 50;
+    private final int boardWidth = (Launcher.width) / 5;
+    private final int boardHeight = (Launcher.height) / 50;
     private final float dT = 0.3f;
     private final Paint paintB1, paintB2, paintBall;
     String TAG = "com.sdsmdg.game";
@@ -33,7 +32,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     private MultiPlayer multiPlayer;
 
 
-    public MyView(Context context, MultiPlayer multiPlayer) {
+    public MultiPlayerView(Context context, MultiPlayer multiPlayer) {
         super(context);
         this.context = context;
         this.multiPlayer = multiPlayer;
@@ -63,9 +62,9 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         rectFB1 = new RectF();
         rectFB2 = new RectF();
 
-        setBoardOneAtCenter(MultiPlayer.width / 2, MultiPlayer.height);
-        setBoardTwoAtCenter(MultiPlayer.width / 2, 0);
-        initializeBallPosition(MultiPlayer.width, MultiPlayer.height);
+        setBoardOneAtCenter(Launcher.width / 2, Launcher.height);
+        setBoardTwoAtCenter(Launcher.width / 2, 0);
+        initializeBallPosition(Launcher.width, Launcher.height);
 
 
     }
@@ -114,9 +113,9 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             vB1X = 0;
         } else {
             if (MultiPlayer.aB1X < 0) {
-                vB1X = (MultiPlayer.temp) * MultiPlayer.width / 36;
+                vB1X = (MultiPlayer.temp) * Launcher.width / 36;
             } else {
-                vB1X = -(MultiPlayer.temp) * MultiPlayer.width / 36;
+                vB1X = -(MultiPlayer.temp) * Launcher.width / 36;
             }
         }
 
@@ -126,8 +125,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             xB1Center = boardWidth / 2;
             vB1X = 0;
         }
-        if (xB1Center > MultiPlayer.width - (boardWidth / 2)) {
-            xB1Center = (MultiPlayer.width - (boardWidth / 2));
+        if (xB1Center > Launcher.width - (boardWidth / 2)) {
+            xB1Center = (Launcher.width - (boardWidth / 2));
             vB1X = 0;
         }
 
@@ -139,23 +138,22 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             Log.i(TAG, "Board 2 velocity is 0000");
             vB2X = 0;
         } else if (MultiPlayer.directionB2 > 0) {
-            vB2X = -(MultiPlayer.temp) * MultiPlayer.width / 36;
+            vB2X = -(MultiPlayer.temp) * Launcher.width / 36;
 
             Log.i(TAG, "Board 2 velocity is ++++");
         } else {
-            vB2X = (MultiPlayer.temp) * MultiPlayer.width / 36;
+            vB2X = (MultiPlayer.temp) * Launcher.width / 36;
             Log.i(TAG, "Board 2 velocity is ----");
         }
 
         xB2Center += (int) (vB2X * dT);
 
-
         if (xB2Center < boardWidth / 2) {
             xB2Center = boardWidth / 2;
             vB2X = 0;
         }
-        if (xB2Center > MultiPlayer.width - (boardWidth / 2)) {
-            xB2Center = (MultiPlayer.width - (boardWidth / 2));
+        if (xB2Center > Launcher.width - (boardWidth / 2)) {
+            xB2Center = (Launcher.width - (boardWidth / 2));
             vB2X = 0;
         }
         return true;
@@ -170,8 +168,8 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
         if (xBallCenter < Ball.radius) {
             xBallCenter = Ball.radius;
             vBallX = -vBallX;
-        } else if (xBallCenter > MultiPlayer.width - Ball.radius) {
-            xBallCenter = MultiPlayer.width - Ball.radius;
+        } else if (xBallCenter > Launcher.width - Ball.radius) {
+            xBallCenter = Launcher.width - Ball.radius;
             vBallX = -vBallX;
         } else if (yBallCenter < Ball.radius) {
             //P2 missed the ball
@@ -179,7 +177,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
             yBallCenter = Ball.radius;
             vBallY = -vBallY;
 
-        } else if (yBallCenter > MultiPlayer.height - Ball.radius) {
+        } else if (yBallCenter > Launcher.height - Ball.radius) {
             //P1 missed the ball
             multiPlayer.popDialog(2);
 
@@ -191,7 +189,7 @@ public class MyView extends SurfaceView implements SurfaceHolder.Callback, Ball 
     @Override
     public boolean collide(int x) {
         if (x == 1) {
-            yBallCenter = (int) (MultiPlayer.height - boardHeight - Ball.radius);
+            yBallCenter = (int) (Launcher.height - boardHeight - Ball.radius);
             vBallY = -vBallY;
         } else if (x == 2) {
             yBallCenter = Ball.radius + boardHeight;
