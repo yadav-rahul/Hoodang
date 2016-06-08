@@ -80,9 +80,6 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
             long finalTime =  (System.currentTimeMillis())/1000;
             String result = "Your score is " + String.valueOf(finalTime - startTime);
-            Log.i(TAG, "START :" + startTime + " END : " + finalTime + " Final Result : " + result);
-
-
 
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

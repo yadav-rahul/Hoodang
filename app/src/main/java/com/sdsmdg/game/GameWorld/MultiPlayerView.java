@@ -86,6 +86,11 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     @Override
+    public float velocityBooster(float velocity) {
+        return 0;
+    }
+
+    @Override
     public boolean initializeBallPosition(int x, int y) {
         xBallCenter = x / 2;
         yBallCenter = y / 2;

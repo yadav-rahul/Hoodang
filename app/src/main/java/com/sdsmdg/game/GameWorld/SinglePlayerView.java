@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -83,18 +82,29 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean initializeBallPosition(int x, int y) {
-        Log.i(TAG, "Ball position initialized");
         xBallCenter = x / 2;
         yBallCenter = y / 2;
-        initializeBallVelocity(x, y);
         return true;
     }
 
     @Override
+    public float velocityBooster(float velocity) {
+        //Here time is the time passed in Game
+        long time = (System.currentTimeMillis() / 1000) - Launcher.startTime;
+        if (0 <= time && time < 5)
+            return velocity;
+        else if (5 <= time && time < 10)
+            return (float) (1.0005 * velocity);
+        else if (10 <= time && time < 25)
+            return (float) (1.001 * velocity);
+        else
+            return (float) (1.01 * velocity);
+    }
+
+    @Override
     public boolean initializeBallVelocity(int x, int y) {
-        Log.i(TAG, "Ball velocity initialized");
-        vBallX = x / 23;
-        vBallY = y / 31;
+        vBallX = x / 25;
+        vBallY = y / (25 + 9);
         return true;
     }
 
@@ -116,6 +126,10 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean updateBall() {
+
+        vBallX = velocityBooster(vBallX);
+        vBallY = velocityBooster(vBallY);
+
         xBallCenter += vBallX * dT;
         yBallCenter += vBallY * dT;
 
@@ -126,11 +140,8 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             xBallCenter = SinglePlayer.width - Ball.radius;
             vBallX = -vBallX;
         } else if (yBallCenter < Ball.radius) {
-            //P2 missed the ball
-            //   popDialog(1);
             yBallCenter = Ball.radius;
             vBallY = -vBallY;
-
         } else if (yBallCenter > SinglePlayer.height) {
             //P1 missed the ball
             singlePlayer.popDialog(2);

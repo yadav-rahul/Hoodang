@@ -18,4 +18,6 @@ public interface Ball {
     boolean updateBall();
 
     boolean collide(int x);
+
+    float velocityBooster(float x);
 }
