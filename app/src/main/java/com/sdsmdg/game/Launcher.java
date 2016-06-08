@@ -22,12 +22,12 @@ import com.sdsmdg.game.GameWorld.SinglePlayer;
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
 
+    public static long startTime;
     public static boolean isDialog = false;
     public static int winner = 1;
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
-    TextView result_textView;
     MultiPlayer multiPlayer = new MultiPlayer(this);
 
     @Override
@@ -40,7 +40,6 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         sP.setOnClickListener(this);
         mP.setOnClickListener(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        result_textView = (TextView) findViewById(R.id.result_textView);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -79,11 +78,8 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public void dialog(boolean check) {
         if (check) {
 
-            try {
-                result_textView.setText(String.valueOf(winner) + "Wins");
-            } catch (NullPointerException e) {
-
-            }
+            long finalTime = (System.currentTimeMillis()) / 1000;
+            String result = "Your score is " + String.valueOf(finalTime - startTime);
 
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -94,6 +90,9 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
             Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
             Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
+
+            TextView result_textView = (TextView) dialog.findViewById(R.id.result_textView);
+            result_textView.setText(result);
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

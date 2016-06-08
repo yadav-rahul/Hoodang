@@ -8,7 +8,6 @@
     android:weightSum="5"
     tools:context="com.sdsmdg.game.Launcher">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

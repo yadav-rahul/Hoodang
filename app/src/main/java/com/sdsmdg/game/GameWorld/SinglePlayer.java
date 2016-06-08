@@ -60,6 +60,8 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
+
                 final Dialog dialog = new Dialog(SinglePlayer.this);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -70,7 +72,9 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 button_start.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         dialog.dismiss();
+                        Launcher.startTime = (System.currentTimeMillis()) / 1000;
                         isUpdate = true;
+                        singlePlayerView.initializeBallVelocity(SinglePlayer.width, SinglePlayer.height);
                     }
                 });
 
