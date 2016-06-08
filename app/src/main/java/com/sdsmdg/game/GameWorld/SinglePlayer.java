@@ -72,9 +72,9 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 button_start.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         dialog.dismiss();
-                        Launcher.startTime = (System.currentTimeMillis()) / 1000;
+                        Launcher.startTime = (System.currentTimeMillis())/1000;
                         isUpdate = true;
-                        singlePlayerView.initializeBallVelocity(SinglePlayer.width, SinglePlayer.height);
+                        singlePlayerView.initializeBallVelocity(SinglePlayer.width,SinglePlayer.height);
                     }
                 });
 

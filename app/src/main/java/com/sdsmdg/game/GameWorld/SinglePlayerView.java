@@ -124,7 +124,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             vBallX = velocityBooster(vBallX);
             vBallY = velocityBooster(vBallY);
         }
-        
+
         xBallCenter += vBallX * dT;
         yBallCenter += vBallY * dT;
 
@@ -158,7 +158,16 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean updateB1Center() {
-        xB1Center = xBallCenter;
+        if (Math.abs(SinglePlayer.aB1X) < 1) {
+            vB1X = 0;
+        } else {
+            if (SinglePlayer.aB1X < 0) {
+                vB1X = SinglePlayer.width / 36;
+            } else {
+                vB1X = -SinglePlayer.width / 36;
+            }
+        }
+        xB1Center += (int) (vB1X * dT);
         if (xB1Center < boardWidth / 2) {
             xB1Center = boardWidth / 2;
             vB1X = 0;

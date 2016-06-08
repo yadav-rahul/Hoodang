@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +31,16 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
+    ImageView left,right;
     MultiPlayer multiPlayer = new MultiPlayer(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+        left = (ImageView) findViewById(R.id.left_image);
+        right = (ImageView) findViewById(R.id.right_image);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         sP = (Button) findViewById(R.id.singlePlayerButton);
         mP = (Button) findViewById(R.id.multiPlayerButton);
@@ -72,11 +79,15 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
+        left.setAnimation(animation);
+        right.setAnimation(animation);
         dialog(isDialog);
     }
 
     public void dialog(boolean check) {
         if (check) {
+
 
             long finalTime = (System.currentTimeMillis()) / 1000;
             String result = "Your score is " + String.valueOf(finalTime - startTime);
@@ -92,6 +103,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
 
             TextView result_textView = (TextView) dialog.findViewById(R.id.result_textView);
+
             result_textView.setText(result);
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
