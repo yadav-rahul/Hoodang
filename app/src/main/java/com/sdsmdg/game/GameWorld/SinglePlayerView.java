@@ -134,7 +134,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         } else if (yBallCenter > SinglePlayer.height) {
             //P1 missed the ball
             singlePlayer.popDialog(2);
-
         }
         return true;
     }
@@ -162,7 +161,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
                 vB1X = -SinglePlayer.width / 36;
             }
         }
-
         xB1Center += (int) (vB1X * dT);
 
         if (xB1Center < boardWidth / 2) {
@@ -173,7 +171,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             xB1Center = (SinglePlayer.width - (boardWidth / 2));
             vB1X = 0;
         }
-
         return true;
     }
 
@@ -183,7 +180,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         //TODO Automatically update center of Board 2
 
         xB2Center = xBallCenter;
-
         if (xB2Center < boardWidth / 2) {
             xB2Center = boardWidth / 2;
             vB2X = 0;
@@ -212,7 +208,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         if (Ball.rectFBall != null) {
             Ball.rectFBall.set(xBallCenter - Ball.radius, yBallCenter - Ball.radius, xBallCenter + Ball.radius, yBallCenter + Ball.radius);
 
-
             canvas.drawOval(Ball.rectFBall, paintBall);
         }
         if (rectFB1 != null) {
@@ -232,7 +227,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override
