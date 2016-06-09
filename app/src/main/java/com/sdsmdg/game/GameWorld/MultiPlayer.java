@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -83,21 +82,17 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-
         bluetoothSocket = Bluetooth.bluetoothSocket;
         bluetoothDevice = Bluetooth.bluetoothDevice;
-
-        Log.i(TAG, "onCreate Starts");
         multiPlayerView = new MultiPlayerView(this, this);
-
-
         connectedThread = new ConnectedThread(bluetoothSocket);
         connectedThread.start();
         Intent i = new Intent(this, SendService.class);
         startService(i);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(multiPlayerView);
+
+        Launcher.startTime = (System.currentTimeMillis())/1000;
     }
 
     public void popDialog(final int x) {
@@ -120,7 +115,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     @Override
@@ -197,7 +191,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                     String outputText = (getB1Direction());
 
                     if (outputText != null) {
-                        //  Log.i("com.sdsmdg.game", outputText);
                         byte[] bytes = outputText.getBytes();
                         connectedThread.write(bytes);
                     }
@@ -247,9 +240,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                 try {
                     bytes = inputStream.read(buffer);
                     final String inputText = new String(buffer, 0, 1);
-
-                    Log.i(TAG, inputText);
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

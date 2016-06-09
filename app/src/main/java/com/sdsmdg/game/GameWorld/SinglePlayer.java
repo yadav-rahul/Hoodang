@@ -3,6 +3,7 @@ package com.sdsmdg.game.GameWorld;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
@@ -54,6 +55,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         setContentView(singlePlayerView);
         isUpdate = false;
         touchDialog();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void touchDialog() {

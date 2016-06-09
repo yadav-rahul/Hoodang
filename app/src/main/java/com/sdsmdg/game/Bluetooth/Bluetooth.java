@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -189,7 +190,7 @@ public class Bluetooth extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "LETS PLAY DUDE !", Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, "Let's Play Dude !");
                         }
                     });
 

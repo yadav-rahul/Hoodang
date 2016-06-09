@@ -58,7 +58,9 @@
         <Button
             android:background="@color/colorSkyBlue"
             android:textColor="@color/colorWhite"
-            android:id="@+id/instructionsButton"
+            android:clickable="true"
+            android:onClick="infoClicked"
+            android:id="@+id/infoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

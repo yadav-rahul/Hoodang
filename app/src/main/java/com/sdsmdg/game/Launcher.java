@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.MultiPlayer;
@@ -31,7 +30,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
-    ImageView left,right;
+    ImageView left, right;
     MultiPlayer multiPlayer = new MultiPlayer(this);
 
     @Override
@@ -69,11 +68,16 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
                 startActivity(i);
                 break;
             }
-            case R.id.instructionsButton: {
-                Toast.makeText(Launcher.this, "More you play, More will you learn !", Toast.LENGTH_SHORT).show();
-                break;
-            }
         }
+    }
+
+    public void infoClicked(View view) {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_instructions);
+        dialog.show();
     }
 
     @Override
@@ -87,8 +91,6 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void dialog(boolean check) {
         if (check) {
-
-
             long finalTime = (System.currentTimeMillis()) / 1000;
             String result = "Your score is " + String.valueOf(finalTime - startTime);
 
