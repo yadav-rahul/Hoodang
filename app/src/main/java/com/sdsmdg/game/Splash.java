@@ -31,8 +31,6 @@ public class Splash extends Activity {
             public void run() {
                 while (progressStatus < 100) {
                     progressStatus += 1;
-                    // Update the progress bar and display the
-                    //current value in the text view
                     handler.post(new Runnable() {
                         public void run() {
                             progressBar.setProgress(progressStatus);
@@ -40,9 +38,7 @@ public class Splash extends Activity {
                         }
                     });
                     try {
-                        // Sleep for 200 milliseconds.
-                        //Just to display the progress slowly
-                        Thread.sleep(30);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -57,6 +53,6 @@ public class Splash extends Activity {
                 startActivity(i);
                 finish();
             }
-        }, 3000);
+        }, 5000);
     }
 }
