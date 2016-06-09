@@ -2,7 +2,7 @@ package com.sdsmdg.game.GameWorld;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Service;
+import android.app.IntentService;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -48,7 +47,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     private MultiPlayerView multiPlayerView;
 
     public MultiPlayer() {
-
     }
 
     public MultiPlayer(Launcher launcher) {
@@ -56,18 +54,22 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     }
 
     public static String getB1Direction() {
-        if (Math.abs(aB1X) < 1)
+        if (Math.abs(aB1X) < 1) {
+            Log.i("com.sdsmdg.game", "Returning 0");
             return "0";
-        else if (aB1X < 0)
-            return ("-" + Launcher.width);
-        else
-            return ("" + Launcher.width);
+        } else if (aB1X < 0) {
+            Log.i("com.sdsmdg.game", ("-" + String.valueOf(Launcher.width)));
+            return ("-" + String.valueOf(Launcher.width));
+        } else {
+            Log.i("com.sdsmdg.game", ("" + String.valueOf(Launcher.width)));
+            return ("" + String.valueOf(Launcher.width));
+        }
+
     }
 
     public static void setAutoOrientationEnabled(Context context, boolean enabled) {
         Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -189,11 +191,15 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         }
     }
 
-    public static class SendService extends Service {
-        @Override
-        public int onStartCommand(Intent intent, int flags, int startId) {
-            new CountDownTimer(600000, 400) {
+    public static class SendService extends IntentService {
 
+        public SendService() {
+            super("SendService");
+        }
+
+        @Override
+        protected void onHandleIntent(Intent intent) {
+            new CountDownTimer(600000, 10) {
                 public void onTick(long millisUntilFinished) {
                     if (true) {
                         String outputText = (getB1Direction());
@@ -206,42 +212,24 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                     Toast.makeText(SendService.this, "Time Over", Toast.LENGTH_SHORT).show();
                 }
             }.start();
-
-            return Service.START_NOT_STICKY;
-        }
-
-
-        @Override
-        public void onDestroy() {
-            stopSelf();
-        }
-
-        @Override
-        public IBinder onBind(Intent intent) {
-            return null;
         }
     }
 
-
     public class ConnectedThread extends Thread {
-
         private final BluetoothSocket socket;
         private final InputStream inputStream;
         private final OutputStream outputStream;
 
         public ConnectedThread(BluetoothSocket bluetoothSocket) {
-
-
             socket = bluetoothSocket;
             InputStream tempIn = null;
             OutputStream tempOut = null;
-
             try {
                 tempIn = socket.getInputStream();
                 tempOut = socket.getOutputStream();
             } catch (IOException e) {
+                e.printStackTrace();
             }
-
             inputStream = tempIn;
             outputStream = tempOut;
         }
@@ -249,18 +237,17 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         public void run() {
             byte[] buffer = new byte[1024];
             int bytes;
-
             while (true) {
                 try {
                     bytes = inputStream.read(buffer);
-
                     final String inputText = new String(buffer, 0, bytes);
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (inputText != null) {
+                            try {
                                 directionB2 = Integer.valueOf(inputText);
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
                             }
 
                         }

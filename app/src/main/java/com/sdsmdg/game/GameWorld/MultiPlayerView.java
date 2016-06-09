@@ -100,8 +100,8 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public boolean initializeBallVelocity(int x, int y) {
-        vBallX = (MultiPlayer.temp) * x / 100;
-        vBallY = (MultiPlayer.temp) * y / 120;
+        vBallX = (MultiPlayer.temp) * x / 10000;
+        vBallY = (MultiPlayer.temp) * y / 12000;
         return true;
     }
 
@@ -139,16 +139,16 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public boolean updateB2Center() {
+      //  Log.i(TAG, "Board 2 velocity is 0000");
         if (MultiPlayer.directionB2 == 0) {
-            Log.i(TAG, "Board 2 velocity is 0000");
+           // Log.i(TAG, "Board 2 velocity is 0000");
             vB2X = 0;
         } else if (MultiPlayer.directionB2 > 0) {
             vB2X = -(MultiPlayer.temp) * Launcher.width / 36;
-
-            Log.i(TAG, "Board 2 velocity is ++++");
-        } else {
+            //Log.i(TAG, "Board 2 velocity is ++++");
+        } else if (MultiPlayer.directionB2 < 0) {
             vB2X = (MultiPlayer.temp) * Launcher.width / 36;
-            Log.i(TAG, "Board 2 velocity is ----");
+            //Log.i(TAG, "Board 2 velocity is ----");
         }
 
         xB2Center += (int) (vB2X * dT);
