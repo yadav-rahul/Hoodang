@@ -48,7 +48,6 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     private MultiPlayerView multiPlayerView;
 
     public MultiPlayer() {
-
     }
 
     public MultiPlayer(Launcher launcher) {
@@ -56,18 +55,18 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     }
 
     public static String getB1Direction() {
-        if (Math.abs(aB1X) < 1)
+        if (Math.abs(aB1X) < 1) {
             return "0";
-        else if (aB1X < 0)
-            return ("-" + Launcher.width);
-        else
-            return ("" + Launcher.width);
+        } else if (aB1X > 0) {
+            return ("1");
+        } else {
+            return ("2");
+        }
     }
 
     public static void setAutoOrientationEnabled(Context context, boolean enabled) {
         Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, enabled ? 1 : 0);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,12 +90,12 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
         Log.i(TAG, "onCreate Starts");
         multiPlayerView = new MultiPlayerView(this, this);
-        Intent i = new Intent(getApplicationContext(), SendService.class);
-        startService(i);
+
 
         connectedThread = new ConnectedThread(bluetoothSocket);
         connectedThread.start();
-
+        Intent i = new Intent(this, SendService.class);
+        startService(i);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(multiPlayerView);
     }
@@ -192,11 +191,13 @@ public class MultiPlayer extends Activity implements SensorEventListener {
     public static class SendService extends Service {
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            new CountDownTimer(600000, 400) {
+            new CountDownTimer(600000, 50) {
 
                 public void onTick(long millisUntilFinished) {
-                    if (true) {
-                        String outputText = (getB1Direction());
+                    String outputText = (getB1Direction());
+
+                    if (outputText != null) {
+                        //  Log.i("com.sdsmdg.game", outputText);
                         byte[] bytes = outputText.getBytes();
                         connectedThread.write(bytes);
                     }
@@ -206,10 +207,8 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                     Toast.makeText(SendService.this, "Time Over", Toast.LENGTH_SHORT).show();
                 }
             }.start();
-
             return Service.START_NOT_STICKY;
         }
-
 
         @Override
         public void onDestroy() {
@@ -222,26 +221,21 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         }
     }
 
-
     public class ConnectedThread extends Thread {
-
         private final BluetoothSocket socket;
         private final InputStream inputStream;
         private final OutputStream outputStream;
 
         public ConnectedThread(BluetoothSocket bluetoothSocket) {
-
-
             socket = bluetoothSocket;
             InputStream tempIn = null;
             OutputStream tempOut = null;
-
             try {
                 tempIn = socket.getInputStream();
                 tempOut = socket.getOutputStream();
             } catch (IOException e) {
+                e.printStackTrace();
             }
-
             inputStream = tempIn;
             outputStream = tempOut;
         }
@@ -249,25 +243,29 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         public void run() {
             byte[] buffer = new byte[1024];
             int bytes;
-
             while (true) {
                 try {
                     bytes = inputStream.read(buffer);
+                    final String inputText = new String(buffer, 0, 1);
 
-                    final String inputText = new String(buffer, 0, bytes);
+                    Log.i(TAG, inputText);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (inputText != null) {
+                            try {
                                 directionB2 = Integer.valueOf(inputText);
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
                             }
 
                         }
                     });
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
         }
 

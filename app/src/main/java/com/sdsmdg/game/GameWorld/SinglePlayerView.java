@@ -90,15 +90,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     @Override
     public float velocityBooster(float velocity) {
         //Here time is the time passed in Game
-        long time = (System.currentTimeMillis() / 1000) - Launcher.startTime;
-        if (0 <= time && time < 5)
-            return velocity;
-        else if (5 <= time && time < 10)
-            return (float) (1.0005 * velocity);
-        else if (10 <= time && time < 25)
-            return (float) (1.001 * velocity);
-        else
-            return (float) (1.01 * velocity);
+        return (float) (velocity * (1 + (1 * 0.004)));
     }
 
     @Override
@@ -127,8 +119,11 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     @Override
     public boolean updateBall() {
 
-        vBallX = velocityBooster(vBallX);
-        vBallY = velocityBooster(vBallY);
+        long time = (System.currentTimeMillis() / 1000) - Launcher.startTime;
+        if (time % 10 == 0) {
+            vBallX = velocityBooster(vBallX);
+            vBallY = velocityBooster(vBallY);
+        }
 
         xBallCenter += vBallX * dT;
         yBallCenter += vBallY * dT;
@@ -173,7 +168,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             }
         }
         xB1Center += (int) (vB1X * dT);
-
         if (xB1Center < boardWidth / 2) {
             xB1Center = boardWidth / 2;
             vB1X = 0;
