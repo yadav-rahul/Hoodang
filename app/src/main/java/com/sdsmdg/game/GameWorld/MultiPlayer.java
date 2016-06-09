@@ -36,7 +36,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
 
     public static float aB1X;
 
-    public static int directionB2 = 1;
+    public static int directionB2;
     public static int temp;
     static ConnectedThread connectedThread;
     public String TAG = "com.sdsmdg.game";
@@ -197,7 +197,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                     String outputText = (getB1Direction());
 
                     if (outputText != null) {
-                          Log.i("com.sdsmdg.game", outputText);
+                        //  Log.i("com.sdsmdg.game", outputText);
                         byte[] bytes = outputText.getBytes();
                         connectedThread.write(bytes);
                     }
@@ -248,13 +248,13 @@ public class MultiPlayer extends Activity implements SensorEventListener {
                     bytes = inputStream.read(buffer);
                     final String inputText = new String(buffer, 0, 1);
 
-                //    Log.i(TAG, inputText);
+                    Log.i(TAG, inputText);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                //directionB2 = Integer.valueOf(inputText);
+                                directionB2 = Integer.valueOf(inputText);
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }

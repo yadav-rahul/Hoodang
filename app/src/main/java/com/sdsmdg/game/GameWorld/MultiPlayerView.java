@@ -139,14 +139,14 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public boolean updateB2Center() {
-      //  Log.i(TAG, "Board 2 velocity is 0000");
+        //  Log.i(TAG, "Board 2 velocity is 0000");
         if (MultiPlayer.directionB2 == 0) {
-           // Log.i(TAG, "Board 2 velocity is 0000");
+            // Log.i(TAG, "Board 2 velocity is 0000");
             vB2X = 0;
-        } else if (MultiPlayer.directionB2 > 0) {
+        } else if (MultiPlayer.directionB2 == 1) {
             vB2X = -(MultiPlayer.temp) * Launcher.width / 36;
             //Log.i(TAG, "Board 2 velocity is ++++");
-        } else if (MultiPlayer.directionB2 < 0) {
+        } else {
             vB2X = (MultiPlayer.temp) * Launcher.width / 36;
             //Log.i(TAG, "Board 2 velocity is ----");
         }
@@ -209,13 +209,13 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
         if (rectFB1 != null) {
             rectFB1.set(xB1Center - (boardWidth / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth / 2), yB1Center - (boardHeight / 2));
 
-            canvas.drawRect(rectFB1, paintB1);
+            canvas.drawOval(rectFB1, paintB1);
         }
 
         if (rectFB2 != null) {
             rectFB2.set(xB2Center - (boardWidth / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth / 2), yB2Center - (boardHeight / 2));
 
-            canvas.drawRect(rectFB2, paintB2);
+            canvas.drawOval(rectFB2, paintB2);
         }
         if (Ball.rectFBall != null) {
             Ball.rectFBall.set(xBallCenter - Ball.radius, yBallCenter - Ball.radius, xBallCenter + Ball.radius, yBallCenter + Ball.radius);
