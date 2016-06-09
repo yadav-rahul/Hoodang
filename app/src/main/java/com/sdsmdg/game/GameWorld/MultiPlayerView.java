@@ -139,14 +139,14 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     public boolean updateB2Center() {
-      //  Log.i(TAG, "Board 2 velocity is 0000");
+        //  Log.i(TAG, "Board 2 velocity is 0000");
         if (MultiPlayer.directionB2 == 0) {
-           // Log.i(TAG, "Board 2 velocity is 0000");
+            // Log.i(TAG, "Board 2 velocity is 0000");
             vB2X = 0;
-        } else if (MultiPlayer.directionB2 > 0) {
+        } else if (MultiPlayer.directionB2 == 1) {
             vB2X = -(MultiPlayer.temp) * Launcher.width / 36;
             //Log.i(TAG, "Board 2 velocity is ++++");
-        } else if (MultiPlayer.directionB2 < 0) {
+        } else {
             vB2X = (MultiPlayer.temp) * Launcher.width / 36;
             //Log.i(TAG, "Board 2 velocity is ----");
         }
