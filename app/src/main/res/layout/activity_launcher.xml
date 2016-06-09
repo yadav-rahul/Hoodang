@@ -38,6 +38,8 @@
         android:weightSum="3">
 
         <Button
+            android:background="@color/colorSkyBlue"
+            android:textColor="@color/colorWhite"
             android:id="@+id/singlePlayerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,13 +47,17 @@
             android:text="Single Player" />
 
         <Button
+            android:background="@color/colorSkyBlue"
+            android:textColor="@color/colorWhite"
             android:id="@+id/multiPlayerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="multi player" />
+            android:text="Multi Player" />
 
         <Button
+            android:background="@color/colorSkyBlue"
+            android:textColor="@color/colorWhite"
             android:id="@+id/instructionsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
