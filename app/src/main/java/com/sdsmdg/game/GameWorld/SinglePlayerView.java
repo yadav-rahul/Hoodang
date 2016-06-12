@@ -9,6 +9,8 @@ import android.view.SurfaceView;
 
 import com.sdsmdg.game.Launcher;
 
+import java.util.Random;
+
 /**
  * Created by Rahul Yadav on 6/4/2016.
  */
@@ -28,6 +30,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private int xB1Center, yB1Center;
     private int xB2Center, yB2Center;
     private Context context;
+    private int[] ballDirection = new int[]{-1, 1};
 
     public SinglePlayerView(Context context, SinglePlayer singlePlayer) {
         super(context);
@@ -95,8 +98,8 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean initializeBallVelocity(int x, int y) {
-        vBallX = x / 25;
-        vBallY = y / (25 + 9);
+        vBallX = (ballDirection[new Random().nextInt(ballDirection.length)])*x / 25;
+        vBallY = (ballDirection[new Random().nextInt(ballDirection.length)])*y / (25 + 9);
         return true;
     }
 
@@ -158,13 +161,13 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean updateB1Center() {
-        if (Math.abs(SinglePlayer.aB1X) < 1) {
+        if (Math.abs(SinglePlayer.aB1X) < 1.2) {
             vB1X = 0;
         } else {
             if (SinglePlayer.aB1X < 0) {
-                vB1X = SinglePlayer.width / 36;
+                vB1X = SinglePlayer.width / 25;
             } else {
-                vB1X = -SinglePlayer.width / 36;
+                vB1X = -SinglePlayer.width / 25;
             }
         }
         xB1Center += (int) (vB1X * dT);
