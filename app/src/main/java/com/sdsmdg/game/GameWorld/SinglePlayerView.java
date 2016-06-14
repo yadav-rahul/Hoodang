@@ -111,8 +111,8 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean initializeBallVelocity(int x, int y) {
-        vBallX = 0;//(ballDirection[new Random().nextInt(ballDirection.length)]) * x / 25;
-        vBallY = 0;// -y / (25 + 9);
+        vBallX = (ballDirection[new Random().nextInt(ballDirection.length)]) * x / 25;
+        vBallY = -y / (25 + 9);
         return true;
     }
 
@@ -121,7 +121,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             updateB1Center();
             updateBall();
             smartUpdateB2Center();
-            if (time % 5 == 0) {
+            if (time % 15 == 0) {
                 showGift = true;
             }
             if (showGift) {
@@ -133,14 +133,13 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     public boolean updateGift() {
         giftTopPosition += giftVelocity * dT;
-        if (giftTopPosition +90 >= Launcher.height - boardHeight && Math.abs(giftLeftPosition + 22 - xB1Center) < (boardWidth1 / 2 + (22))) {
+        if (giftTopPosition + 90 >= Launcher.height - boardHeight && Math.abs(giftLeftPosition + 22 - xB1Center) < (boardWidth1 / 2 + (22))) {
             Log.i(TAG, "Gift just collide with Board");
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
             giftTopPosition = 0;
             showGift = false;
             Gift.showGift();
-        }
-        else if (giftTopPosition > Launcher.height) {
+        } else if (giftTopPosition > Launcher.height) {
             giftTopPosition = 0;
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
             showGift = false;

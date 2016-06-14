@@ -16,7 +16,7 @@ public class BoardSize {
     public static void start() {
         Log.i("com.sdsmdg.game", "Board Size changed");
         SinglePlayerView.boardWidth1 = (SinglePlayer.width) / (size[new Random().nextInt(size.length)]);
-        
+
     }
 
 }
