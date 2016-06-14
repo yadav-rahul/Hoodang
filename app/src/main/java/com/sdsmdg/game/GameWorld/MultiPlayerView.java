@@ -16,6 +16,7 @@ import com.sdsmdg.game.Launcher;
  */
 public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callback, Ball {
 
+    public static int radius = Launcher.width / 25;
     private final int boardWidth = (Launcher.width) / 5;
     private final int boardHeight = (Launcher.height) / 50;
     private final float dT = 0.3f;
@@ -166,19 +167,19 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
         xBallCenter += vBallX * dT;
         yBallCenter += vBallY * dT;
 
-        if (xBallCenter < Ball.radius) {
-            xBallCenter = Ball.radius;
+        if (xBallCenter < radius) {
+            xBallCenter = radius;
             vBallX = -vBallX;
-        } else if (xBallCenter > Launcher.width - Ball.radius) {
-            xBallCenter = Launcher.width - Ball.radius;
+        } else if (xBallCenter > Launcher.width - radius) {
+            xBallCenter = Launcher.width - radius;
             vBallX = -vBallX;
-        } else if (yBallCenter < Ball.radius) {
+        } else if (yBallCenter < radius) {
             //P2 missed the ball
             //   popDialog(1);
-            yBallCenter = Ball.radius;
+            yBallCenter = radius;
             vBallY = -vBallY;
 
-        } else if (yBallCenter > Launcher.height - Ball.radius) {
+        } else if (yBallCenter > Launcher.height - radius) {
             //P1 missed the ball
             multiPlayer.popDialog(2);
 
@@ -190,10 +191,10 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
     @Override
     public boolean collide(int x) {
         if (x == 1) {
-            yBallCenter = (int) (Launcher.height - boardHeight - Ball.radius);
+            yBallCenter = (int) (Launcher.height - boardHeight - radius);
             vBallY = -vBallY;
         } else if (x == 2) {
-            yBallCenter = Ball.radius + boardHeight;
+            yBallCenter = radius + boardHeight;
             vBallY = -vBallY;
         }
         return true;
@@ -214,7 +215,7 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
             canvas.drawOval(rectFB2, paintB2);
         }
         if (Ball.rectFBall != null) {
-            Ball.rectFBall.set(xBallCenter - Ball.radius, yBallCenter - Ball.radius, xBallCenter + Ball.radius, yBallCenter + Ball.radius);
+            Ball.rectFBall.set(xBallCenter - radius, yBallCenter - radius, xBallCenter + radius, yBallCenter + radius);
 
             canvas.drawOval(Ball.rectFBall, paintBall);
         }

@@ -119,6 +119,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        this.finish();
     }
 
     @Override
@@ -168,5 +169,11 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.finish();
     }
 }
