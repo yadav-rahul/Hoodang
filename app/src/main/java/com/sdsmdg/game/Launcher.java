@@ -112,6 +112,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
                 public void onClick(View v) {
                     isDialog = false;
                     dialog.dismiss();
+
                 }
             });
             btn_no.setOnClickListener(new View.OnClickListener() {

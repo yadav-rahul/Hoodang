@@ -13,12 +13,12 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.sdsmdg.game.Launcher;
 import com.sdsmdg.game.R;
@@ -34,7 +34,6 @@ public class SinglePlayer extends Activity implements SensorEventListener {
     public static boolean isUpdate;
     public String TAG = "com.sdsmdg.game";
     protected PowerManager.WakeLock mWakeLock;
-    RelativeLayout ballonLayout;
     private SensorManager sensorManager;
     private Sensor sensor;
     private SinglePlayerView singlePlayerView;
@@ -90,6 +89,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
             public void run() {
                 Launcher.winner = x;
                 Launcher.isDialog = true;
+
                 SinglePlayer.this.finish();
             }
         });
@@ -120,6 +120,8 @@ public class SinglePlayer extends Activity implements SensorEventListener {
             sensorManager.unregisterListener(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         this.finish();
+
+        Log.i(TAG, "onPause called");
     }
 
     @Override
@@ -127,8 +129,9 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         super.onStop();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
-
         this.finish();
+
+        Log.i(TAG, "onStop called");
     }
 
     public static class RenderThread extends Thread {

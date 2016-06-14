@@ -6,10 +6,7 @@ import java.util.Random;
  * Created by Rahul Yadav on 6/12/2016.
  */
 public class Gift {
-
-    //TODO Add ball velocity in gift.
-
-    private static int[] gift = new int[]{1, 2};
+    private static int[] gift = new int[]{1, 2, 3};
 
     public static int getGift() {
         return (gift[new Random().nextInt(gift.length)]);

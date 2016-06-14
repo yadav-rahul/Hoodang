@@ -21,8 +21,9 @@ import java.util.Random;
  */
 public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callback, Ball, BoardOne, BoardTwo {
 
-    public static int radius = Launcher.width / 25;
-    public static int boardWidth1 = (Launcher.width) / 5;
+    public static int radius;
+    public static int boardWidth1;
+    public static float vBallX, vBallY;
     private final int boardWidth2 = (Launcher.width) / 5;
     private final int boardHeight = (Launcher.height) / 50;
     private final float dT = 0.3f;
@@ -33,7 +34,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private int giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
     private boolean showGift = false;
     private SinglePlayer singlePlayer;
-    private float vBallX, vBallY;
     private RectF rectFB1, rectFB2, rectInvisible;
     private SinglePlayer.RenderThread renderThread;
     private float vB1X, vB2X;
@@ -50,8 +50,9 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
         getHolder().addCallback(this);
         renderThread = new SinglePlayer.RenderThread(getHolder(), this);
-
         setFocusable(true);
+        boardWidth1 = (Launcher.width) / 5;
+        radius = Launcher.width / 25;
         paintB1 = new Paint();
         paintB1.setColor(0xFF3F51B5);
         paintB1.setAlpha(255);
