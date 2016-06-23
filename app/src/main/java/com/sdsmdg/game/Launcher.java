@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
+import com.sdsmdg.game.LeaderBoard.LeaderBoard;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
@@ -73,11 +74,9 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void infoClicked(View view) {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_instructions);
-        dialog.show();
+        Intent i = new Intent(getApplicationContext(), LeaderBoard.class);
+        Log.i(TAG, "LeaderBoard Button clicked !");
+        startActivity(i);
     }
 
     @Override
