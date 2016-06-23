@@ -60,11 +60,11 @@
             android:textColor="@color/colorWhite"
             android:clickable="true"
             android:onClick="infoClicked"
-            android:id="@+id/infoButton"
+            android:id="@+id/scoreButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Instructions" />
+            android:text="LeaderBoard" />
     </LinearLayout>
 </LinearLayout>
 

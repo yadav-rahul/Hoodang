@@ -62,7 +62,6 @@ public class SinglePlayer extends Activity implements SensorEventListener {
             @Override
             public void run() {
 
-
                 final Dialog dialog = new Dialog(SinglePlayer.this);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
