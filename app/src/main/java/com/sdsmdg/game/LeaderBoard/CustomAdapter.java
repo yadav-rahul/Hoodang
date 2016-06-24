@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Rahul Yadav on 6/23/2016.
  */
 class CustomAdapter extends ArrayAdapter<Scores> {
+
     public CustomAdapter(Context context, List<Scores> scores) {
         super(context, R.layout.score_list, scores);
     }

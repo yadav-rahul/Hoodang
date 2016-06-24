@@ -12,6 +12,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -19,8 +21,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.sdsmdg.game.Launcher;
+import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
+import com.sdsmdg.game.LeaderBoard.LocalDB.Profile;
 import com.sdsmdg.game.R;
 
 /**
@@ -61,6 +66,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                final DBHandler dbHandler = new DBHandler(getApplicationContext());
 
                 final Dialog dialog = new Dialog(SinglePlayer.this);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -68,13 +74,37 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 dialog.setContentView(R.layout.touch_dialog);
                 dialog.show();
                 dialog.setCancelable(false);
-                Button button_start = (Button) dialog.findViewById(R.id.button_start);
-                button_start.setOnClickListener(new View.OnClickListener() {
+
+                final EditText userName = (EditText) dialog.findViewById(R.id.user_name);
+                final Button start_button = (Button) dialog.findViewById(R.id.start_button);
+                start_button.setEnabled(false);
+                userName.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.toString().trim().length() == 0) {
+                            start_button.setEnabled(false);
+                        } else {
+                            start_button.setEnabled(true);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+                start_button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        dialog.dismiss();
-                        Launcher.startTime = (System.currentTimeMillis())/1000;
+                        //Initialize a score of zero.
+                        Profile profile = new Profile(userName.getText().toString(),0);
+                        Launcher.startTime = (System.currentTimeMillis()) / 1000;
                         isUpdate = true;
-                        singlePlayerView.initializeBallVelocity(SinglePlayer.width,SinglePlayer.height);
+                        singlePlayerView.initializeBallVelocity(SinglePlayer.width, SinglePlayer.height);
+                        dbHandler.addProfile(profile);
+                        dialog.dismiss();
                     }
                 });
 
@@ -133,6 +163,12 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         Log.i(TAG, "onStop called");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.finish();
+    }
+
     public static class RenderThread extends Thread {
 
         private SurfaceHolder surfaceHolder;
@@ -171,11 +207,5 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.finish();
     }
 }
