@@ -1,9 +1,12 @@
 package com.sdsmdg.game;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -16,11 +19,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
 import com.sdsmdg.game.LeaderBoard.LeaderBoard;
+import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
@@ -72,11 +77,33 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void infoClicked(View view) {
+    public void highScoreClicked(View view) {
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        if (!dbHandler.checkDatabase()) {
+            Toast.makeText(Launcher.this, "Your High Score is : " + dbHandler.getPastHighScore(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(Launcher.this, "You didn't played yet !", Toast.LENGTH_LONG).show();
+        }
+    }
 
-        Intent i = new Intent(getApplicationContext(), LeaderBoard.class);
-        Log.i(TAG, "LeaderBoard Button clicked !");
-        startActivity(i);
+    public void infoClicked(View view) {
+        checkConnection();
+    }
+
+    private void checkConnection() {
+        if (isNetworkAvailable()) {
+            Intent i = new Intent(getApplicationContext(), LeaderBoard.class);
+            startActivity(i);
+        } else {
+            Toast.makeText(this, "Check your Internet Connection !", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 
     @Override
@@ -90,8 +117,10 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void dialog(boolean check) {
         if (check) {
+            DBHandler dbHandler = new DBHandler(getApplicationContext());
             long finalTime = (System.currentTimeMillis()) / 1000;
-            String result = "Your score is " + String.valueOf(finalTime - startTime);
+            long score = finalTime - startTime;
+            String result = "Your score is " + String.valueOf(score);
 
             final Dialog dialog = new Dialog(this);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -100,6 +129,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             dialog.show();
             dialog.setCancelable(false);
 
+            dbHandler.updateDatabase((int) score, this);
             Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
             Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
 

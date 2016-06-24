@@ -3,6 +3,7 @@ package com.sdsmdg.game.GameWorld;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
@@ -37,6 +38,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
     public static float aB1X;
     public static int height, width;
     public static boolean isUpdate;
+    public Dialog dialog;
     public String TAG = "com.sdsmdg.game";
     protected PowerManager.WakeLock mWakeLock;
     private SensorManager sensorManager;
@@ -68,42 +70,61 @@ public class SinglePlayer extends Activity implements SensorEventListener {
             public void run() {
                 final DBHandler dbHandler = new DBHandler(getApplicationContext());
 
-                final Dialog dialog = new Dialog(SinglePlayer.this);
+                dialog = new Dialog(SinglePlayer.this);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.touch_dialog);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(true);
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        finish();
+                    }
+                });
                 dialog.show();
-                dialog.setCancelable(false);
 
                 final EditText userName = (EditText) dialog.findViewById(R.id.user_name);
                 final Button start_button = (Button) dialog.findViewById(R.id.start_button);
-                start_button.setEnabled(false);
-                userName.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (s.toString().trim().length() == 0) {
-                            start_button.setEnabled(false);
-                        } else {
-                            start_button.setEnabled(true);
+                if (dbHandler.checkDatabase()) {
+
+                    start_button.setEnabled(false);
+                    userName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                         }
-                    }
 
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-                });
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (s.toString().trim().length() == 0) {
+                                start_button.setEnabled(false);
+                            } else {
+                                start_button.setEnabled(true);
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                        }
+                    });
+                } else {
+                    userName.setText(dbHandler.fetchUserName());
+                    userName.setEnabled(false);
+                    start_button.setEnabled(true);
+                }
+
                 start_button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         //Initialize a score of zero.
-                        Profile profile = new Profile(userName.getText().toString(),0);
+                        if (dbHandler.checkDatabase()) {
+                            Profile profile = new Profile(userName.getText().toString(), 0);
+                            dbHandler.addProfile(profile);
+                        }
                         Launcher.startTime = (System.currentTimeMillis()) / 1000;
                         isUpdate = true;
                         singlePlayerView.initializeBallVelocity(SinglePlayer.width, SinglePlayer.height);
-                        dbHandler.addProfile(profile);
+
                         dialog.dismiss();
                     }
                 });
@@ -154,12 +175,19 @@ public class SinglePlayer extends Activity implements SensorEventListener {
     }
 
     @Override
+    public void onBackPressed() {
+        if (dialog.isShowing()) {
+            dialog.cancel();
+        }
+        finish();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
         this.finish();
-
         Log.i(TAG, "onStop called");
     }
 
@@ -168,6 +196,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         super.onDestroy();
         this.finish();
     }
+
 
     public static class RenderThread extends Thread {
 

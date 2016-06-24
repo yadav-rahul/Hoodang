@@ -21,7 +21,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:hint="User name"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            android:gravity="center_horizontal" />
 
         <Button
             android:id="@+id/start_button"

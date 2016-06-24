@@ -2,16 +2,18 @@ package com.sdsmdg.game.LeaderBoard.LocalDB;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.sdsmdg.game.Launcher;
 
 /**
  * Created by Rahul Yadav on 6/24/2016.
  */
 public class DBHandler extends SQLiteOpenHelper {
-
-
     public static final String KEY_NAME = "name";
     public static final String KEY_SCORE = "score";
     private static final String TAG = "com.sdsmdg.game";
@@ -50,11 +52,54 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(SQLITE_TABLE, null, values);
     }
 
-    public void checkDatabase(){
+    public boolean checkDatabase() {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT COUNT(*) AS NumberOfRows FROM " + SQLITE_TABLE + ";";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        int entities = c.getInt(c.getColumnIndex("NumberOfRows"));
+        Log.i(TAG, "Number of rows : " + entities);
+        return (entities == 0);
 
     }
-    public void updateDatabase(int score){
+
+    public String fetchUserName() {
         SQLiteDatabase db = getWritableDatabase();
 
+        String query = "SELECT  " + KEY_NAME + " from " + SQLITE_TABLE + ";";
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        return (c.getString(c.getColumnIndex("name")));
+    }
+
+    public void updateDatabase(int score, Launcher context) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (score > getPastHighScore()) {
+
+            String updateQuery = "UPDATE " + SQLITE_TABLE
+                    + " SET " + KEY_SCORE + "='" + score + "';";
+            db.execSQL(updateQuery);
+
+            Toast.makeText(context.getApplicationContext(), "Your HighScore is updated to : " + score, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    public int getPastHighScore() {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT  " + KEY_SCORE + " from " + SQLITE_TABLE + ";";
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        int pastHighScore = c.getInt(c.getColumnIndex("score"));
+        Log.i(TAG, "Previous High Score : " + String.valueOf(pastHighScore));
+        return pastHighScore;
     }
 }
