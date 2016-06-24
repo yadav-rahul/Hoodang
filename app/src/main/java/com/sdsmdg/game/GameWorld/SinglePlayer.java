@@ -3,6 +3,7 @@ package com.sdsmdg.game.GameWorld;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -19,8 +22,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.sdsmdg.game.Launcher;
+import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
+import com.sdsmdg.game.LeaderBoard.LocalDB.Profile;
 import com.sdsmdg.game.R;
 
 /**
@@ -32,6 +38,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
     public static float aB1X;
     public static int height, width;
     public static boolean isUpdate;
+    public Dialog dialog;
     public String TAG = "com.sdsmdg.game";
     protected PowerManager.WakeLock mWakeLock;
     private SensorManager sensorManager;
@@ -61,21 +68,64 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                final DBHandler dbHandler = new DBHandler(getApplicationContext());
 
-
-                final Dialog dialog = new Dialog(SinglePlayer.this);
+                dialog = new Dialog(SinglePlayer.this);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.touch_dialog);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(true);
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        finish();
+                    }
+                });
                 dialog.show();
-                dialog.setCancelable(false);
-                Button button_start = (Button) dialog.findViewById(R.id.button_start);
-                button_start.setOnClickListener(new View.OnClickListener() {
+
+                final EditText userName = (EditText) dialog.findViewById(R.id.user_name);
+                final Button start_button = (Button) dialog.findViewById(R.id.start_button);
+
+                if (dbHandler.checkDatabase()) {
+
+                    start_button.setEnabled(false);
+                    userName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (s.toString().trim().length() == 0) {
+                                start_button.setEnabled(false);
+                            } else {
+                                start_button.setEnabled(true);
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                        }
+                    });
+                } else {
+                    userName.setText(dbHandler.fetchUserName());
+                    userName.setEnabled(false);
+                    start_button.setEnabled(true);
+                }
+
+                start_button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        dialog.dismiss();
-                        Launcher.startTime = (System.currentTimeMillis())/1000;
+                        //Initialize a score of zero.
+                        if (dbHandler.checkDatabase()) {
+                            Profile profile = new Profile(userName.getText().toString(), 0);
+                            dbHandler.addProfile(profile);
+                        }
+                        Launcher.startTime = (System.currentTimeMillis()) / 1000;
                         isUpdate = true;
-                        singlePlayerView.initializeBallVelocity(SinglePlayer.width,SinglePlayer.height);
+                        singlePlayerView.initializeBallVelocity(SinglePlayer.width, SinglePlayer.height);
+
+                        dialog.dismiss();
                     }
                 });
 
@@ -125,14 +175,28 @@ public class SinglePlayer extends Activity implements SensorEventListener {
     }
 
     @Override
+    public void onBackPressed() {
+        if (dialog.isShowing()) {
+            dialog.cancel();
+        }
+        finish();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (sensorManager != null)
             sensorManager.unregisterListener(this);
         this.finish();
-
         Log.i(TAG, "onStop called");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.finish();
+    }
+
 
     public static class RenderThread extends Thread {
 
@@ -172,11 +236,5 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.finish();
     }
 }

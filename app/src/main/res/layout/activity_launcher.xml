@@ -38,33 +38,53 @@
         android:weightSum="3">
 
         <Button
-            android:background="@color/colorSkyBlue"
-            android:textColor="@color/colorWhite"
             android:id="@+id/singlePlayerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Single Player" />
+            android:background="@color/colorSkyBlue"
+            android:text="Single Player"
+            android:textColor="@color/colorWhite" />
 
         <Button
-            android:background="@color/colorSkyBlue"
-            android:textColor="@color/colorWhite"
             android:id="@+id/multiPlayerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Multi Player" />
-
-        <Button
             android:background="@color/colorSkyBlue"
-            android:textColor="@color/colorWhite"
-            android:clickable="true"
-            android:onClick="infoClicked"
-            android:id="@+id/infoButton"
+            android:text="Multi Player"
+            android:textColor="@color/colorWhite" />
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Instructions" />
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/high_score_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorSkyBlue"
+                android:clickable="true"
+                android:onClick="highScoreClicked"
+                android:text="High Score"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/scoreButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorSkyBlue"
+                android:clickable="true"
+                android:onClick="infoClicked"
+                android:text="LeaderBoard"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
 
