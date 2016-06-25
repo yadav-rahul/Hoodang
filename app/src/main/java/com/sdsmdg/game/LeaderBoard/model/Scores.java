@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName;
  * Created by Rahul Yadav on 6/23/2016.
  */
 public class Scores {
-
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+//
+//    @SerializedName("id")
+//    @Expose
+//    private Integer id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -18,19 +18,23 @@ public class Scores {
     @Expose
     private Integer score;
 
-    /**
-     * @return The id
-     */
-    public Integer getId() {
-        return id;
+    public Scores(String name, Integer score) {
+        this.name = name;
+        this.score = score;
     }
-
-    /**
-     * @param id The id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    /**
+//     * @return The id
+//     */
+//    public Integer getId() {
+//        return id;
+//    }
+//
+//    /**
+//     * @param id The id
+//     */
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     /**
      * @return The name

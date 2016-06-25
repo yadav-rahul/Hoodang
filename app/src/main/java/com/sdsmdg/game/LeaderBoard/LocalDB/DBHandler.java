@@ -57,47 +57,35 @@ public class DBHandler extends SQLiteOpenHelper {
         String query = "SELECT COUNT(*) AS NumberOfRows FROM " + SQLITE_TABLE + ";";
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-
         int entities = c.getInt(c.getColumnIndex("NumberOfRows"));
         Log.i(TAG, "Number of rows : " + entities);
         return (entities == 0);
 
     }
 
-    public String fetchUserName() {
+    public String getUserName() {
         SQLiteDatabase db = getWritableDatabase();
-
         String query = "SELECT  " + KEY_NAME + " from " + SQLITE_TABLE + ";";
-
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-
         return (c.getString(c.getColumnIndex("name")));
     }
 
     public void updateDatabase(int score, Launcher context) {
         SQLiteDatabase db = getWritableDatabase();
-
         if (score > getPastHighScore()) {
-
             String updateQuery = "UPDATE " + SQLITE_TABLE
                     + " SET " + KEY_SCORE + "='" + score + "';";
             db.execSQL(updateQuery);
-
             Toast.makeText(context.getApplicationContext(), "Your HighScore is updated to : " + score, Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     public int getPastHighScore() {
         SQLiteDatabase db = getWritableDatabase();
-
         String query = "SELECT  " + KEY_SCORE + " from " + SQLITE_TABLE + ";";
-
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-
         int pastHighScore = c.getInt(c.getColumnIndex("score"));
         Log.i(TAG, "Previous High Score : " + String.valueOf(pastHighScore));
         return pastHighScore;

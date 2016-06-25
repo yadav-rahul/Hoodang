@@ -109,7 +109,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                         }
                     });
                 } else {
-                    userName.setText(dbHandler.fetchUserName());
+                    userName.setText(dbHandler.getUserName());
                     userName.setEnabled(false);
                     start_button.setEnabled(true);
                 }

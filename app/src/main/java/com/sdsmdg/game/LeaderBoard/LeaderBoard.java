@@ -3,10 +3,12 @@ package com.sdsmdg.game.LeaderBoard;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.sdsmdg.game.LeaderBoard.API.dbapi;
+import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 import com.sdsmdg.game.LeaderBoard.model.Scores;
 import com.sdsmdg.game.R;
 
@@ -55,9 +57,29 @@ public class LeaderBoard extends AppCompatActivity {
         });
     }
 
-    public void showList() {
-        String[] scores = new String[scoresList.size()];
+    public void postButtonClicked(View view) {
+        final ProgressDialog loading = ProgressDialog.show(this, "Sending Data", "Please wait...", false, false);
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(ROOT_URL)
+                .build();
 
+        dbapi api = adapter.create(dbapi.class);
+        api.postJson(new Scores(dbHandler.getUserName(), dbHandler.getPastHighScore()),
+                new Callback<Scores>() {
+                    @Override
+                    public void success(Scores scores, Response response) {
+                        loading.dismiss();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+    }
+
+    public void showList() {
         ArrayAdapter adapter = new CustomAdapter(this, scoresList);
         scoreListView.setAdapter(adapter);
     }
