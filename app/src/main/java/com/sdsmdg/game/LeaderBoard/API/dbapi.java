@@ -26,4 +26,7 @@ public interface dbapi {
     Call<Scores> addScore(
             @Field("name") String name,
             @Field("score") int score
-    );}
+    );
+    
+
+}

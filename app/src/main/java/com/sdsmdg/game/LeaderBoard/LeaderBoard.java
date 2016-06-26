@@ -3,11 +3,14 @@ package com.sdsmdg.game.LeaderBoard;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.sdsmdg.game.Launcher;
 import com.sdsmdg.game.LeaderBoard.API.dbapi;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 import com.sdsmdg.game.LeaderBoard.model.Scores;
@@ -23,8 +26,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LeaderBoard extends AppCompatActivity {
 
+    public String TAG = "com.sdsmdg.game";
     private final String BASE_URL = "http://rauhly247.pythonanywhere.com/";
     ArrayAdapter adapter;
+    Button postButton;
     List<Scores> scoresList;
     ListView scoreListView;
 
@@ -32,11 +37,19 @@ public class LeaderBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
-
         scoreListView = (ListView) findViewById(R.id.scoreListView);
+        postButton = (Button) findViewById(R.id.post_button);
         getScores();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        if(dbHandler.checkDatabase()){
+            postButton.setEnabled(false);
+        }
+    }
 
     public void getScores() {
         final ProgressDialog loading = ProgressDialog.show(this, "Fetching Data", "Please wait...", false, false);
@@ -68,33 +81,42 @@ public class LeaderBoard extends AppCompatActivity {
     }
 
     public void postButtonClicked(View view) {
+        if (Launcher.newUser) {
+            Log.i(TAG, "New User");
+            final ProgressDialog loading = ProgressDialog.show(this, "Sending Data", "Please wait...", false, false);
+            DBHandler dbHandler = new DBHandler(getApplicationContext());
 
-        final ProgressDialog loading = ProgressDialog.show(this, "Sending Data", "Please wait...", false, false);
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        dbapi api = retrofit.create(dbapi.class);
-        Call<Scores> addScore = api.addScore(dbHandler.getUserName(), dbHandler.getPastHighScore());
-        addScore.enqueue(new Callback<Scores>() {
-            @Override
-            public void onResponse(Call<Scores> call, Response<Scores> response) {
-                loading.dismiss();
-                if (response.body() != null) {
-                    updateList();
-                } else {
-                    Toast.makeText(LeaderBoard.this, "User with this name already exists !", Toast.LENGTH_SHORT).show();
+            dbapi api = retrofit.create(dbapi.class);
+            Call<Scores> addScore = api.addScore(dbHandler.getUserName(), dbHandler.getPastHighScore());
+            addScore.enqueue(new Callback<Scores>() {
+                @Override
+                public void onResponse(Call<Scores> call, Response<Scores> response) {
+                    loading.dismiss();
+                    if (response.body() != null) {
+                        updateList();
+                        Launcher.newUser = false;
+                    } else {
+                        //TODO Add a method to replace the user name.
+                        Toast.makeText(LeaderBoard.this, "User with this name already exists !", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Scores> call, Throwable t) {
-                Toast.makeText(LeaderBoard.this, "Please try again !", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Scores> call, Throwable t) {
+                    Toast.makeText(LeaderBoard.this, "Please try again !", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Log.i(TAG, "Old User");
+            //TODO update initial score.
+
+        }
     }
 
     public void updateList() {
