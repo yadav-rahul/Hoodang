@@ -22,7 +22,7 @@ public interface dbapi {
     //Since Retrofit 1.9 uses Gson by default, the FooRequest instances
     // will be serialized as JSON as the sole body of the request.
     @FormUrlEncoded
-    @POST("scores/?format=json")
+    @POST("scores/")
     Call<Scores> addScore(
             @Field("name") String name,
             @Field("score") int score

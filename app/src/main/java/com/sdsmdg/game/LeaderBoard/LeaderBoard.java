@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.sdsmdg.game.LeaderBoard.API.dbapi;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
@@ -54,6 +55,8 @@ public class LeaderBoard extends AppCompatActivity {
                     scoresList = response.body();
                     loading.dismiss();
                     showList();
+                } else {
+                    Toast.makeText(LeaderBoard.this, "Be the first to post ur Score !", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -65,6 +68,7 @@ public class LeaderBoard extends AppCompatActivity {
     }
 
     public void postButtonClicked(View view) {
+
         final ProgressDialog loading = ProgressDialog.show(this, "Sending Data", "Please wait...", false, false);
         DBHandler dbHandler = new DBHandler(getApplicationContext());
 
@@ -79,12 +83,16 @@ public class LeaderBoard extends AppCompatActivity {
             @Override
             public void onResponse(Call<Scores> call, Response<Scores> response) {
                 loading.dismiss();
-                updateList();
+                if (response.body() != null) {
+                    updateList();
+                } else {
+                    Toast.makeText(LeaderBoard.this, "User with this name already exists !", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<Scores> call, Throwable t) {
-
+                Toast.makeText(LeaderBoard.this, "Please try again !", Toast.LENGTH_SHORT).show();
             }
         });
     }
