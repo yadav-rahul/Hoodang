@@ -18,5 +18,4 @@ public class BoardSize {
         SinglePlayerView.boardWidth1 = (SinglePlayer.width) / (size[new Random().nextInt(size.length)]);
 
     }
-
 }

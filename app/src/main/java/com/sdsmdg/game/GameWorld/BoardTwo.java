@@ -6,5 +6,6 @@ package com.sdsmdg.game.GameWorld;
 public interface BoardTwo {
 
     boolean setBoardTwoAtCenter(int x, int y);
+
     boolean updateB2Center();
 }

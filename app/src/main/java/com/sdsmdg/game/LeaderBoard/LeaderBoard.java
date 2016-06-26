@@ -14,13 +14,16 @@ import com.sdsmdg.game.R;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LeaderBoard extends AppCompatActivity {
-    private final String ROOT_URL = "http://rauhly247.pythonanywhere.com/";
+
+    private final String BASE_URL = "http://rauhly247.pythonanywhere.com/";
+    ArrayAdapter adapter;
     List<Scores> scoresList;
     ListView scoreListView;
 
@@ -37,22 +40,26 @@ public class LeaderBoard extends AppCompatActivity {
     public void getScores() {
         final ProgressDialog loading = ProgressDialog.show(this, "Fetching Data", "Please wait...", false, false);
 
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL)
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        dbapi api = adapter.create(dbapi.class);
-        api.getScores(new Callback<List<Scores>>() {
+        dbapi api = retrofit.create(dbapi.class);
+        Call<List<Scores>> call = api.getScores();
+        call.enqueue(new Callback<List<Scores>>() {
             @Override
-            public void success(List<Scores> scores, Response response) {
-                loading.dismiss();
-                scoresList = scores;
-                showList();
+            public void onResponse(Call<List<Scores>> call, Response<List<Scores>> response) {
+                if (response.body() != null) {
+                    scoresList = response.body();
+                    loading.dismiss();
+                    showList();
+                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                //Handle the errors here
+            public void onFailure(Call<List<Scores>> call, Throwable t) {
+
             }
         });
     }
@@ -60,27 +67,57 @@ public class LeaderBoard extends AppCompatActivity {
     public void postButtonClicked(View view) {
         final ProgressDialog loading = ProgressDialog.show(this, "Sending Data", "Please wait...", false, false);
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL)
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        dbapi api = adapter.create(dbapi.class);
-        api.postJson(new Scores(dbHandler.getUserName(), dbHandler.getPastHighScore()),
-                new Callback<Scores>() {
-                    @Override
-                    public void success(Scores scores, Response response) {
-                        loading.dismiss();
-                    }
+        dbapi api = retrofit.create(dbapi.class);
+        Call<Scores> addScore = api.addScore(dbHandler.getUserName(), dbHandler.getPastHighScore());
+        addScore.enqueue(new Callback<Scores>() {
+            @Override
+            public void onResponse(Call<Scores> call, Response<Scores> response) {
+                loading.dismiss();
+                updateList();
+            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
+            @Override
+            public void onFailure(Call<Scores> call, Throwable t) {
 
-                    }
-                });
+            }
+        });
+    }
+
+    public void updateList() {
+        final ProgressDialog loading = ProgressDialog.show(this, "Updating Data", "Please wait...", false, false);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        dbapi api = retrofit.create(dbapi.class);
+        Call<List<Scores>> call = api.getScores();
+        call.enqueue(new Callback<List<Scores>>() {
+            @Override
+            public void onResponse(Call<List<Scores>> call, Response<List<Scores>> response) {
+                if (response.body() != null) {
+                    scoresList = response.body();
+                    loading.dismiss();
+                    showList();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Scores>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void showList() {
-        ArrayAdapter adapter = new CustomAdapter(this, scoresList);
+        adapter = new CustomAdapter(this, scoresList);
         scoreListView.setAdapter(adapter);
     }
 }
