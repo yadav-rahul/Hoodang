@@ -20,23 +20,22 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
             android:hint="User name"
-            android:textColor="@color/colorWhite"
-            android:gravity="center_horizontal" />
+            android:textColor="@color/colorWhite" />
 
         <Button
             android:id="@+id/start_button"
-
+            style="@style/buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            style="@style/buttonStyle"
             android:fontFamily="casual"
             android:onClick="onBallonClicked"
             android:text="Play"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
 </RelativeLayout>

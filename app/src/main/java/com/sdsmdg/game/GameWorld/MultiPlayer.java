@@ -92,7 +92,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(multiPlayerView);
 
-        Launcher.startTime = (System.currentTimeMillis())/1000;
+        Launcher.startTime = (System.currentTimeMillis()) / 1000;
     }
 
     public void popDialog(final int x) {

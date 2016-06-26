@@ -11,19 +11,19 @@
 
 
     <TextView
+        android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Name"
-        android:id="@+id/userName" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
+        android:id="@+id/userScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Score"
         android:layout_weight="1"
-        android:id="@+id/userScore"
-        android:gravity="right" />
+        android:gravity="right"
+        android:text="Score"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </LinearLayout>

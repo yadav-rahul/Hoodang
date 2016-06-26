@@ -187,7 +187,6 @@ public class MultiPlayerView extends SurfaceView implements SurfaceHolder.Callba
         return true;
     }
 
-
     @Override
     public boolean collide(int x) {
         if (x == 1) {

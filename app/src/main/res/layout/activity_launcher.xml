@@ -64,10 +64,10 @@
             android:weightSum="2">
 
             <Button
-                android:layout_weight="1"
                 android:id="@+id/high_score_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/colorSkyBlue"
                 android:clickable="true"
                 android:onClick="highScoreClicked"
@@ -75,10 +75,10 @@
                 android:textColor="@color/colorWhite" />
 
             <Button
-                android:layout_weight="1"
                 android:id="@+id/scoreButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/colorSkyBlue"
                 android:clickable="true"
                 android:onClick="infoClicked"

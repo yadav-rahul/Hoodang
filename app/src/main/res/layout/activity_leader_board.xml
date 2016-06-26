@@ -10,7 +10,7 @@
     tools:context="com.sdsmdg.game.LeaderBoard.LeaderBoard">
 
     <ListView
+        android:id="@+id/scoreListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scoreListView" />
+        android:layout_height="wrap_content" />
 </RelativeLayout>
