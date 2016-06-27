@@ -29,7 +29,6 @@ import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
-    public static boolean newUser = true;
     public static long startTime;
     public static boolean isDialog = false;
     public static int winner = 1;

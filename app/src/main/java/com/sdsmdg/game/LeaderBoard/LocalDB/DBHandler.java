@@ -16,6 +16,7 @@ import com.sdsmdg.game.Launcher;
 public class DBHandler extends SQLiteOpenHelper {
     public static final String KEY_NAME = "name";
     public static final String KEY_SCORE = "score";
+    public static final String KEY_TOKEN = "token";
     private static final String TAG = "com.sdsmdg.game";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "highScore.db";
@@ -24,6 +25,7 @@ public class DBHandler extends SQLiteOpenHelper {
             "CREATE TABLE if not exists " + SQLITE_TABLE + " (" +
                     KEY_NAME + " PRIMARY KEY," +
                     KEY_SCORE + "," +
+                    KEY_TOKEN + "," +
                     " UNIQUE (" + KEY_NAME + "));";
 
     public DBHandler(Context context) {
@@ -32,7 +34,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.w(TAG, DATABASE_CREATE);
+        Log.i(TAG, DATABASE_CREATE);
         db.execSQL(DATABASE_CREATE);
     }
 
@@ -48,6 +50,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, profile.getUserName());
         values.put(KEY_SCORE, profile.getScore());
+        values.put(KEY_TOKEN, profile.getToken());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(SQLITE_TABLE, null, values);
     }
@@ -79,6 +82,23 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL(updateQuery);
             Toast.makeText(context.getApplicationContext(), "Your HighScore is updated to : " + score, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public int getToken() {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT  " + KEY_TOKEN + " from " + SQLITE_TABLE + ";";
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        return (c.getInt(c.getColumnIndex("token")));
+    }
+
+    public void changeToken(int param) {
+        Log.i(TAG, "Token has been changed");
+        SQLiteDatabase db = getWritableDatabase();
+
+        String updateQuery = "UPDATE " + SQLITE_TABLE
+                + " SET " + KEY_TOKEN + "='" + param + "';";
+        db.execSQL(updateQuery);
     }
 
     public int getPastHighScore() {

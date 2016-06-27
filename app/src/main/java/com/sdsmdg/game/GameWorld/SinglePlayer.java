@@ -116,9 +116,9 @@ public class SinglePlayer extends Activity implements SensorEventListener {
 
                 start_button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        //Initialize a score of zero.
                         if (dbHandler.checkDatabase()) {
-                            Profile profile = new Profile(userName.getText().toString(), 0);
+                            //Set initial score to zero and token to one.
+                            Profile profile = new Profile(userName.getText().toString(), 0, 1);
                             dbHandler.addProfile(profile);
                         }
                         Launcher.startTime = (System.currentTimeMillis()) / 1000;

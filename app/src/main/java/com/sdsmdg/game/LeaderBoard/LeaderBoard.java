@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.sdsmdg.game.Launcher;
 import com.sdsmdg.game.LeaderBoard.API.dbapi;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 import com.sdsmdg.game.LeaderBoard.model.Scores;
@@ -26,8 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LeaderBoard extends AppCompatActivity {
 
-    public String TAG = "com.sdsmdg.game";
     private final String BASE_URL = "http://rauhly247.pythonanywhere.com/";
+    public String TAG = "com.sdsmdg.game";
     ArrayAdapter adapter;
     Button postButton;
     List<Scores> scoresList;
@@ -46,7 +45,7 @@ public class LeaderBoard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        if(dbHandler.checkDatabase()){
+        if (dbHandler.checkDatabase()) {
             postButton.setEnabled(false);
         }
     }
@@ -81,10 +80,10 @@ public class LeaderBoard extends AppCompatActivity {
     }
 
     public void postButtonClicked(View view) {
-        if (Launcher.newUser) {
+        final DBHandler dbHandler = new DBHandler(getApplicationContext());
+        if (dbHandler.getToken() == 1) {
             Log.i(TAG, "New User");
             final ProgressDialog loading = ProgressDialog.show(this, "Sending Data", "Please wait...", false, false);
-            DBHandler dbHandler = new DBHandler(getApplicationContext());
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -99,7 +98,8 @@ public class LeaderBoard extends AppCompatActivity {
                     loading.dismiss();
                     if (response.body() != null) {
                         updateList();
-                        Launcher.newUser = false;
+
+                        dbHandler.changeToken(0);
                     } else {
                         //TODO Add a method to replace the user name.
                         Toast.makeText(LeaderBoard.this, "User with this name already exists !", Toast.LENGTH_LONG).show();
@@ -111,16 +111,40 @@ public class LeaderBoard extends AppCompatActivity {
                     Toast.makeText(LeaderBoard.this, "Please try again !", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-        else {
+        } else {
             Log.i(TAG, "Old User");
             //TODO update initial score.
+            final ProgressDialog loading = ProgressDialog.show(this, "Updating Score", "Please wait...", false, false);
 
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            dbapi api = retrofit.create(dbapi.class);
+
+            Scores scores = new Scores(dbHandler.getUserName(), dbHandler.getPastHighScore());
+            Call<Scores> updateScore = api.updateScore(scores);
+            updateScore.enqueue(new Callback<Scores>() {
+                @Override
+                public void onResponse(Call<Scores> call, Response<Scores> response) {
+                    loading.dismiss();
+                    if (response.body() != null) {
+                        updateList();
+                        Toast.makeText(LeaderBoard.this, "HighScore successfully updated !", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Scores> call, Throwable t) {
+                    Toast.makeText(LeaderBoard.this, "Please try again !", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
     public void updateList() {
-        final ProgressDialog loading = ProgressDialog.show(this, "Updating Data", "Please wait...", false, false);
+        final ProgressDialog loading = ProgressDialog.show(this, "Updating List", "Please wait...", false, false);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
