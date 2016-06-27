@@ -113,7 +113,6 @@ public class LeaderBoard extends AppCompatActivity {
             });
         } else {
             Log.i(TAG, "Old User");
-            //TODO update initial score.
             final ProgressDialog loading = ProgressDialog.show(this, "Updating Score", "Please wait...", false, false);
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -124,20 +123,18 @@ public class LeaderBoard extends AppCompatActivity {
             dbapi api = retrofit.create(dbapi.class);
 
             Scores scores = new Scores(dbHandler.getUserName(), dbHandler.getPastHighScore());
-            Call<Scores> updateScore = api.updateScore(scores);
-            updateScore.enqueue(new Callback<Scores>() {
+            Call<String> updateScore = api.updateScore(scores);
+            updateScore.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<Scores> call, Response<Scores> response) {
+                public void onResponse(Call<String> call, Response<String> response) {
+                   // Log.i(TAG, response.body());
                     loading.dismiss();
-                    if (response.body() != null) {
-                        updateList();
-                        Toast.makeText(LeaderBoard.this, "HighScore successfully updated !", Toast.LENGTH_SHORT).show();
-                    }
+                    updateList();
                 }
 
                 @Override
-                public void onFailure(Call<Scores> call, Throwable t) {
-                    Toast.makeText(LeaderBoard.this, "Please try again !", Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<String> call, Throwable t) {
+
                 }
             });
         }

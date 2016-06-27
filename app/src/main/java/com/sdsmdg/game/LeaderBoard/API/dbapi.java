@@ -27,8 +27,8 @@ public interface dbapi {
             @Field("score") int score
     );
 
-    @PUT("scores/update/")
-    Call<Scores> updateScore(
+    @PUT("scores/")
+    Call<String> updateScore(
             @Body Scores scores
     );
 }
