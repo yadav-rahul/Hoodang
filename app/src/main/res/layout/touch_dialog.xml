@@ -16,6 +16,8 @@
 
         <EditText
             android:id="@+id/user_name"
+            android:inputType="textFilter"
+            android:digits="@string/allowedDigits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
