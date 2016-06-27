@@ -14,8 +14,13 @@
         android:id="@+id/post_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/roundcorner"
+        android:fontFamily="sans-serif-thin"
         android:onClick="postButtonClicked"
-        android:text="Post your highScore" />
+        android:text="Post your highScore"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/scoreListView"

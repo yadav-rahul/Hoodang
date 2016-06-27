@@ -61,7 +61,6 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
         int entities = c.getInt(c.getColumnIndex("NumberOfRows"));
-        Log.i(TAG, "Number of rows : " + entities);
         return (entities == 0);
 
     }
@@ -107,7 +106,6 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
         int pastHighScore = c.getInt(c.getColumnIndex("score"));
-        Log.i(TAG, "Previous High Score : " + String.valueOf(pastHighScore));
         return pastHighScore;
     }
 }

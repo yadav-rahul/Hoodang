@@ -45,6 +45,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
     private Sensor sensor;
     private SinglePlayerView singlePlayerView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,17 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         isUpdate = false;
         touchDialog();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    public void popDialog(final int x) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Launcher.winner = x;
+                Launcher.check = 1;
+                SinglePlayer.this.finish();
+            }
+        });
     }
 
     public void touchDialog() {
@@ -129,18 +141,6 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                     }
                 });
 
-            }
-        });
-    }
-
-    public void popDialog(final int x) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Launcher.winner = x;
-                Launcher.isDialog = true;
-
-                SinglePlayer.this.finish();
             }
         });
     }

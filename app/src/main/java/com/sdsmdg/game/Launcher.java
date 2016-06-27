@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.Bluetooth;
-import com.sdsmdg.game.GameWorld.MultiPlayer;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
 import com.sdsmdg.game.LeaderBoard.LeaderBoard;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
@@ -30,18 +29,19 @@ import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
     public static long startTime;
-    public static boolean isDialog = false;
+    public static int check;
     public static int winner = 1;
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
     Button sP, mP;
     ImageView left, right;
-    MultiPlayer multiPlayer = new MultiPlayer(this);
+    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+        Launcher.check = 0;
         left = (ImageView) findViewById(R.id.left_image);
         right = (ImageView) findViewById(R.id.right_image);
 
@@ -56,6 +56,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         height = (displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
+        dbHandler = new DBHandler(getApplicationContext());
     }
 
     @Override
@@ -77,7 +78,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void highScoreClicked(View view) {
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
+
         if (!dbHandler.checkDatabase()) {
             Toast.makeText(Launcher.this, "Your High Score is : " + dbHandler.getPastHighScore(), Toast.LENGTH_LONG).show();
         } else {
@@ -111,41 +112,46 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
         left.setAnimation(animation);
         right.setAnimation(animation);
-        dialog(isDialog);
+        Log.i(TAG, "value of check is : " + check);
+        dialog(check);
     }
 
-    public void dialog(boolean check) {
-        if (check) {
-            DBHandler dbHandler = new DBHandler(getApplicationContext());
+    @Override
+    protected void onPause() {
+        super.onPause();
+        check--;
+    }
+
+    public void dialog(int param) {
+        if (param == 1) {
             long finalTime = (System.currentTimeMillis()) / 1000;
             long score = finalTime - startTime;
             String result = "Your score is " + String.valueOf(score);
 
-            final Dialog dialog = new Dialog(this);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.game_over_dialog);
-            dialog.show();
-            dialog.setCancelable(false);
+            final Dialog d = new Dialog(Launcher.this);
+            d.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            d.setContentView(R.layout.game_over_dialog);
+            d.show();
+            d.setCancelable(true);
 
             dbHandler.updateDatabase((int) score, this);
-            Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
-            Button btn_no = (Button) dialog.findViewById(R.id.btn_no);
+            Button btn_yes = (Button) d.findViewById(R.id.btn_yes);
+            Button btn_no = (Button) d.findViewById(R.id.btn_no);
 
-            TextView result_textView = (TextView) dialog.findViewById(R.id.result_textView);
+            TextView result_textView = (TextView) d.findViewById(R.id.result_textView);
 
             result_textView.setText(result);
 
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    isDialog = false;
-                    dialog.dismiss();
+                    d.dismiss();
 
                 }
             });
             btn_no.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    dialog.dismiss();
+                    d.dismiss();
                     System.exit(0);
                 }
             });

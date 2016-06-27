@@ -98,7 +98,6 @@ public class LeaderBoard extends AppCompatActivity {
                     loading.dismiss();
                     if (response.body() != null) {
                         updateList();
-
                         dbHandler.changeToken(0);
                     } else {
                         //TODO Add a method to replace the user name.
@@ -127,14 +126,15 @@ public class LeaderBoard extends AppCompatActivity {
             updateScore.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                   // Log.i(TAG, response.body());
+                    // Log.i(TAG, response.body());
                     loading.dismiss();
                     updateList();
+                    Toast.makeText(LeaderBoard.this, "HighScore has been successfully updated !", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-
+                    Toast.makeText(LeaderBoard.this, "Try again later !", Toast.LENGTH_SHORT).show();
                 }
             });
         }

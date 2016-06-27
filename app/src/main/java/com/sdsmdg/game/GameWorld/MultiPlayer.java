@@ -100,7 +100,7 @@ public class MultiPlayer extends Activity implements SensorEventListener {
             @Override
             public void run() {
                 Launcher.winner = x;
-                Launcher.isDialog = true;
+                Launcher.check = 1;
                 MultiPlayer.this.finish();
 
             }

@@ -11,6 +11,9 @@
 
 
     <TextView
+        android:textColor="@color/colorBlack"
+        android:textSize="25dp"
+        android:fontFamily="sans-serif-condensed"
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
+        android:fontFamily="sans-serif-thin"
         android:id="@+id/userScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
