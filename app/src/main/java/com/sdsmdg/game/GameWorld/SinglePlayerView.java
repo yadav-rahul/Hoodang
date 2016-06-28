@@ -225,7 +225,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean updateB2Center() {
-        //TODO Automatically update center of Board 2
 
         xB2Center = xBallCenter;
         if (xB2Center < boardWidth2 / 2) {

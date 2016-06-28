@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.sdsmdg.game.GameWorld.SinglePlayer;
 import com.sdsmdg.game.LeaderBoard.API.dbapi;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 import com.sdsmdg.game.LeaderBoard.model.Scores;
@@ -102,6 +103,8 @@ public class LeaderBoard extends AppCompatActivity {
                     } else {
                         //TODO Add a method to replace the user name.
                         Toast.makeText(LeaderBoard.this, "User with this name already exists !", Toast.LENGTH_LONG).show();
+                        SinglePlayer.changeUserName = true;
+
                     }
                 }
 
@@ -134,6 +137,7 @@ public class LeaderBoard extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
+                    loading.dismiss();
                     Toast.makeText(LeaderBoard.this, "Try again later !", Toast.LENGTH_SHORT).show();
                 }
             });

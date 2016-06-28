@@ -83,6 +83,14 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public void changeUserName(String param) {
+        Log.i(TAG, "Name has been changed");
+        SQLiteDatabase db = getWritableDatabase();
+
+        String updateQuery = "UPDATE " + SQLITE_TABLE
+                + " SET " + KEY_NAME + "='" + param + "';";
+        db.execSQL(updateQuery);
+    }
     public int getToken() {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT  " + KEY_TOKEN + " from " + SQLITE_TABLE + ";";

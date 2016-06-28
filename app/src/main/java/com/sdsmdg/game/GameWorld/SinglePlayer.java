@@ -12,7 +12,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -23,6 +22,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sdsmdg.game.Launcher;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
@@ -35,12 +35,12 @@ import com.sdsmdg.game.R;
 
 public class SinglePlayer extends Activity implements SensorEventListener {
 
+    public static boolean changeUserName = false;
     public static float aB1X;
     public static int height, width;
     public static boolean isUpdate;
     public Dialog dialog;
     public String TAG = "com.sdsmdg.game";
-    protected PowerManager.WakeLock mWakeLock;
     private SensorManager sensorManager;
     private Sensor sensor;
     private SinglePlayerView singlePlayerView;
@@ -100,7 +100,7 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                 final Button start_button = (Button) dialog.findViewById(R.id.start_button);
 
                 if (dbHandler.checkDatabase()) {
-
+                    //New player
                     start_button.setEnabled(false);
                     userName.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -121,22 +121,49 @@ public class SinglePlayer extends Activity implements SensorEventListener {
                         }
                     });
                 } else {
-                    userName.setText(dbHandler.getUserName());
-                    userName.setEnabled(false);
-                    start_button.setEnabled(true);
+                    if (changeUserName) {
+                        start_button.setEnabled(false);
+                        userName.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                if (s.toString().trim().length() == 0) {
+                                    start_button.setEnabled(false);
+                                } else {
+                                    start_button.setEnabled(true);
+                                }
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                            }
+                        });
+                    } else {
+                        userName.setText(dbHandler.getUserName());
+                        userName.setEnabled(false);
+                        start_button.setEnabled(true);
+                    }
+                    //changeUserName = false;
                 }
 
                 start_button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (dbHandler.checkDatabase()) {
+                            //New Player playing for the first time.
                             //Set initial score to zero and token to one.
                             Profile profile = new Profile(userName.getText().toString(), 0, 1);
                             dbHandler.addProfile(profile);
+                        } else if (changeUserName) {
+                            dbHandler.changeUserName(userName.getText().toString());
+                            Toast.makeText(SinglePlayer.this, "User name changed to : " + userName.getText().toString(), Toast.LENGTH_SHORT).show();
                         }
                         Launcher.startTime = (System.currentTimeMillis()) / 1000;
                         isUpdate = true;
                         singlePlayerView.initializeBallVelocity(SinglePlayer.width, SinglePlayer.height);
-
+                        changeUserName = false;
                         dialog.dismiss();
                     }
                 });
