@@ -7,11 +7,13 @@ Don't miss the ball and take gifts to increase your Score but remember gifts are
 ## ScreenShots
 ![](screenshots/initial.png?raw=true)
 ![](screenshots/action.png?raw=true)
-![](screenshots/gover.png?raw=true)
+![](screenshots/gameover.png?raw=true)
 
 ## Gifts
 ![](app/src/main/res/drawable/speed_gift.png) : Used to increase/decrease Ball's speed
+<hr>
 ![](app/src/main/res/drawable/size_gift.png) : Used to increase/decrease size of either Ball or Board
+<hr>
 ![](app/src/main/res/drawable/multi_ball_gift.png) : Introduces one more ball i.e. green ball whose
 main purpose in life is only to boost user's score and complicate game loop.
 
