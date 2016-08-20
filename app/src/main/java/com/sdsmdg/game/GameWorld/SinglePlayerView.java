@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -50,10 +51,12 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private long time;
     private int typeOfGift;
     private Bitmap bitmap;
-    private int numberOfHits = 1;
+    private Bitmap leftButton, rightButton;
+    public static int numberOfHits = 1;
     private Canvas canvas;
     private int touchPosition;
     private boolean touchAction;
+    private MediaPlayer mp;
     public static boolean showSecondBall = false;
 
     public SinglePlayerView(Context context, SinglePlayer singlePlayer) {
@@ -96,6 +99,9 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         setBoardTwoAtCenter(Launcher.width / 2, 0);
         initializeBallPosition(Launcher.width, Launcher.height);
         initializeSecondBallPosition();
+        leftButton = BitmapFactory.decodeResource(getResources(), R.drawable.left_button);
+        rightButton = BitmapFactory.decodeResource(getResources(), R.drawable.right_button);
+        mp = MediaPlayer.create(singlePlayer.getApplicationContext(), R.raw.strike_sound);
     }
 
 
@@ -155,7 +161,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             updateB1Center();
             updateBall();
             smartUpdateB2Center();
-            if (numberOfHits % 3 == 0) {
+            if (numberOfHits % 4 == 0) {
                 numberOfHits++;
                 bitmap = dropGift();
                 showGift = true;
@@ -259,13 +265,14 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             vBallY = -vBallY;
         } else if (yBallCenter > Launcher.height) {
             showSecondBall = false;
-            singlePlayer.popDialog(2);
+            singlePlayer.popDialog(numberOfHits);
         }
         return true;
     }
 
     @Override
     public boolean collide(int x) {
+        mp.start();
         if (x == 1) {
             numberOfHits++;
             yBallCenter = (int) (Launcher.height - boardHeight - radius);
@@ -276,8 +283,10 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             vBallY = -vBallY;
         }
         if (x == 3) {
+            numberOfHits++;
             ySecondBallCenter = (int) (Launcher.height - boardHeight - radius);
             vSecondBallY = -vSecondBallY;
+            numberOfHits++;
         } else if (x == 4) {
             ySecondBallCenter = radius + boardHeight;
             vSecondBallY = -vSecondBallY;
@@ -369,12 +378,11 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         this.canvas = canvas;
         canvas.drawColor(0XFFFFFFFF);
 
-
         if(Launcher.showButtons) {
-            canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.left_button),
-                    10, Launcher.height - 110, new Paint());
-            canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.right_button),
-                    Launcher.width - 110, Launcher.height - 110, new Paint());
+            canvas.drawBitmap(leftButton,
+                    10, Launcher.height - 110, paintBall);
+            canvas.drawBitmap(rightButton,
+                    Launcher.width - 110, Launcher.height - 110, paintBall);
         }
 
         if (showGift) {

@@ -69,7 +69,6 @@ public class SinglePlayer extends Activity implements SensorEventListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Launcher.winner = x;
                 Launcher.check = 1;
                 SinglePlayer.this.finish();
             }

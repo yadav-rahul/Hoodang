@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
+import com.sdsmdg.game.GameWorld.SinglePlayerView;
 import com.sdsmdg.game.LeaderBoard.LeaderBoard;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -69,6 +70,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
                 Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
                 Log.i(TAG, "Sensor Button clicked");
                 sensorMode = true;
+                showButtons = false;
                 startActivity(i);
                 break;
             }
@@ -131,8 +133,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void dialog(int param) {
         if (param == 1) {
-            long finalTime = (System.currentTimeMillis()) / 1000;
-            long score = finalTime - startTime;
+            long score = SinglePlayerView.numberOfHits;
             String result = "Your score is " + String.valueOf(score);
 
             final Dialog d = new Dialog(Launcher.this);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Game</string>
+    <string name="app_name">Hoodang</string>
     <string name="allowedDigits">abcdefghijklmnopqrstuvwxyz0123456789</string>
     <string name="send_message">Send message</string>
 </resources>
