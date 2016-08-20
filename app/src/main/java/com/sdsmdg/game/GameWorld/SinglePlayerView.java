@@ -42,8 +42,10 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private RectF rectFB1, rectFB2, rectInvisible;
     private SinglePlayer.RenderThread renderThread;
     private float vB1X, vB2X;
-    private int xBallCenter, yBallCenter;
-    private int xSecondBallCenter, ySecondBallCenter;
+
+    public static int xBallCenter, yBallCenter;
+    public static int xSecondBallCenter, ySecondBallCenter;
+
     private int xB1Center, yB1Center;
     private int xB2Center, yB2Center;
     private Context context;
@@ -103,7 +105,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         rightButton = BitmapFactory.decodeResource(getResources(), R.drawable.right_button);
         mp = MediaPlayer.create(singlePlayer.getApplicationContext(), R.raw.strike_sound);
     }
-
 
     public boolean setBoardOneAtCenter(int x, int y) {
         //Default position at the start of the Game
@@ -378,11 +379,10 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         this.canvas = canvas;
         canvas.drawColor(0XFFFFFFFF);
 
-        if(Launcher.showButtons) {
-            canvas.drawBitmap(leftButton,
-                    10, Launcher.height - 110, paintBall);
-            canvas.drawBitmap(rightButton,
-                    Launcher.width - 110, Launcher.height - 110, paintBall);
+        if (Launcher.showButtons) {
+            canvas.drawBitmap(leftButton, 10, (Launcher.height - (Launcher.height / 8)), paintBall);
+            canvas.drawBitmap(rightButton, (Launcher.width - (Launcher.width / 5)),
+                    (Launcher.height - (Launcher.height / 8)), paintBall);
         }
 
         if (showGift) {

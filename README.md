@@ -1,4 +1,4 @@
-# Game
+# Hoodang
 Modified version of famous android game ping-pong.
 
 ## Strategy
