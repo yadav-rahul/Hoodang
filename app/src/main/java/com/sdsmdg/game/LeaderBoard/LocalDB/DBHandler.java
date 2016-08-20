@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sdsmdg.game.Launcher;
+import com.sdsmdg.tastytoast.TastyToast;
 
 /**
  * Created by Rahul Yadav on 6/24/2016.
@@ -79,7 +80,8 @@ public class DBHandler extends SQLiteOpenHelper {
             String updateQuery = "UPDATE " + SQLITE_TABLE
                     + " SET " + KEY_SCORE + "='" + score + "';";
             db.execSQL(updateQuery);
-            Toast.makeText(context.getApplicationContext(), "Your HighScore is updated to : " + score, Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(context.getApplicationContext(), "Your HighScore is updated to : " + score,
+                    TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
         }
     }
 
@@ -91,6 +93,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + " SET " + KEY_NAME + "='" + param + "';";
         db.execSQL(updateQuery);
     }
+
     public int getToken() {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT  " + KEY_TOKEN + " from " + SQLITE_TABLE + ";";

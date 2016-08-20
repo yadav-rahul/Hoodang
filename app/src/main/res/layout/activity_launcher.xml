@@ -43,16 +43,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorSkyBlue"
-            android:text="Single Player"
+            android:text="G-Sensor Mode"
             android:textColor="@color/colorWhite" />
 
         <Button
-            android:id="@+id/multiPlayerButton"
+            android:id="@+id/manualButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorSkyBlue"
-            android:text="Multi Player"
+            android:text="Manual Mode"
             android:textColor="@color/colorWhite" />
 
 

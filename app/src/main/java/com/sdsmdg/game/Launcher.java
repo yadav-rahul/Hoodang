@@ -25,6 +25,7 @@ import com.sdsmdg.game.Bluetooth.Bluetooth;
 import com.sdsmdg.game.GameWorld.SinglePlayer;
 import com.sdsmdg.game.LeaderBoard.LeaderBoard;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
+import com.sdsmdg.tastytoast.TastyToast;
 
 public class Launcher extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,6 +37,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     Button sP, mP;
     ImageView left, right;
     DBHandler dbHandler;
+    public static boolean sensorMode = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         sP = (Button) findViewById(R.id.singlePlayerButton);
-        mP = (Button) findViewById(R.id.multiPlayerButton);
+        mP = (Button) findViewById(R.id.manualButton);
         sP.setOnClickListener(this);
         mP.setOnClickListener(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -65,12 +67,14 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             case R.id.singlePlayerButton: {
                 Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
                 Log.i(TAG, "SP Button clicked");
+                sensorMode = true;
                 startActivity(i);
                 break;
             }
-            case R.id.multiPlayerButton: {
-                Intent i = new Intent(getApplicationContext(), Bluetooth.class);
+            case R.id.manualButton: {
+                Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
                 Log.i(TAG, "MP Button clicked");
+                sensorMode = false;
                 startActivity(i);
                 break;
             }
@@ -80,9 +84,10 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     public void highScoreClicked(View view) {
 
         if (!dbHandler.checkDatabase()) {
-            Toast.makeText(Launcher.this, "Your High Score is : " + dbHandler.getPastHighScore(), Toast.LENGTH_LONG).show();
+            TastyToast.makeText(Launcher.this, "Your High Score is : " + dbHandler.getPastHighScore(),
+                    TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
         } else {
-            Toast.makeText(Launcher.this, "You didn't played yet !", Toast.LENGTH_LONG).show();
+            TastyToast.makeText(Launcher.this, "You didn't played yet !", TastyToast.LENGTH_LONG, TastyToast.ERROR);
         }
     }
 

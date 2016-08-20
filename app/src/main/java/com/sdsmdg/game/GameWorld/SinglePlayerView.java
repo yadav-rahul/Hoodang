@@ -24,10 +24,12 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     public static int radius;
     public static int boardWidth1;
     public static float vBallX, vBallY;
+    public static float vSecondBallX, vSecondBallY;
+
     private final int boardWidth2 = (Launcher.width) / 5;
     private final int boardHeight = (Launcher.height) / 50;
     private final float dT = 0.3f;
-    private final Paint paintB1, paintB2, paintBall;
+    private final Paint paintB1, paintB2, paintBall, paintSecondBall;
     String TAG = "com.sdsmdg.game";
     private int giftVelocity = Launcher.width / 25;
     private int giftTopPosition = 0;
@@ -38,6 +40,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private SinglePlayer.RenderThread renderThread;
     private float vB1X, vB2X;
     private int xBallCenter, yBallCenter;
+    private int xSecondBallCenter, ySecondBallCenter;
     private int xB1Center, yB1Center;
     private int xB2Center, yB2Center;
     private Context context;
@@ -46,6 +49,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private int typeOfGift;
     private Bitmap bitmap;
     private int numberOfHits = 1;
+    public static boolean showSecondBall = false;
 
     public SinglePlayerView(Context context, SinglePlayer singlePlayer) {
         super(context);
@@ -74,12 +78,19 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         paintBall.setStyle(Paint.Style.FILL);
         paintBall.setAntiAlias(true);
 
+        paintSecondBall = new Paint();
+        paintSecondBall.setColor(0xFF5CB85C);
+        paintSecondBall.setAlpha(255);
+        paintSecondBall.setStyle(Paint.Style.FILL);
+        paintSecondBall.setAntiAlias(true);
+
         rectFB1 = new RectF();
         rectFB2 = new RectF();
 
         setBoardOneAtCenter(Launcher.width / 2, Launcher.height);
         setBoardTwoAtCenter(Launcher.width / 2, 0);
         initializeBallPosition(Launcher.width, Launcher.height);
+        initializeSecondBallPosition();
     }
 
 
@@ -104,7 +115,12 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         xBallCenter = x / 2;
         yBallCenter = y / 2;
         return true;
+    }
 
+    public boolean initializeSecondBallPosition() {
+        xSecondBallCenter = Launcher.width / 2;
+        ySecondBallCenter = Launcher.height / 2;
+        return true;
     }
 
     @Override
@@ -117,15 +133,23 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     public boolean initializeBallVelocity(int x, int y) {
         vBallX = (ballDirection[new Random().nextInt(ballDirection.length)]) * x / 25;
         vBallY = -y / (25 + 9);
+
+        vSecondBallX = (ballDirection[new Random().nextInt(ballDirection.length)]) * x / 25;
+        vSecondBallY = -y / (25 + 9);
         return true;
     }
 
+    public boolean initializeSecondBallVelocity(){
+        vSecondBallX = (ballDirection[new Random().nextInt(ballDirection.length)]) * (SinglePlayer.width) / 25;
+        vSecondBallY = -(SinglePlayer.height) / (25 + 9);
+        return true;
+    }
     public boolean update(boolean check) {
         if (check) {
             updateB1Center();
             updateBall();
             smartUpdateB2Center();
-            if (numberOfHits % 4 == 0) {
+            if (numberOfHits % 3 == 0) {
                 numberOfHits++;
                 bitmap = dropGift();
                 showGift = true;
@@ -144,7 +168,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
             giftTopPosition = 0;
             showGift = false;
-            Gift.showGift(typeOfGift);
+            Gift.showGift(3);
         } else if (giftTopPosition > Launcher.height) {
             giftTopPosition = 0;
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
@@ -155,23 +179,62 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     public boolean smartUpdateB2Center() {
-        if (vBallY < 0 && yBallCenter < Launcher.height / 2) {
+        if (showSecondBall) {
+            //Do update the center of the board for the ball closer to it !
+            if (ySecondBallCenter < Launcher.height / 2 && ySecondBallCenter <= yBallCenter) {
+                //Update center according to the new ball
+                updateB2CenterNew();
+            } else if (yBallCenter < Launcher.height / 2 && yBallCenter <= ySecondBallCenter) {
+                updateB2Center();
+            }
+        } else if (vBallY < 0 && yBallCenter < Launcher.height / 2) {
             updateB2Center();
         }
         return true;
     }
 
     public Bitmap dropGift() {
+        typeOfGift = Gift.getTypeOfGift();
         Log.i(TAG, "dropGift called and type of gift is : " + typeOfGift);
-        typeOfGift = Gift.getTypeOfGitf();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), typeOfGift);
-        return bitmap;
+        switch (typeOfGift) {
+            case 1:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.speed_gift);
+            case 2:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.size_gift);
+            case 3:
+                return BitmapFactory.decodeResource(getResources(), R.drawable.multi_ball_gift);
+        }
+        return null;
     }
 
     @Override
     public boolean updateBall() {
-
         time = (System.currentTimeMillis() / 1000) - Launcher.startTime + 1;
+
+        if (showSecondBall) {
+            if (time % 20 == 0) {
+                vSecondBallX = velocityBooster(vSecondBallX);
+                vSecondBallY = velocityBooster(vSecondBallY);
+            }
+            xSecondBallCenter += vSecondBallX * dT;
+            ySecondBallCenter += vSecondBallY * dT;
+
+            if (xSecondBallCenter < radius) {
+                xSecondBallCenter = radius;
+                vSecondBallX = -vSecondBallX;
+            } else if (xSecondBallCenter > Launcher.width - radius) {
+                xSecondBallCenter = Launcher.width - radius;
+                vSecondBallX = -vSecondBallX;
+            } else if (ySecondBallCenter < radius) {
+                ySecondBallCenter = radius;
+                vSecondBallY = -vSecondBallY;
+            } else if (ySecondBallCenter > Launcher.height) {
+                showSecondBall = false;
+                initializeSecondBallPosition();
+                initializeSecondBallVelocity();
+            }
+        }
+
         if (time % 20 == 0) {
             vBallX = velocityBooster(vBallX);
             vBallY = velocityBooster(vBallY);
@@ -189,6 +252,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             yBallCenter = radius;
             vBallY = -vBallY;
         } else if (yBallCenter > Launcher.height) {
+            showSecondBall = false;
             singlePlayer.popDialog(2);
         }
         return true;
@@ -205,19 +269,32 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             yBallCenter = radius + boardHeight;
             vBallY = -vBallY;
         }
+        if (x == 3) {
+            ySecondBallCenter = (int) (Launcher.height - boardHeight - radius);
+            vSecondBallY = -vSecondBallY;
+        } else if (x == 4) {
+            ySecondBallCenter = radius + boardHeight;
+            vSecondBallY = -vSecondBallY;
+        }
         return true;
     }
 
     @Override
     public boolean updateB1Center() {
-        if (Math.abs(SinglePlayer.aB1X) < 1) {
-            vB1X = 0;
-        } else {
-            if (SinglePlayer.aB1X < 0) {
-                vB1X = Launcher.width / 25;
+        if (Launcher.sensorMode){
+            if (Math.abs(SinglePlayer.aB1X) < 1) {
+                vB1X = 0;
             } else {
-                vB1X = -Launcher.width / 25;
+                if (SinglePlayer.aB1X < 0) {
+                    vB1X = Launcher.width / 25;
+                } else {
+                    vB1X = -Launcher.width / 25;
+                }
             }
+        }
+        else
+        {
+            //Attach buttons on both side of screen and give acceleration according to the press.
         }
         xB1Center += (int) (vB1X * dT);
         if (xB1Center < boardWidth1 / 2) {
@@ -235,6 +312,19 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     public boolean updateB2Center() {
 
         xB2Center = xBallCenter;
+        if (xB2Center < boardWidth2 / 2) {
+            xB2Center = boardWidth2 / 2;
+            vB2X = 0;
+        }
+        if (xB2Center > Launcher.width - (boardWidth2 / 2)) {
+            xB2Center = (Launcher.width - (boardWidth2 / 2));
+            vB2X = 0;
+        }
+        return true;
+    }
+
+    public boolean updateB2CenterNew() {
+        xB2Center = xSecondBallCenter;
         if (xB2Center < boardWidth2 / 2) {
             xB2Center = boardWidth2 / 2;
             vB2X = 0;
@@ -270,11 +360,24 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
             canvas.drawOval(Ball.rectFBall, paintBall);
         }
+        if (Ball.rectFSecondBall != null && showSecondBall == true) {
+            Ball.rectFSecondBall.set(xSecondBallCenter - radius, ySecondBallCenter - radius, xSecondBallCenter + radius,
+                    ySecondBallCenter + radius);
+
+            canvas.drawOval(Ball.rectFSecondBall, paintSecondBall);
+        }
         if (rectFB1 != null) {
             if (rectFBall.intersect(rectFB1)) {
                 collide(1);
             } else if (rectFBall.intersect(rectFB2)) {
                 collide(2);
+            }
+        }
+        if (rectFB1 != null && showSecondBall == true) {
+            if (rectFSecondBall.intersect(rectFB1)) {
+                collide(3);
+            } else if (rectFSecondBall.intersect(rectFB2)) {
+                collide(4);
             }
         }
     }

@@ -7,6 +7,7 @@ import android.graphics.RectF;
  */
 public interface Ball {
     RectF rectFBall = new RectF();
+    RectF rectFSecondBall = new RectF();
 
     boolean initializeBallPosition(int x, int y);
 
