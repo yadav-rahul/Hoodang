@@ -38,7 +38,7 @@ public class Splash extends Activity {
                         }
                     });
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -53,6 +53,6 @@ public class Splash extends Activity {
                 startActivity(i);
                 finish();
             }
-        }, 5000);
+        }, 1000);
     }
 }

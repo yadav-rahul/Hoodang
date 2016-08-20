@@ -43,6 +43,9 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private Context context;
     private int[] ballDirection = new int[]{-1, 1};
     private long time;
+    private int typeOfGift;
+    private Bitmap bitmap;
+    private int numberOfHits = 1;
 
     public SinglePlayerView(Context context, SinglePlayer singlePlayer) {
         super(context);
@@ -122,7 +125,9 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             updateB1Center();
             updateBall();
             smartUpdateB2Center();
-            if (time % 15 == 0) {
+            if (numberOfHits % 4 == 0) {
+                numberOfHits++;
+                bitmap = dropGift();
                 showGift = true;
             }
             if (showGift) {
@@ -157,7 +162,9 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     public Bitmap dropGift() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gift);
+        Log.i(TAG, "dropGift called and type of gift is : " + typeOfGift);
+        typeOfGift = Gift.getTypeOfGitf();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), typeOfGift);
         return bitmap;
     }
 
@@ -182,7 +189,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             yBallCenter = radius;
             vBallY = -vBallY;
         } else if (yBallCenter > Launcher.height) {
-            //P1 missed the ball
             singlePlayer.popDialog(2);
         }
         return true;
@@ -191,8 +197,10 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     @Override
     public boolean collide(int x) {
         if (x == 1) {
+            numberOfHits++;
             yBallCenter = (int) (Launcher.height - boardHeight - radius);
             vBallY = -vBallY;
+            Log.i(TAG, "Number of hits : " + numberOfHits);
         } else if (x == 2) {
             yBallCenter = radius + boardHeight;
             vBallY = -vBallY;
@@ -243,7 +251,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         canvas.drawColor(0XFFFFFFFF);
 
         if (showGift) {
-            canvas.drawBitmap(dropGift(), giftLeftPosition, giftTopPosition, paintBall);
+            canvas.drawBitmap(bitmap, giftLeftPosition, giftTopPosition, paintBall);
         }
 
         if (rectFB1 != null) {
