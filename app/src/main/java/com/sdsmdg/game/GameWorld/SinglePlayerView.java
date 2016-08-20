@@ -7,8 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.sdsmdg.game.Gifts.Gift;
 import com.sdsmdg.game.Launcher;
@@ -49,6 +51,8 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private int typeOfGift;
     private Bitmap bitmap;
     private int numberOfHits = 1;
+    private int touchPosition;
+    private boolean touchAction;
     public static boolean showSecondBall = false;
 
     public SinglePlayerView(Context context, SinglePlayer singlePlayer) {
@@ -139,11 +143,12 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         return true;
     }
 
-    public boolean initializeSecondBallVelocity(){
+    public boolean initializeSecondBallVelocity() {
         vSecondBallX = (ballDirection[new Random().nextInt(ballDirection.length)]) * (SinglePlayer.width) / 25;
         vSecondBallY = -(SinglePlayer.height) / (25 + 9);
         return true;
     }
+
     public boolean update(boolean check) {
         if (check) {
             updateB1Center();
@@ -279,9 +284,24 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         return true;
     }
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        touchPosition = (int) event.getX();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                touchAction = true;
+                break;
+            case MotionEvent.ACTION_UP:
+                touchAction = false;
+                break;
+        }
+        return true;
+    }
+
     @Override
     public boolean updateB1Center() {
-        if (Launcher.sensorMode){
+        if (Launcher.sensorMode) {
             if (Math.abs(SinglePlayer.aB1X) < 1) {
                 vB1X = 0;
             } else {
@@ -291,10 +311,19 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
                     vB1X = -Launcher.width / 25;
                 }
             }
-        }
-        else
-        {
-            //Attach buttons on both side of screen and give acceleration according to the press.
+        } else {
+            //Attach buttons on both side of screen and give acceleration according to the press
+
+            if (touchAction) {
+                if (touchPosition < Launcher.width / 2) {
+                    vB1X = -Launcher.width / 25;
+                } else if (touchPosition > Launcher.width / 2) {
+                    vB1X = Launcher.width / 25;
+                }
+            } else {
+                vB1X = 0;
+            }
+
         }
         xB1Center += (int) (vB1X * dT);
         if (xB1Center < boardWidth1 / 2) {
@@ -307,6 +336,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         }
         return true;
     }
+
 
     @Override
     public boolean updateB2Center() {
