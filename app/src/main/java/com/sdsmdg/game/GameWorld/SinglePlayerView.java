@@ -51,6 +51,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private int typeOfGift;
     private Bitmap bitmap;
     private int numberOfHits = 1;
+    private Canvas canvas;
     private int touchPosition;
     private boolean touchAction;
     public static boolean showSecondBall = false;
@@ -173,7 +174,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
             giftTopPosition = 0;
             showGift = false;
-            Gift.showGift(3);
+            Gift.showGift(typeOfGift);
         } else if (giftTopPosition > Launcher.height) {
             giftTopPosition = 0;
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
@@ -284,7 +285,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         return true;
     }
 
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         touchPosition = (int) event.getX();
@@ -299,6 +299,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         return true;
     }
 
+
     @Override
     public boolean updateB1Center() {
         if (Launcher.sensorMode) {
@@ -312,8 +313,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
                 }
             }
         } else {
-            //Attach buttons on both side of screen and give acceleration according to the press
-
             if (touchAction) {
                 if (touchPosition < Launcher.width / 2) {
                     vB1X = -Launcher.width / 25;
@@ -336,7 +335,6 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         }
         return true;
     }
-
 
     @Override
     public boolean updateB2Center() {
@@ -368,7 +366,16 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public void onDraw(Canvas canvas) {
+        this.canvas = canvas;
         canvas.drawColor(0XFFFFFFFF);
+
+
+        if(Launcher.showButtons) {
+            canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.left_button),
+                    10, Launcher.height - 110, new Paint());
+            canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.right_button),
+                    Launcher.width - 110, Launcher.height - 110, new Paint());
+        }
 
         if (showGift) {
             canvas.drawBitmap(bitmap, giftLeftPosition, giftTopPosition, paintBall);

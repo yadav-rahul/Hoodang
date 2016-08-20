@@ -38,6 +38,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     ImageView left, right;
     DBHandler dbHandler;
     public static boolean sensorMode = true;
+    public static boolean showButtons = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +67,16 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.singlePlayerButton: {
                 Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
-                Log.i(TAG, "SP Button clicked");
+                Log.i(TAG, "Sensor Button clicked");
                 sensorMode = true;
                 startActivity(i);
                 break;
             }
             case R.id.manualButton: {
                 Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
-                Log.i(TAG, "MP Button clicked");
+                Log.i(TAG, "Manual Button clicked");
                 sensorMode = false;
+                showButtons = true;
                 startActivity(i);
                 break;
             }
