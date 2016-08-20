@@ -5,7 +5,31 @@ Modified version of famous android game ping-pong.
 Don't miss the ball and take gifts to increase your Score but remember gifts are not always as good as they look.
 
 ## ScreenShots
-![](screenshots/start.png?raw=true)
-![](screenshots/play.png?raw=true)
-![](screenshots/gameover.png?raw=true)
-![](screenshots/leaderboard.png?raw=true)
+![](screenshots/initial.png?raw=true)
+![](screenshots/action.png?raw=true)
+![](screenshots/gover.png?raw=true)
+
+## Gifts
+![](app/src/main/res/drawable/speed_gift.png) : Used to increase/decrease Ball's speed
+![](app/src/main/res/drawable/size_gift.png) : Used to increase/decrease size of either Ball or Board
+![](app/src/main/res/drawable/multi_ball_gift.png) : Introduces one more ball i.e. green ball whose
+main purpose in life is only to boost user's score and complicate game loop.
+
+## License
+
+* [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+```
+Copyright 2016 Rahul Yadav
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
