@@ -17,16 +17,23 @@ public class Gift {
         return (gift[new Random().nextInt(gift.length)]);
     }
 
-    public static void showGift() {
-        switch (getGift()) {
-            case 1:
-                BoardSize.start();
-                break;
-            case 2:
-                BallSize.start();
-                break;
-            case 3:
+    public static void showGift(int typeOfGift) {
+        switch (typeOfGift) {
+            case R.drawable.speed_gift:
                 BallVelocity.start();
+                break;
+            case R.drawable.size_gift:{
+                switch ((gift[new Random().nextInt(gift.length - 1)])){
+                    case 1:
+                        BallSize.start();
+                        break;
+                    case 2:
+                        BoardSize.start();
+                        break;
+                }
+            }
+            case R.drawable.multi_ball_gift:
+
                 break;
         }
     }

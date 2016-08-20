@@ -11,7 +11,7 @@ import java.util.Random;
  * Created by Rahul Yadav on 6/12/2016.
  */
 public class BoardSize {
-    private static int[] size = new int[]{4, 5, 6};
+    private static int[] size = new int[]{4, 6};
 
     public static void start() {
         Log.i("com.sdsmdg.game", "Board Size changed");
