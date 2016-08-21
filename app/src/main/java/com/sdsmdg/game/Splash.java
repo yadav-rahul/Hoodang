@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 public class Splash extends Activity {
 
-    private ProgressBar progressBar;
     private int progressStatus = 0;
-    private TextView textView;
     private Handler handler = new Handler();
 
     @Override
@@ -24,21 +22,13 @@ public class Splash extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar1);
-        textView = (TextView) findViewById(R.id.textView1);
 
         new Thread(new Runnable() {
             public void run() {
                 while (progressStatus < 100) {
                     progressStatus += 1;
-                    handler.post(new Runnable() {
-                        public void run() {
-                            progressBar.setProgress(progressStatus);
-                            textView.setText(progressStatus + "/" + progressBar.getMax());
-                        }
-                    });
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(15);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -53,6 +43,6 @@ public class Splash extends Activity {
                 startActivity(i);
                 finish();
             }
-        }, 1000);
+        }, 1500);
     }
 }

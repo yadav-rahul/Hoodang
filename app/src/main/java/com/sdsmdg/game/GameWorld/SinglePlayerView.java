@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.MediaPlayer;
@@ -29,17 +31,18 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     public static float vBallX, vBallY;
     public static float vSecondBallX, vSecondBallY;
 
+
     private final int boardWidth2 = (Launcher.width) / 5;
     private final int boardHeight = (Launcher.height) / 50;
     private final float dT = 0.3f;
-    private final Paint paintB1, paintB2, paintBall, paintSecondBall;
+    private final Paint paintB1, paintB2, paintBall, paintSecondBall, paintInvisible, textPaint, circlePaint;
     String TAG = "com.sdsmdg.game";
     private int giftVelocity = Launcher.width / 25;
     private int giftTopPosition = 0;
     private int giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
     private boolean showGift = false;
     private SinglePlayer singlePlayer;
-    private RectF rectFB1, rectFB2, rectInvisible;
+    private RectF rectFB1, rectFB2, rectFInvisibleB1, rectFInvisibleB2;
     private SinglePlayer.RenderThread renderThread;
     private float vB1X, vB2X;
 
@@ -55,8 +58,10 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
     private Bitmap bitmap;
     private Bitmap leftButton, rightButton;
     public static int numberOfHits = 1;
+    public static int score = 0;
     private Canvas canvas;
     private int touchPosition;
+    private Bitmap backgroundBitmap, scaledBitmap, rotatedBitmap;
     private boolean touchAction;
     private MediaPlayer mp;
     public static boolean showSecondBall = false;
@@ -94,8 +99,31 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         paintSecondBall.setStyle(Paint.Style.FILL);
         paintSecondBall.setAntiAlias(true);
 
+
+        paintInvisible = new Paint();
+        paintInvisible.setColor(0xFFFFFFFF);
+        paintInvisible.setAlpha(0);
+        paintInvisible.setStyle(Paint.Style.FILL);
+        paintInvisible.setAntiAlias(true);
+
+        textPaint = new Paint();
+        textPaint.setAlpha(255);
+        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setColor(Color.BLACK);
+        textPaint.setAntiAlias(true);
+        textPaint.setTextSize(Launcher.width / 10);
+
+        circlePaint = new Paint();
+        circlePaint.setColor(Color.WHITE);
+        circlePaint.setAlpha(255);
+        circlePaint.setStyle(Paint.Style.FILL);
+        circlePaint.setAntiAlias(true);
+
+
         rectFB1 = new RectF();
         rectFB2 = new RectF();
+        rectFInvisibleB1 = new RectF();
+        rectFInvisibleB2 = new RectF();
 
         setBoardOneAtCenter(Launcher.width / 2, Launcher.height);
         setBoardTwoAtCenter(Launcher.width / 2, 0);
@@ -104,6 +132,13 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         leftButton = BitmapFactory.decodeResource(getResources(), R.drawable.left_button);
         rightButton = BitmapFactory.decodeResource(getResources(), R.drawable.right_button);
         mp = MediaPlayer.create(singlePlayer.getApplicationContext(), R.raw.strike_sound);
+        takeBitmap();
+        Matrix matrix = new Matrix();
+        matrix.postRotate(-90);
+        scaledBitmap = Bitmap.createScaledBitmap(backgroundBitmap, Launcher.height
+                , Launcher.width, true);
+        rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(),
+                scaledBitmap.getHeight(), matrix, true);
     }
 
     public boolean setBoardOneAtCenter(int x, int y) {
@@ -124,6 +159,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean initializeBallPosition(int x, int y) {
+        score = 0;
         xBallCenter = x / 2;
         yBallCenter = y / 2;
         return true;
@@ -266,7 +302,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             vBallY = -vBallY;
         } else if (yBallCenter > Launcher.height) {
             showSecondBall = false;
-            singlePlayer.popDialog(numberOfHits);
+            singlePlayer.popDialog(score);
         }
         return true;
     }
@@ -276,20 +312,21 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         mp.start();
         if (x == 1) {
             numberOfHits++;
-            yBallCenter = (int) (Launcher.height - boardHeight - radius);
+            score++;
+            yBallCenter = (int) (Launcher.height - (4 * boardHeight / 2) - radius);
             vBallY = -vBallY;
-            Log.i(TAG, "Number of hits : " + numberOfHits);
         } else if (x == 2) {
-            yBallCenter = radius + boardHeight;
+            yBallCenter = radius + (4 * boardHeight / 2);
             vBallY = -vBallY;
         }
         if (x == 3) {
+            score++;
             numberOfHits++;
-            ySecondBallCenter = (int) (Launcher.height - boardHeight - radius);
+            ySecondBallCenter = (int) (Launcher.height - (4 * boardHeight / 2) - radius);
             vSecondBallY = -vSecondBallY;
-            numberOfHits++;
+            score++;
         } else if (x == 4) {
-            ySecondBallCenter = radius + boardHeight;
+            ySecondBallCenter = radius + (4 * boardHeight / 2);
             vSecondBallY = -vSecondBallY;
         }
         return true;
@@ -374,10 +411,37 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
         return true;
     }
 
+    public void takeBitmap() {
+        int[] number = new int[]{1, 2, 3};
+        int index = (number[new Random().nextInt(number.length)]);
+        switch (index) {
+            case 1:
+                backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_back);
+                textPaint.setColor(0xFF605E5F);
+                break;
+            case 2:
+                backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.green_back);
+                textPaint.setColor(0xFF3F8522);
+                break;
+            case 3:
+                backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.red_back);
+                textPaint.setColor(0xFF748E69);
+                break;
+        }
+    }
+
     @Override
     public void onDraw(Canvas canvas) {
         this.canvas = canvas;
-        canvas.drawColor(0XFFFFFFFF);
+
+        //Randomly draw any of the three available background
+        //canvas.drawColor(0XFFFFFFFF);
+        canvas.drawBitmap(rotatedBitmap, 0, 0, null);
+        canvas.drawCircle(Launcher.width / 2, Launcher.height / 2, Launcher.width / 8
+                , circlePaint);
+
+        canvas.drawText(String.valueOf(score), Launcher.width / 2 - Launcher.width / 40,
+                Launcher.height / 2 + Launcher.width / 40, textPaint);
 
         if (Launcher.showButtons) {
             canvas.drawBitmap(leftButton, 10, (Launcher.height - (Launcher.height / 8)), paintBall);
@@ -391,13 +455,15 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
 
         if (rectFB1 != null) {
             rectFB1.set(xB1Center - (boardWidth1 / 2), yB1Center + (boardHeight / 2), xB1Center + (boardWidth1 / 2), yB1Center - (boardHeight / 2));
-
+            rectFInvisibleB1.set(xB1Center - (boardWidth1 / 2), yB1Center - (boardHeight / 2), xB1Center + (boardWidth1 / 2), yB1Center - (3 * boardHeight / 2));
+            canvas.drawOval(rectFInvisibleB1, paintInvisible);
             canvas.drawOval(rectFB1, paintB1);
         }
 
         if (rectFB2 != null) {
             rectFB2.set(xB2Center - (boardWidth2 / 2), yB2Center + (boardHeight / 2), xB2Center + (boardWidth2 / 2), yB2Center - (boardHeight / 2));
-
+            rectFInvisibleB2.set(xB2Center - (boardWidth2 / 2), yB2Center + (3 * boardHeight / 2), xB2Center + (boardWidth2 / 2), yB2Center + (boardHeight / 2));
+            canvas.drawOval(rectFInvisibleB2, paintInvisible);
             canvas.drawOval(rectFB2, paintB2);
         }
         if (Ball.rectFBall != null) {
@@ -412,16 +478,16 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             canvas.drawOval(Ball.rectFSecondBall, paintSecondBall);
         }
         if (rectFB1 != null) {
-            if (rectFBall.intersect(rectFB1)) {
+            if (rectFBall.intersect(rectFInvisibleB1)) {
                 collide(1);
-            } else if (rectFBall.intersect(rectFB2)) {
+            } else if (rectFBall.intersect(rectFInvisibleB2)) {
                 collide(2);
             }
         }
         if (rectFB1 != null && showSecondBall == true) {
-            if (rectFSecondBall.intersect(rectFB1)) {
+            if (rectFSecondBall.intersect(rectFInvisibleB1)) {
                 collide(3);
-            } else if (rectFSecondBall.intersect(rectFB2)) {
+            } else if (rectFSecondBall.intersect(rectFInvisibleB2)) {
                 collide(4);
             }
         }

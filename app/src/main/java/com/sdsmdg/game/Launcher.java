@@ -118,9 +118,6 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
-        left.setAnimation(animation);
-        right.setAnimation(animation);
         Log.i(TAG, "value of check is : " + check);
         dialog(check);
     }
@@ -133,7 +130,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
     public void dialog(int param) {
         if (param == 1) {
-            long score = SinglePlayerView.numberOfHits;
+            long score = SinglePlayerView.score;
             String result = "Your score is " + String.valueOf(score);
 
             final Dialog d = new Dialog(Launcher.this);
