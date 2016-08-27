@@ -1,90 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:layout_margin="0dp"
     android:orientation="vertical"
-    android:weightSum="5"
     tools:context="com.sdsmdg.game.Launcher">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="Hoodang"
+        android:textSize="70sp"
+        android:typeface="monospace" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:onClick="onPlayClicked"
+        android:src="@drawable/play_button"
+        android:clickable="true" />
+
     <LinearLayout
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView3"
+        android:layout_above="@+id/imageView2"
+        android:weightSum="4">
 
         <ImageView
-            android:id="@+id/left_image"
-            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:layout_margin="3dp"
+            android:padding="3dp"
+            android:src="@drawable/highscore_button"
+            android:onClick="highScoreClicked"
+            android:id="@+id/imageView4"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/image_one" />
+            android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/right_image"
-            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:layout_margin="3dp"
+            android:padding="3dp"
+            android:src="@drawable/settings_button"
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/image_two" />
+            android:layout_weight="1" />
+
+        <ImageView
+            android:clickable="true"
+            android:onClick="soundClicked"
+            android:layout_margin="3dp"
+            android:padding="3dp"
+            android:src="@drawable/sound_button"
+            android:id="@+id/soundImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:onClick="leaderBoardClicked"
+            android:clickable="true"
+            android:layout_margin="3dp"
+            android:padding="3dp"
+            android:src="@drawable/leaderboard_button"
+            android:id="@+id/imageView7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        android:weightSum="3">
-
-        <Button
-            android:id="@+id/singlePlayerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorSkyBlue"
-            android:text="G-Sensor Mode"
-            android:textColor="@color/colorWhite" />
-
-        <Button
-            android:id="@+id/manualButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorSkyBlue"
-            android:text="Manual Mode"
-            android:textColor="@color/colorWhite" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/bottom" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/high_score_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorSkyBlue"
-                android:clickable="true"
-                android:onClick="highScoreClicked"
-                android:text="High Score"
-                android:textColor="@color/colorWhite" />
-
-            <Button
-                android:id="@+id/scoreButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorSkyBlue"
-                android:clickable="true"
-                android:onClick="infoClicked"
-                android:text="LeaderBoard"
-                android:textColor="@color/colorWhite" />
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
-
+</RelativeLayout>

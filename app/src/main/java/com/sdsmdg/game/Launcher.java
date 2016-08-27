@@ -7,7 +7,9 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,32 +30,27 @@ import com.sdsmdg.game.LeaderBoard.LeaderBoard;
 import com.sdsmdg.game.LeaderBoard.LocalDB.DBHandler;
 import com.sdsmdg.tastytoast.TastyToast;
 
-public class Launcher extends AppCompatActivity implements View.OnClickListener {
+public class Launcher extends AppCompatActivity {
 
     public static long startTime;
     public static int check;
     public static int winner = 1;
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
-    Button sP, mP;
-    ImageView left, right;
     DBHandler dbHandler;
+    ImageView soundImageView;
     public static boolean sensorMode = true;
     public static boolean showButtons = false;
+    public static boolean isSound = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
         Launcher.check = 0;
-        left = (ImageView) findViewById(R.id.left_image);
-        right = (ImageView) findViewById(R.id.right_image);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        sP = (Button) findViewById(R.id.singlePlayerButton);
-        mP = (Button) findViewById(R.id.manualButton);
-        sP.setOnClickListener(this);
-        mP.setOnClickListener(this);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -61,28 +58,45 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         height = (displaymetrics.heightPixels);
         width = displaymetrics.widthPixels;
         dbHandler = new DBHandler(getApplicationContext());
+        soundImageView = (ImageView) findViewById(R.id.soundImage);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.singlePlayerButton: {
-                Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
-                Log.i(TAG, "Sensor Button clicked");
-                sensorMode = true;
-                showButtons = false;
-                startActivity(i);
-                break;
+
+    public void onPlayClicked(View view) {
+        Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
+        Log.i(TAG, "Sensor Button clicked");
+        sensorMode = true;
+        showButtons = false;
+        startActivity(i);
+    }
+
+    public void onSettingsButtonClicked(View view) {
+        Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
+        Log.i(TAG, "Manual Button clicked");
+        sensorMode = false;
+        showButtons = true;
+        startActivity(i);
+    }
+
+    public void soundClicked(View view) {
+        isSound = !isSound;
+
+        if (isSound) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                soundImageView.setImageDrawable(getResources().getDrawable(R.drawable.sound_button, getApplicationContext().getTheme()));
+            } else {
+                soundImageView.setImageDrawable(getResources().getDrawable(R.drawable.sound_button));
             }
-            case R.id.manualButton: {
-                Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
-                Log.i(TAG, "Manual Button clicked");
-                sensorMode = false;
-                showButtons = true;
-                startActivity(i);
-                break;
+            TastyToast.makeText(this, "Turning sounds on ...", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                soundImageView.setImageDrawable(getResources().getDrawable(R.drawable.sound_mute_button, getApplicationContext().getTheme()));
+            } else {
+                soundImageView.setImageDrawable(getResources().getDrawable(R.drawable.sound_mute_button));
             }
+            TastyToast.makeText(this, "Turning sounds off ...", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
         }
+
     }
 
     public void highScoreClicked(View view) {
@@ -95,7 +109,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void infoClicked(View view) {
+    public void leaderBoardClicked(View view) {
         checkConnection();
     }
 

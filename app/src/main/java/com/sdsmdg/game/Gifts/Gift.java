@@ -35,9 +35,11 @@ public class Gift {
                 break;
             }
             case 3:
-                SinglePlayerView.xSecondBallCenter = SinglePlayerView.xBallCenter;
-                SinglePlayerView.ySecondBallCenter = SinglePlayerView.yBallCenter;
-                SinglePlayerView.showSecondBall = true;
+                if (!SinglePlayerView.showSecondBall) {
+                    SinglePlayerView.xSecondBallCenter = SinglePlayerView.xBallCenter;
+                    SinglePlayerView.ySecondBallCenter = SinglePlayerView.yBallCenter;
+                    SinglePlayerView.showSecondBall = true;
+                }
                 break;
         }
     }
