@@ -38,9 +38,9 @@ public class Launcher extends AppCompatActivity {
     public static int height, width;
     public String TAG = "com.sdsmdg.game";
     DBHandler dbHandler;
-    ImageView soundImageView;
-    public static boolean sensorMode = true;
-    public static boolean showButtons = false;
+    ImageView soundImageView, sensorImageView;
+    public static boolean sensorMode = false;
+    public static boolean showButtons = true;
     public static boolean isSound = true;
 
     @Override
@@ -59,23 +59,36 @@ public class Launcher extends AppCompatActivity {
         width = displaymetrics.widthPixels;
         dbHandler = new DBHandler(getApplicationContext());
         soundImageView = (ImageView) findViewById(R.id.soundImage);
+        sensorImageView = (ImageView) findViewById(R.id.sensorImageView);
     }
 
 
     public void onPlayClicked(View view) {
         Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
         Log.i(TAG, "Sensor Button clicked");
-        sensorMode = true;
-        showButtons = false;
         startActivity(i);
     }
 
-    public void onSettingsButtonClicked(View view) {
-        Intent i = new Intent(getApplicationContext(), SinglePlayer.class);
-        Log.i(TAG, "Manual Button clicked");
-        sensorMode = false;
-        showButtons = true;
-        startActivity(i);
+    //By default turn on the manual mode
+    public void onSensorButtonClicked(View view) {
+        sensorMode = !sensorMode;
+        showButtons = !showButtons;
+        if (sensorMode) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                sensorImageView.setImageDrawable(getResources().getDrawable(R.drawable.sensor_mode_icon, getApplicationContext().getTheme()));
+            } else {
+                sensorImageView.setImageDrawable(getResources().getDrawable(R.drawable.sensor_mode_icon));
+            }
+
+            TastyToast.makeText(this, "Turning sensor mode on ...", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                sensorImageView.setImageDrawable(getResources().getDrawable(R.drawable.manual_mode_icon, getApplicationContext().getTheme()));
+            } else {
+                sensorImageView.setImageDrawable(getResources().getDrawable(R.drawable.manual_mode_icon));
+            }
+            TastyToast.makeText(this, "Turning sensor mode off ...", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+        }
     }
 
     public void soundClicked(View view) {

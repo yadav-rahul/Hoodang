@@ -220,7 +220,7 @@ public class SinglePlayerView extends SurfaceView implements SurfaceHolder.Callb
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);
             giftTopPosition = 0;
             showGift = false;
-            Gift.showGift(3);
+            Gift.showGift(typeOfGift);
         } else if (giftTopPosition > Launcher.height) {
             giftTopPosition = 0;
             giftLeftPosition = Launcher.width / ((new Random().nextInt(10)) + 1);

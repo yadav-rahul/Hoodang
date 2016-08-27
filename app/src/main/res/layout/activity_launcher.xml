@@ -58,8 +58,9 @@
             android:clickable="true"
             android:layout_margin="3dp"
             android:padding="3dp"
-            android:src="@drawable/settings_button"
-            android:id="@+id/imageView5"
+            android:onClick="onSensorButtonClicked"
+            android:src="@drawable/manual_mode_icon"
+            android:id="@+id/sensorImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
