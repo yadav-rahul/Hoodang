@@ -89,9 +89,9 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
 
         if (!dbHandler.checkDatabase()) {
             TastyToast.makeText(Launcher.this, "Your High Score is : " + dbHandler.getPastHighScore(),
-                    TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+                    TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
         } else {
-            TastyToast.makeText(Launcher.this, "You didn't played yet !", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+            TastyToast.makeText(Launcher.this, "You didn't played yet !", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
         }
     }
 
@@ -104,7 +104,7 @@ public class Launcher extends AppCompatActivity implements View.OnClickListener 
             Intent i = new Intent(getApplicationContext(), LeaderBoard.class);
             startActivity(i);
         } else {
-            Toast.makeText(this, "Check your Internet Connection !", Toast.LENGTH_LONG).show();
+            TastyToast.makeText(this, "Check your Internet Connection !", TastyToast.LENGTH_SHORT, TastyToast.WARNING);
         }
     }
 

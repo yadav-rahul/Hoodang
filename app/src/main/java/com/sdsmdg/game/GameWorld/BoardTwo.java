@@ -7,5 +7,5 @@ public interface BoardTwo {
 
     boolean setBoardTwoAtCenter(int x, int y);
 
-    boolean updateB2Center();
+    boolean updateB2Center(boolean token);
 }

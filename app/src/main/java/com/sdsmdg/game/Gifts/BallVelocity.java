@@ -13,5 +13,11 @@ public class BallVelocity {
         Log.i("com.sdsmdg.game", "Ball Velocity changed !");
         SinglePlayerView.vBallX = (SinglePlayerView.vBallX) * 7 / 10;
         SinglePlayerView.vBallY = (SinglePlayerView.vBallY) * 7 / 10;
+
+        if (SinglePlayerView.showSecondBall){
+            Log.i("com.sdsmdg.game", "Ball Velocity changed !");
+            SinglePlayerView.vSecondBallX = (SinglePlayerView.vSecondBallX) * 8 / 10;
+            SinglePlayerView.vSecondBallY = (SinglePlayerView.vSecondBallY) * 8 / 10;
+        }
     }
 }
