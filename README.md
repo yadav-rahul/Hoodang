@@ -2,15 +2,19 @@
 Modified version of famous android game ping-pong.
 
 ## Strategy
-Don't miss the ball and take gifts to increase your Score but remember gifts are not always as good as they look.
+Don't miss the ball and take gifts to increase your Score but remember gifts are not always as good as they look.<br>
+Collision with pink ball will your score by one only but green ball aka score ball will increase score by two in one collision. 
 
 ## ScreenShots
-![](screenshots/initial.png?raw=true)
-![](screenshots/action.png?raw=true)
-![](screenshots/gameover.png?raw=true)
+<img src = "https://github.com/yadav-rahul/Hoodang/blob/master/screenshots/main.png" width = "300">
+<img src = "https://github.com/yadav-rahul/Hoodang/blob/master/screenshots/play_one.png" width = "300">
+<img src = "https://github.com/yadav-rahul/Hoodang/blob/master/screenshots/play_two.png" width = "300">
+<img src = "https://github.com/yadav-rahul/Hoodang/blob/master/screenshots/play_three.png" width = "300">
+<img src = "https://github.com/yadav-rahul/Hoodang/blob/master/screenshots/gameover.png" width = "300">
+<img src = "https://github.com/yadav-rahul/Hoodang/blob/master/screenshots/leaderboard.png" width = "300">
 
 ## Gifts
-![](app/src/main/res/drawable/speed_gift.png) : It Is used to increase/decrease Ball's speed
+![](app/src/main/res/drawable/speed_gift.png) : It's purpose in life is increase/decrease Ball's speed
 <hr>
 ![](app/src/main/res/drawable/size_gift.png) : It is used to increase/decrease size of either Ball or Board
 <hr>
